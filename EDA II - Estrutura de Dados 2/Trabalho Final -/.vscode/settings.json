@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "header.C": "cpp",
+        "limits": "c",
+        "header.h": "c"
+    }
+}
