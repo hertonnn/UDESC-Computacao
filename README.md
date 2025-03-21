@@ -15,8 +15,6 @@ bem como trabalhos, projetos, materiais usados e arquivos diversos meus.
 
 obs: Essa relevância não é a relevância da disciplina no curso, e sim a quantidade e qualidade do material no presente repositório.
 
-- EN - English ⏳
-
 # 2025/1
 - SOP: Sistemas Operacionais ⏳
 - BAN1: Bancos de Dados I ⏳
@@ -51,6 +49,8 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - LMA: Lógica Matemática ⏳
 - PFN: Programação Funcional 
 - AGT: Algoritmos ⏳
+# OUTROS
+- ENG - English ⏳
 # Sobre mim
 
 ![Texto Alternativo](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_site.png)
