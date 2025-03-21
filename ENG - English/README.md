@@ -10,7 +10,7 @@ Esse tapa na cara em forma de vídeo foi crucial para eu deixar de lado a procra
 
 | **ENGLISH** 			|   Aula/Leit.	|     Resumo 	|	Exerc.	|    Revisão    |
 | ------------------------------|---------------|---------------|---------------|---------------|
-| Basic Review			|	`✅` 	|		|		|		|
+| Basic Review			|	[x] 	|		|		|		|
 | Reading Technique 		|		|		|		|		|
 | Nouns				|		|		|		|		|
 | Genitive Case			|		|		|		|		|
