@@ -9,6 +9,7 @@ Esse tapa na cara em forma de vídeo foi crucial para eu deixar de lado a procra
 ## Abaixo conteúdos importantes e o seu progresso.
 
 | **ENGLISH** 			|   Aula/Leit.	|     Resumo 	|	Exerc.	|    Revisão    |
+| ------------------------------|---------------|---------------|---------------|---------------|
 | Basic Review			|	✅ 	|		|		|		|
 | Reading Technique 		|		|		|		|		|
 | Nouns				|		|		|		|		|
