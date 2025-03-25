@@ -81,6 +81,11 @@ Possui Doutorado em Matemática (tese em Lógica) pelo Instituto Superior Técni
 karina.roggia@udesc.br 
 ### Lattes:
  http://lattes.cnpq.br/7786281602726587
+ 
+ 
+## Meu diário de bordo - Minha jornada tech
+
+Vazio até então hehe...
 
 
 
