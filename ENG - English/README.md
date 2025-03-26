@@ -10,11 +10,11 @@ Esse tapa na cara em forma de vídeo foi crucial para eu deixar de lado a procra
 
 | **ENGLISH** 			|   Aula/Leit.	|     Resumo 	|	Exerc.	|    Revisão    |
 | ------------------------------|---------------|---------------|---------------|---------------|
-| Basic Review			|	✅ 	|	✅	|	✅	|		|
-| Reading Technique 		|		|		|		|		|
-| Nouns				|		|		|		|		|
+| Basic Review			|	✅ 	|		|		|		|
+| Reading Technique 		|	✅	|		|		|		|
+| Nouns				|	✅	|		|		|		|
 | Genitive Case			|		|		|		|		|
-| Articles			|		|		|		|		|
+| Articles			|	✅	|		|		|		|
 | Pronouns			|		|		|		|		|
 | Interrogatives Adverbs	|		|		|		|		|
 | Simple Present Tense		|		|		|		|		|
