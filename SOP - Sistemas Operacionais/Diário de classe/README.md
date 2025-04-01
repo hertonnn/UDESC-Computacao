@@ -42,7 +42,7 @@ Leitura
 
 Leitura: Tanenbaum, seção 2.1; ALP, cap. 3
 
-[Exemplos de fork]()
+[Exemplos de fork](SOP - Sistemas Operacionais/Diário de classe/processos/exemplos-fork.zip)
 
 [Exercícios de fork]()
 
