@@ -42,13 +42,13 @@ Leitura
 
 Leitura: Tanenbaum, seção 2.1; ALP, cap. 3
 
-[Exemplos de fork](SOP - Sistemas Operacionais/Diário de classe/processos/exemplos-fork.zip)
+[Exemplos de fork](https://github.com/hertonnn/UDESC-Computacao/blob/0cc1da7fde78d7bde263df4861ca53d37962c718/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos/exemplos-fork.zip)
 
-[Exercícios de fork]()
+[Exercícios de fork](https://github.com/hertonnn/UDESC-Computacao/blob/0cc1da7fde78d7bde263df4861ca53d37962c718/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos/sop-exerc-fork-resp.pdf)
 
-[Exercícios de fork (respostas)]()
+[Exercícios de fork (respostas)](https://github.com/hertonnn/UDESC-Computacao/blob/0cc1da7fde78d7bde263df4861ca53d37962c718/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos/sop-exerc-fork-resp.zip)
 
-[Exercícios de fork (respostas - programas)]()
+[Exercícios de fork (respostas - programas)](SOP - Sistemas Operacionais/Diário de classe/processos/sop-exerc-fork.pdf)
 
 
 
