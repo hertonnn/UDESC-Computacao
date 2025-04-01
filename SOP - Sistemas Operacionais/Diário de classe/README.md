@@ -1,92 +1,54 @@
+06/03/25 - Introdução à disciplina; apresentação do plano de ensino
 
-# Sistemas Operacionais
-![img_sop](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_sop.png)
+11/03/25 - [Fundamentos de SO](SOP - Sistemas Operacionais/Exercicios/sop-exerc-fundam.pdf)
 
-A disciplina de Sistemas Operacionais é de extrema importância para seu curso
-e para sua carreira profissional, já que se trata do sistema gestor de qualquer
-computador. O Sistema Operacional é que organiza a execução dos aplicativos, aloca espaço em memória para uma execução mais rápida, envia e recebe
-dados de dispositivos e os trata para serem utilizados pelos aplicativos dos
-usuários, além de muitas outras atividades. Em suma, o Sistema Operacional
-protege a máquina do usuário e protege o usuário da máquina.
+- definições
+- tipos de SO
+- conceitos básicos
+- chamadas de sistema
+- estruturas de SO
+Leitura: Tanenbaum, seções 1.1, 1.4 a 1.7
 
+### Leitura adicional sugerida:
 
-## 📚 Recursos para Estudo de Sistemas Operacionais e Programação de Baixo Nível
+- J. N. Herder, H. Bos, B. Gras, P. Homburg e A. S. Tanenbaum, "[MINIX 3: A Highly Reliable, Self-Repairing Operating System](https://www.minix3.org/docs/jorrit-herder/osr-jul06.pdf)". ACM SIGOPS Operating Systems Review, vol. 40, no. 3, pp. 80-89, July 2006. Uma descrição da arquitetura do MINIX 3, um sistema operacional compatível com POSIX baseado em micronúcleo.
 
-### **📖 Livros On-line de Sistemas Operacionais**  
-- [Sistemas Operacionais: Conceitos e Mecanismos (Carlos Maziero)](http://wiki.inf.ufpr.br/maziero/doku.php?id=socm%3Astart)  
-- [Operating Systems: Three Easy Pieces (Remzi H. Arpaci-Dusseau e Andrea C. Arpaci-Dusseau)](http://pages.cs.wisc.edu/~remzi/OSTEP/)  
-- [Introduction to Operating Systems (vários autores)](https://okrieg.github.io/openos/textbook/index.html)  
-- [An Operating Systems Vade Mecum (Raphael Finkel)](https://www.researchgate.net/publication/220694982_An_operating_systems_vade_mecum_2_ed)  
-- [Operating Systems and Middleware: Supporting Controlled Interaction (Max Hailperin)](https://gustavus.edu/mcs/max/os-book/)  
-- [Think OS: A Brief Introduction to Operating Systems (Allen B. Downey)](http://greenteapress.com/thinkos/index.html)  
+- [Unikernels - Rethinking Cloud Infrastructure](http://unikernel.org/). Página com links para descrições mais aprofundadas de unikernels e projetos que usam unikernels.
 
-### **🧵 Programação de Sistemas (Threads, Processos, IPC)**  
-- [POSIX Threads Programming](https://hpc-tutorials.llnl.gov/posix/)  
-- [Multi-Threaded Programming With POSIX Threads](https://web.archive.org/web/20140102060513/http://users.actcom.co.il/~choo/lupg/tutorials/multi-thread/multi-thread.html)  
-- [Pthread Primer](http://pages.cs.wisc.edu/~travitch/pthreads_primer.html)  
-- [Advanced Linux Programming (ALP)](http://mentorembedded.github.io/advancedlinuxprogramming/)   
-- [An Introduction to Linux IPC (Michael Kerrisk)](https://www.youtube.com/watch?v=vU2HDf5ZhO4&t=1s)  
+### Tabelas de chamadas de sistema
 
-### **🖥️ Sistemas Computacionais e Arquitetura**  
-- [Below C Level: An Introduction to Computer Systems (Norm Matloff)](http://heather.cs.ucdavis.edu/~matloff/50/PLN/CompSystsBook.pdf)  
-- [Introduction to Computer Organization with x86-64 Assembly Language & GNU/Linux](https://moodle.joinville.udesc.br/mod/resource/view.php?id=287098)  
+Condições de conclusão
+[xv6 (x86)](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf#Anchor%24fig%242d0%242d2)
 
-### **🔧 Programação Assembly (MIPS e x86)**  
-#### **MIPS**  
-- [MIPS Quick Tutorial](https://minnie.tuhs.org/CompArch/Resources/mips_quick_tutorial.html)  
-- [Fundamentals of MIPS Programming in Assembly Language (Karl Von Dyson)](https://www.udemy.com/blog/mips-assembly-language-programming/)  
-- [Programmed Introduction to MIPS Assembly Language (Bradley Kjell)](https://chortle.ccsu.edu/AssemblyTutorial/index.html)  
-- [MIPS Assembly Language Programming (Robert L. Britton)](https://moodle.joinville.udesc.br/mod/url/view.php?id=287103)  
+[FreeBSD](https://cgit.freebsd.org/src/tree/sys/kern/syscalls.master)
 
-#### **Intel x86/x86-64**  
-- [Programming from the Ground Up (Jonathan Bartlett)](URL)  
-- [A Guide to Programming Intel IA32 PC Architecture (Kai Li)](URL)  
-- [PC Assembly Language (Paul Carter)](URL)  
-- [Assembly para o GNU (Intel IA-32) (Filipe Araújo)](./caminho/arquivo.pdf)  
-- [Introduction to Linux Intel Assembly Language (Norm Matloff)](URL)  
-- [x86-64 Assembly Language Programming with Ubuntu (Ed Jorgensen)](URL)  
-- [Intel 80386 Programmer's Reference Manual](./caminho/arquivo.pdf)  
+[OpenBSD](https://cvsweb.openbsd.org/src/sys/kern/syscalls.master)
 
-### **🟢 Programação em C**  
-- [Apostila do curso de linguagem C (UFMG)](./)  
-- [Essential C (Nick Parlante)](./caminho/arquivo.pdf)  
-- [Programming in C — UNIX System Calls and Subroutines using C (David Marshall)](URL)  
+[Darwin (Mac OS X)](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/syscalls.master)
 
-### **🐧 Ferramentas Unix/Linux**  
-- [Unix Programming Tools (Stanford)](https://moodle.joinville.udesc.br/mod/resource/view.php?id=287119)  
-- [The Student's Guide to the Secret Art of Debugging (Norm Matloff)](http://heather.cs.ucdavis.edu/~matloff/debug.html)  
-- [Programming Tools (FreeBSD Developers' Handbook)](http://www.freebsd.org/doc/en_US.ISO8859-1/books/developers-handbook/tools.html)  
-- [Debugging (Patrick Horgan)](http://dbp-consulting.com/tutorials/debugging/index.html)  
+[Linux](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/x86/entry/syscalls/syscall_64.tbl)
 
-### **🛠️ Desenvolvimento de Sistemas Operacionais**  
-- [OS Development Wiki](URL)  
-- [Linux Kernel Development, 3rd Edition (Robert Love)](./caminho/arquivo.pdf)  
-- [Writing Device Drivers in Linux: A Brief Tutorial (Xavier Calbet)](URL)  
-- [Understanding the Linux Virtual Memory Manager (Mel Gorman)](URL)  
-- [Mapa interativo do kernel Linux (Constantine Shulyupin)](URL)  
-- [OS Development Tutorials on Bona Fide OS Developer](URL)  
-- [Roll your own toy UNIX-clone OS (James Molloy)](URL)
-- [Linux Kernel Teaching (UPB)](URL)  
+[Windows](https://github.com/j00ru/windows-syscalls)
 
-### **🎮 Outros**  
-- [You're the OS! (jogo em que você faz o papel de um SO)](https://drfreckles42.itch.io/youre-the-os)  
+13/03/25 - Fundamentos de SO: revisão de hardware
+
+Leitura
+
+- Tanenbaum, seção 1.3
+- Stallings, Operating Systems: Internals and Design Principles, 6th Ed, cap. 1 => funcionamento do processador hipotético
 
 
-## 👨‍🏫 Video Aulas do professor
+18/03/25 - Processos
 
-A playlist abaixo contém as videoaulas que foram usadas durante o período de ensino remoto. Essas videoaulas cobrem a parte teórica do conteúdo, a parte prática era vista em encontros síncronos (sem gravações disponíveis). Elas podem ser úteis principalmente para quem perder alguma aula presencial durante o semestre. Em algumas aulas o conteúdo pode não ser exatamente o mesmo, mas deve ser bem próximo.
+Leitura: Tanenbaum, seção 2.1; ALP, cap. 3
 
-- [Playlist VideoAulas](https://www.youtube.com/playlist?list=PLNsyM5MBjYzd_uTCtvvt1EAnmaKrBJwQi)
+[Exemplos de fork]()
 
-### Sobre o Professor
-Atualmente é professor adjunto na Universidade do Estado de Santa Catarina (UDESC), campus Joinville. Possui graduação em Engenharia de Computação pela Fundação Universidade Federal do Rio Grande (1998), mestrado em Engenharia Elétrica pela Universidade Federal de Santa Catarina (2001) e doutorado em Engenharia Elétrica pela Universidade Federal de Santa Catarina (2006). Atualmente é professor adjunto na Universidade do Estado de Santa Catarina (UDESC), campus Joinville, onde é docente permanente do Programa de Pós-Graduação em Computação Aplicada (PPGCA).
-### Email:
-rafael.obelheiro@udesc.br
-### Lattes:
-não registrado
+[Exercícios de fork]()
 
+[Exercícios de fork (respostas)]()
 
-
+[Exercícios de fork (respostas - programas)]()
 
 
 
