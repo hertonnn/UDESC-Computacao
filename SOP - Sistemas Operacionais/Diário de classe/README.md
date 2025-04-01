@@ -1,6 +1,6 @@
 ---
 
-# **📅 Cronograma de Sistemas Operacionais**  
+# ** Cronograma de Sistemas Operacionais**  
 
 ### **📌 Aula 1 - 06/03/25**  
 **Introdução à disciplina**  
