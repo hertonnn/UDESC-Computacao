@@ -1,6 +1,6 @@
 06/03/25 - Introdução à disciplina; apresentação do plano de ensino
 
-11/03/25 - [Fundamentos de SO](SOP - Sistemas Operacionais/Exercicios/sop-exerc-fundam.pdf)
+11/03/25 - [Fundamentos de SO]([SOP - Sistemas Operacionais/Exercicios/sop-exerc-fundam.pdf](https://github.com/hertonnn/UDESC-Computacao/blob/d4f5467b76f7a0746e2d73f0b8a684858dc9637d/SOP%20-%20Sistemas%20Operacionais/Exercicios/sop-exerc-fundam.pdf))
 
 - definições
 - tipos de SO
