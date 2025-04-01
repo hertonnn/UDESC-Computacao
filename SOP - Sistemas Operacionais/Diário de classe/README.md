@@ -50,8 +50,8 @@
 - **Tanenbaum**, seção **2.1**  
 - **ALP**, cap. 3  
 
-📂 **Material complementar:**  
-- [Processos (Conteúdo/Exercícios)]()
+📂 **Material:**  
+- [Processos (Conteúdo/Exercícios)](https://github.com/hertonnn/UDESC-Computacao/tree/b09f786fb89bd2fa7d0cbebaf83788d038d02b8d/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos)
 
 ---
 
@@ -71,7 +71,7 @@
 - **ALP**, Cap. 4  
 - [POSIX Threads Programming (Seções 1-5)](LINK_AQUI)  
 
-📂 **Material complementar:**  
+📂 **Material:**  
 - [Threads (Conteúdo/Exercícios)](LINK_AQUI) 
 
 ---
