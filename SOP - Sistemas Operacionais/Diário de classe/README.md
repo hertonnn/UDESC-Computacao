@@ -1,54 +1,77 @@
-06/03/25 - Introdução à disciplina; apresentação do plano de ensino
+---
 
-11/03/25 - [Fundamentos de SO](https://github.com/hertonnn/UDESC-Computacao/blob/d4f5467b76f7a0746e2d73f0b8a684858dc9637d/SOP%20-%20Sistemas%20Operacionais/Exercicios/sop-exerc-fundam.pdf)
+# **📅 Cronograma de Sistemas Operacionais**  
 
-- definições
-- tipos de SO
-- conceitos básicos
-- chamadas de sistema
-- estruturas de SO
-Leitura: Tanenbaum, seções 1.1, 1.4 a 1.7
+### **📌 Aula 1 - 06/03/25**  
+**Introdução à disciplina**  
+- Apresentação do plano de ensino.  
 
-### Leitura adicional sugerida:
+---
 
-- J. N. Herder, H. Bos, B. Gras, P. Homburg e A. S. Tanenbaum, "[MINIX 3: A Highly Reliable, Self-Repairing Operating System](https://www.minix3.org/docs/jorrit-herder/osr-jul06.pdf)". ACM SIGOPS Operating Systems Review, vol. 40, no. 3, pp. 80-89, July 2006. Uma descrição da arquitetura do MINIX 3, um sistema operacional compatível com POSIX baseado em micronúcleo.
+### **📌 Aula 2 - 11/03/25**  
+**Fundamentos de Sistemas Operacionais**  
+📚 **Conteúdo:**  
+- Definições e tipos de SO  
+- Conceitos básicos  
+- Chamadas de sistema  
+- Estruturas de SO  
 
-- [Unikernels - Rethinking Cloud Infrastructure](http://unikernel.org/). Página com links para descrições mais aprofundadas de unikernels e projetos que usam unikernels.
+📖 **Leitura obrigatória:**  
+- **Tanenbaum**, seções **1.1, 1.4 a 1.7**  
 
-### Tabelas de chamadas de sistema
+🔗 **Exercícios:**  
+- [Fundamentos de SO (PDF)](https://github.com/hertonnn/UDESC-Computacao/blob/d4f5467b76f7a0746e2d73f0b8a684858dc9637d/SOP%20-%20Sistemas%20Operacionais/Exercicios/sop-exerc-fundam.pdf)  
 
-Condições de conclusão
-[xv6 (x86)](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf#Anchor%24fig%242d0%242d2)
+📚 **Leitura adicional sugerida:**  
+1. **MINIX 3**: [Artigo "A Highly Reliable, Self-Repairing OS"](https://www.minix3.org/docs/jorrit-herder/osr-jul06.pdf) *(Tanenbaum et al.)*  
+2. **Unikernels**: [Rethinking Cloud Infrastructure](http://unikernel.org/)  
 
-[FreeBSD](https://cgit.freebsd.org/src/tree/sys/kern/syscalls.master)
+🔧 **Tabelas de chamadas de sistema:**  
+| Sistema       | Link |
+|--------------|------|
+| **xv6 (x86)** | [MIT xv6 Book](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf#Anchor%24fig%242d0%242d2) |
+| **FreeBSD** | [syscalls.master](https://cgit.freebsd.org/src/tree/sys/kern/syscalls.master) |
+| **Linux** | [syscall_64.tbl](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/x86/entry/syscalls/syscall_64.tbl) |
+| **Windows** | [Windows Syscalls](https://github.com/j00ru/windows-syscalls) |
 
-[OpenBSD](https://cvsweb.openbsd.org/src/sys/kern/syscalls.master)
+---
 
-[Darwin (Mac OS X)](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/syscalls.master)
+### **📌 Aula 3 - 13/03/25**  
+**Revisão de Hardware**  
+📖 **Leitura obrigatória:**  
+- **Tanenbaum**, seção **1.3**  
+- **Stallings**, *Operating Systems: Internals and Design Principles* (6ª Ed.), cap. 1 *(processador hipotético)*  
 
-[Linux](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/x86/entry/syscalls/syscall_64.tbl)
+---
 
-[Windows](https://github.com/j00ru/windows-syscalls)
+### **📌 Aula 4 - 18/03/25**  
+**Processos**  
+📖 **Leitura obrigatória:**  
+- **Tanenbaum**, seção **2.1**  
+- **ALP**, cap. 3  
 
-13/03/25 - Fundamentos de SO: revisão de hardware
+📂 **Material complementar:**  
+- [Processos (Conteúdo/Exercícios)]()
 
-Leitura
+---
 
-- Tanenbaum, seção 1.3
-- Stallings, Operating Systems: Internals and Design Principles, 6th Ed, cap. 1 => funcionamento do processador hipotético
+### **⚠️ Aula 5 - 20/03/25** *(Início às 8:00)*  
+**Threads**  
+📖 **Leitura obrigatória:**  
+- **Tanenbaum**, seção **2.2**  
 
+📚 **Leitura adicional sugerida:**  
+- [Writing Reentrant and Threadsafe Code (IBM AIX)](LINK_AQUI) 
 
-18/03/25 - Processos
+---
 
-Leitura: Tanenbaum, seção 2.1; ALP, cap. 3
+### **📌 Aula 6 - 25/03/25**  
+**Programação com Pthreads**  
+📖 **Leitura obrigatória:**  
+- **ALP**, Cap. 4  
+- [POSIX Threads Programming (Seções 1-5)](LINK_AQUI)  
 
-[Exemplos de fork](https://github.com/hertonnn/UDESC-Computacao/blob/0cc1da7fde78d7bde263df4861ca53d37962c718/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos/exemplos-fork.zip)
+📂 **Material complementar:**  
+- [Threads (Conteúdo/Exercícios)](LINK_AQUI) 
 
-[Exercícios de fork](https://github.com/hertonnn/UDESC-Computacao/blob/0cc1da7fde78d7bde263df4861ca53d37962c718/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos/sop-exerc-fork-resp.pdf)
-
-[Exercícios de fork (respostas)](https://github.com/hertonnn/UDESC-Computacao/blob/0cc1da7fde78d7bde263df4861ca53d37962c718/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos/sop-exerc-fork-resp.zip)
-
-[Exercícios de fork (respostas - programas)](SOP - Sistemas Operacionais/Diário de classe/processos/sop-exerc-fork.pdf)
-
-
-
+---
