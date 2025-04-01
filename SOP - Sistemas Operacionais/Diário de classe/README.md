@@ -124,8 +124,8 @@
 - **Tanenbaum**, seção **2.1**  
 - **ALP**, cap. 3  
 
-📂 **Material complementar:**  
-- [Processos (Conteúdo/Exercícios)]()
+📂 **Material:**  
+- [Processos (Conteúdo/Exercícios)](https://github.com/hertonnn/UDESC-Computacao/tree/f72802199b92401ba94ed23331c4cec568135383/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos)
 
 ---
 
@@ -135,7 +135,7 @@
 - **Tanenbaum**, seção **2.2**  
 
 📚 **Leitura adicional sugerida:**  
-- [Writing Reentrant and Threadsafe Code (IBM AIX)](LINK_AQUI) 
+- [Writing Reentrant and Threadsafe Code (IBM AIX)](https://www.ibm.com/docs/en/aix/7.3?topic=programming-writing-reentrant-threadsafe-code) 
 
 ---
 
@@ -143,7 +143,7 @@
 **Programação com Pthreads**  
 📖 **Leitura obrigatória:**  
 - **ALP**, Cap. 4  
-- [POSIX Threads Programming (Seções 1-5)](LINK_AQUI)  
+- [POSIX Threads Programming (Seções 1-5)](https://hpc-tutorials.llnl.gov/posix/)  
 
-📂 **Material complementar:**  
-- [Threads (Conteúdo/Exercícios)](LINK_AQUI) 
+📂 **Material:**  
+- [Threads (Conteúdo/Exercícios)](https://github.com/hertonnn/UDESC-Computacao/tree/f72802199b92401ba94ed23331c4cec568135383/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/pthreads) 
