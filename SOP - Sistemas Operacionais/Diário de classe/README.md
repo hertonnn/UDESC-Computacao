@@ -74,11 +74,13 @@
 
 ## **📌 Aula 7 - 27/03/25**
 **[Comunicação interprocessos](https://github.com/hertonnn/UDESC-Computacao/tree/335e22085a7c8849b6d378ae3de3ef1c6457851d/SOP%20-%20Sistemas%20Operacionais/Exercicios): conceitos de concorrência, soluções com espera ocupada**
+
 📖 **Leitura obrigatória:** 
 - **Tanenbaum**, seções 2.3.1 a 2.3.3
 
 ## **📌 Aula 8 - 01/04/25**
 **[Comunicação interprocessos](https://github.com/hertonnn/UDESC-Computacao/tree/335e22085a7c8849b6d378ae3de3ef1c6457851d/SOP%20-%20Sistemas%20Operacionais/Exercicios): sleep/wakeup, semáforos, mutexes, futexes**
+
 📖 **Leitura obrigatória:** 
 - **Tanenbaum**, seções 2.3.4 a 2.3.6
 
@@ -88,6 +90,7 @@
 
 ## *📌 Aula 9 - 03/04/25*
 **Comunicação interprocessos: monitores, passagem de mensagens e barreiras**
+
 📖 **Leitura obrigatória:** 
 - **Tanenbaum**, seções 2.3.7 a 2.3.9; [Maziero](https://wiki.inf.ufpr.br/maziero/lib/exe/fetch.php?media=socm%3Asocm-08.pdf), cap. 8 (a partir da seção 8.3)
 
