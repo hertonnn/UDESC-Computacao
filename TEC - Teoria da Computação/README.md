@@ -8,7 +8,8 @@ A teoria da computação é um subcampo da ciência da computação e matemátic
 
 ### Links pertinentes 📌
 
-- [O Sipser. Livro que a disciplina irá se basear](https://moodle.joinville.udesc.br/pluginfile.php/368582/mod_resource/content/1/Solution-Manual-Introduction-to-the-Theory-of-Computation-Sipser.pdf)
+- [O Sipser!](https://fuuu.be/polytech/INFOF408/Introduction-To-The-Theory-Of-Computation-Michael-Sipser.pdf)
+- [Algumas respostas do Sipser. Livro que a disciplina irá se basear](https://moodle.joinville.udesc.br/pluginfile.php/368582/mod_resource/content/1/Solution-Manual-Introduction-to-the-Theory-of-Computation-Sipser.pdf)
 - [Vídeos Mágicos do Sipser](https://ocw.mit.edu/courses/18-404j-theory-of-computation-fall-2020/video_galleries/video-lectures/)
 - [Simulador de máquina de turing](http://morphett.info/turing/turing.html)
 - [P versus NP](http://www.claymath.org/millennium/p-vs-np/)
@@ -82,10 +83,6 @@ karina.roggia@udesc.br
 ### Lattes:
  http://lattes.cnpq.br/7786281602726587
  
- 
-## Meu diário de bordo - Minha jornada tech
-
-Vazio até então hehe...
 
 
 
