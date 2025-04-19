@@ -2,6 +2,8 @@
 # 📘 Diário de Bordo – Teoria da Computação  
 
 ![img_tec2](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_tec2.jpg)
+
+
 **Disciplina:** Teoria da Computação  
 **Objetivo:** Registro das dúvidas e reflexões durante o estudo dos capítulos do livro *Introduction to the Theory of Computation* – Michael Sipser.  
 
