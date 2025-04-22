@@ -74,8 +74,8 @@ Contabiliza e retorna o esforço de inserção ou remoção:
 
 ## 📚 Discussão Teórica
 
-![img-remocao]()
-![img-insercao]()
+![img-remocao](https://github.com/hertonnn/UDESC-Computacao/blob/405e916ed7efaa05c8f16c6826c10b61a439d06b/EDA%20II%20-%20Estrutura%20de%20Dados%202/Trabalho%20Final/imgs/img-insercao.png)
+![img-insercao](https://github.com/hertonnn/UDESC-Computacao/blob/405e916ed7efaa05c8f16c6826c10b61a439d06b/EDA%20II%20-%20Estrutura%20de%20Dados%202/Trabalho%20Final/imgs/img-remocao.png)
 
 | Estrutura     | Altura Máxima        | Vantagem                                                  |
 |---------------|----------------------|------------------------------------------------------------|
