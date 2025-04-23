@@ -38,7 +38,8 @@ Cada amostra possui 4 atributos:
 - Conexão entre vértices se a distância euclidiana normalizada ≤ 0.3
 - Geração da matriz de adjacência
 
--  Grafo obtido:
+- Grafo obtido:
+
 ![grafo](https://github.com/hertonnn/UDESC-Computacao/blob/master/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/grafo.png?raw=true)
 
 ### 🔹 2. Análise de Componentes Conexos
