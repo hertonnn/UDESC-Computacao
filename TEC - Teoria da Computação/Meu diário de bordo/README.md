@@ -7,6 +7,32 @@
 **Disciplina:** Teoria da Computação  
 **Objetivo:** Registro das dúvidas e reflexões durante o estudo dos capítulos do livro *Introduction to the Theory of Computation* – Michael Sipser.  
 
+
+---
+
+## 📝 Anotações exercícios 
+
+### 🔹 Problema 3.12 – Capítulo 3 (Sipser)
+"...quando a máquina está no estado lendo um , a cabeça da máquina salta para a extremidade esquerda da fita..." Não tinha sacado de cara aqui que o ato de reiniciar é, obviamente, voltar até o início da fita.
+
+#### Passo a passo:
+
+Fita inicial:
+```txt
+... A B C D ...
+      ↑  (Cabeçote sobre B)
+```
+Marca aonde está o cabeçote:
+```txt
+... A *B C D ...
+       ↑
+```
+Copia tudo uma célua a direita, reseta e anda até a marca:
+```txt
+... □ A *B C D ...
+      ↑     (Cabeçote sobre A)
+```
+
 ---
 
 ## ❓ Dúvidas em Aberto
