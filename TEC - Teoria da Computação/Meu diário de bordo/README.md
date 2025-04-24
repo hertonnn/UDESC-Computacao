@@ -13,7 +13,7 @@
 ## 📝 Anotações exercícios 
 
 ### 🔹 Problema 3.12 – Capítulo 3 (Sipser)
-"...quando a máquina está no estado lendo um , a cabeça da máquina salta para a extremidade esquerda da fita..." Não tinha sacado de cara aqui que o ato de reiniciar é, obviamente, voltar até o início da fita.
+"...quando a máquina está no estado lendo um 'a', a cabeça da máquina salta para a extremidade esquerda da fita..." Não tinha sacado de cara aqui que o ato de reiniciar é, obviamente, voltar até o início da fita.
 
 #### Passo a passo:
 
@@ -27,10 +27,10 @@ Marca aonde está o cabeçote:
 ... A *B C D ...
        ↑
 ```
-Copia tudo uma célua a direita, reseta e anda até a marca:
+Copia tudo uma célua a direita(exceto a marca), reseta e anda até a marca:
 ```txt
-... □ A *B C D ...
-      ↑     (Cabeçote sobre A)
+... □ *A B C D ...
+       ↑     (Cabeçote sobre A)
 ```
 
 ---
