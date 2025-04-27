@@ -9,6 +9,14 @@
 
 
 ---
+## 🧾 Prova 1 
+
+### ✅ Estudei:
+
+- Alguns exercícios de MT dos slides e do moodle (resoluções na pasta de exercícios)
+- Problemas 3.9 ao 3.13 do cáp.3 do Sipser (resoluções na pasta Cáp.3)
+
+**Ajudou?:** Não sei ainda...
 
 ## 📝 Anotações exercícios 
 
