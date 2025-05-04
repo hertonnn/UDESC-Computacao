@@ -18,9 +18,9 @@ Esse tapa na cara em forma de vídeo foi crucial para eu deixar de lado a procra
 | Articles                        | ✅         |         |
 | Pronouns                        |            |         |
 | Interrogatives Adverbs          |            |         |
-| Simple Present Tense            |            |         |
+| Simple Present Tense            | ✅         |         |
 | Simple Past Tense               |            |         |
-| Present Continuous Tenses       |            |         |
+| Present Continuous Tenses       | ✅         |         |
 | Future Tenses                   |            |         |
 | Present Perfect Tenses          |            |         |
 | Past Perfect Tenses             |            |         |
