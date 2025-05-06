@@ -1,0 +1,93 @@
+1.Esquema Dietas
+--------------
+Restricoes(#idRestricao,descricao)
+Pratos(#idPrato,nome,dificuldade)
+proibidos(#&idRestricao,#&idPrato)
+Nutrientes(#idNutriente,nome)
+conteudo(#&idPrato,#&idNutriente)
+composi��o (#&idPrato,#&idAlimento, qtd)
+substitui��o(#&idAlimentoSubstituto, 
+ #&idAlimentoSubstituido)
+intoleranceas#&idAlimento, #&idRestricao)
+Dietas(#idDieta,nome,respTecnico)
+menuPratos(#&idPrato,#&idDieta,#dia, horario)
+menuNatural#&idDieta,#&idAlimento,#dia, qtd,insConsumo,horario)
+Categorias(#idCat,nome)
+Alimentos(#idAlimento, nome, unMed, calorias,&idCat)
+
+--- OU 
+Alimentos(#idAlimento, nome, unMed, calorias)
+classe(#&idAlimento,&idCat)
+
+----------------------------------------
+2.Esquema Farm�cia
+----------------
+Produtos (#numero, nomeComercial, tipoEmbalagem, precoUni, tipo, [tarja], [formula], [sexo], [intensidade], &CNPJ, qtdLote)
+Fabricantes (#CNPJ, nome, rua, nro, bairro)
+Vendas (#nroNota, data, nomeCliente)
+Emails (#email, &nroNota)
+ReceitasMedicas (#nrReceita, CRMMedico, data)
+Tratamentos (#&nroNota, #&numero, quantidade, imposto, [&nrReceita])
+Estetica (#&nroNota, #&numero, quantidade, imposto)
+-----
+RIs:
+- Produtos.tipo=1 se Medicamento (tarja!=null,formula!=null, sexo=null, intensidade=null)
+- Produtos.tipo=2 se Perfume (tarja=null,formula=null, sexo!=null, intensidade!=null)
+- Tratamento.numero -> refere-se a um Produto.tipo=1
+- Estetica.numero -> refere-se a um Produto.tipo=2
+
+----------------
+OUTRA SOLU�O
+----------------
+Produtos (#numero, nomeComercial, tipoEmbalagem, precoUni,  &CNPJ, qtdLote)
+Medicamentos (#&nroMedicamento, tarja, formula)
+Perfumes (#&nroPerfume, sexo, intensidade)
+Fabricantes (#CNPJ, nome, rua, nro, bairro)
+Vendas (#nroNota, data, nomeCliente)
+Emails (#email, &nroNota)
+ReceitasMedicas (#nrReceita, CRMMedico, data)
+Tratamentos (#&nroNota, #&nroMedicamento, quantidade, imposto, [&nrReceita])
+Estetica (#&nroNota, #&nroPerfume, quantidade, imposto)
+
+----------------------------------------
+3.Esquema Varejo
+--------------
+Pessoas(#codCliente,nome,tipo,[cpf],[cnpj],[razaosocial])
+Produtos(#codProduto,nome,qtdDisp,peso,altura,largura,profundidade,unMedida, precoUniCompra, precoUniVenda)
+Empresas (#CNPJ,razaoSocial)
+Venda(#&codCliente,#&codProduto, #dtHoraEmissao,qtd)
+Compras(#&CNPJ,#&codProduto, #dtHoraEmissao,qtd,&CNPJEntrega,dtPrevEntrega)
+-----
+RIs:
+- Pessoas.tipo=1 se Pessoa F�sica(cpf!=null,cnpj=null,razaosocial=null)
+- Pessoas.tipo=2 se Pessoa Jur�dica(cpf=null,cnpj!=null,razaosocial!=null)
+
+----------------------------------------
+4.Esquema Locadora Ve�culos
+-------------------------
+Clientes (#codInterno, nome, endereco, tipo, [cpf], [dt_nasc], [sexo], [cnpj])
+Tipos Veiculo (#codigoTipo, kmMediaDiaria, tempoLimpeza)
+Passeio (#&codigoTipo, nPassageiros, tamanho, portas)
+Acessorios (#codAcessorio, &codTipoPasseio, [arCondicionado], [tocaFitas], [cd], [direcaHidraulica], [cambioAutomatico])
+Carga (#&codigoTipo, cargaMax)
+Reserva (#&codigoTipo, #&codInterno, #dtHoraRetirada, dtHoraEntrega, &codFilialRetirada, &codFilialEntrega,
+[&placa], [CNH], [dtVencimentoCNH], [nomeMotorista])
+Veiculos (#placa, nrMotor, cor, kmAtual, chassi, &codFilial, &codigoTipo)
+Revis�es (#codRevisao, nome, descricao)
+Agendamento (#&codRevisao, #&placa, #dataHora)
+Filiais (#codFilial, nome)
+Manuten��o (#&codRevisao, #&codigoTipo)
+ 
+------------------------------------------
+5.Esquema Reserva de Passagens A�reas
+-----------------------------------
+Reservas(#codigo,nomePass,PrazoValidade,emitido)
+trechos(#idTrecho, &siglaAeroOrigem, horaPartida, &siglaAeroDestino, horaChegada)
+Aeroportos(#sigla,nome,capacidade,&codCid)
+itiner�rios (#&idTrecho, #&idVoo, &codAeronave)
+Cidades(#codCId,estada,pais,clima,nome)
+voos(#codVoo,ciaAerea)
+DiasSemana(#codDia, diaSemana, &codVoo)
+Aeronaves(#codAeronave,modelo,autoriza��o,capacidade,ano)
+Assentos(#idAssento,classe,&codAeronave);
+escala(&#codigoReserva,[&idAssento],&#idTrecho)

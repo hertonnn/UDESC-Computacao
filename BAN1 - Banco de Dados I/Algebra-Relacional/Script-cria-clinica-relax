@@ -1,0 +1,57 @@
+group: clinica 
+
+
+Ambulatorios = {
+	nroa:number, andar:number, capacidade:number
+	1,1,30
+	2,1,50
+	3,2,40
+	4,2,25
+	5,2,55
+	6,5,32
+	10,10,10
+}
+	
+Consultas = {
+ codm:number, codp:number, data:date, hora:string
+1,	1,	2006-06-12,	'14:00:00'
+1,	4 	2006-06-13,	'10:00:00'
+2,	1,	2006-06-13,	'09:00:00'
+2,	2,	2006-06-13,	'11:00:00'
+2,	3,	2006-06-14,	'14:00:00'
+2,	4,	2006-06-14,	'17:00:00'
+3,	1,	2006-06-19,	'18:00:00'
+3,	3,	2006-06-12,	'10:00:00'
+3,	4,	2006-06-19,	'13:00:00'
+4,	4,	2006-06-20,	'13:00:00'
+4,	4,	2006-06-22,	'19:30:00'
+5,	4,	2006-10-20,	'17:30:00'
+}	
+
+Funcionarios = {
+codf:number, nome:string, idade:number, cpf:number, cidade:string, salario:number
+1,	Rita,		32,	20000100000,	'Sao Jose',		1200
+2,	Maria,	55,	30000110000,	Palhoca,		1220
+3,	Caio,		45,	41000100000,	Florianopolis,	1100
+4,	Carlos,	44,	51000110000,	Florianopolis,	1200
+5,	Paula,	33,	61000111000,	Florianopolis,	2500
+}
+
+Medicos = {
+codm:number, nome:string, idade:number, especialidade:string, cpf:number, cidade:string, nroa:number
+1,	Joao,	40,	ortopedia,           	10000100000,	Florianopolis,	1
+2,	Maria,	42,	traumatologia,       	10000110000,	Blumenau,		2
+4,	Carlos,	28,	ortopedia,           	11000110000,	Joinville,	0
+5,	Marcia,	33,	neurologia,          	11000111000,	Biguacu,		3
+3,	Pedro,	51,	pediatria,           	11000100000,	'Sao Jose',	2
+6,  Rita,   32, psiquiatra,           20000100000,  'Sao Jose', 6
+}
+
+Pacientes = {
+codp:number, nome:string, idade:number, cidade:string, cpf:number, doenca:string
+1,	Ana,	20,	Florianopolis, 20000200000,	gripe
+2,	Paulo,	24,	Palhoca, 20000220000,	fratura
+3,	Lucia,	30,	Biguacu, 22000200000,	tendinite
+4,	Carlos,	44,	Florianopolis, 51000110000,	sarampo
+5, Valdesio, 55, Joinville, 1000, hepatite
+}

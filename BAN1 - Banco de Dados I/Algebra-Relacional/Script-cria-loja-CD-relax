@@ -1,0 +1,93 @@
+group: lojaCD 
+cds = {
+	id:number, titulo:string, duracao:number, ano:number, tipo:string, interprete:number, preco:number 
+	1, Reviver, 120, 2001, coletanea, null, 55
+	2, Paraiso, 100, 2002, interprete, 1, 65
+	3, Juventude, 85, 2005, interprete, 2, 40
+	4, Restauracao, 100, 2013, 'trilha sonora', null, 50
+	5, Justica, 80, 2014, interprete, 3, 64
+	6, Desconexo, 105, 2013, interprete, 9, 88
+}
+
+interpretes = {
+	id:number, nome:string, nacionalidade:string, tipo:string
+	1, 'Jorge Luiz', brasileiro, cantor
+	2, 'Marie Ruiz', uruguaia, cantor
+	3, 'Andre Koo', chines, cantor
+	4, 'Renato Augusto', brasileiro, cantor
+	5, 'Desafinados', brasileiro, grupo
+	6, 'Dona Francisca', brasileiro, orquestra
+	7, 'Padua Arantes', chileno, cantor
+	8, 'Marco da Silva', brasileiro, grupo
+	9, 'Afogados', brasileiro, grupo
+}
+
+faixas = {
+	cd:number, numero:number, interprete:number, duracao:number
+        1, 1, 1, 2
+        1, 2, 2, 2
+        1, 3, 3, 92
+        1, 4, 4, 101
+        1, 5, 5, 25
+        2, 1, 7, 2
+        2, 2, 7, 2
+        2, 3, 7, 92
+        2, 4, 7, 101
+        2, 5, 7, 25
+        3, 1, 4, 2
+        3, 2, 4, 2
+        3, 3, 4, 92
+        3, 4, 4, 101
+        3, 5, 4, 25
+        4, 1, 9, 2
+        4, 2, 5, 2
+        4, 3, 6, 92
+        4, 4, 7, 101
+        4, 5, 8, 25
+        5, 1, 7, 2
+        5, 2, 7, 2
+        5, 3, 7, 92
+        5, 4, 7, 101
+        5, 5, 7, 25
+        6, 1, 7, 2
+        6, 2, 7, 2
+        6, 3, 7, 92
+        6, 4, 7, 101
+        6, 5, 7, 25	
+}
+
+exemplares = {
+	cd:number, exemplar:number, codBarras:number, status:string
+        1, 1, 11, ok
+        1, 2, 12, ok
+        2, 1, 21, ok
+        2, 2, 22, ok
+        3, 1, 31, ok
+        3, 2, 32, ok
+        4, 1, 41, incompleto
+        4, 2, 42, ok
+        5, 1, 51, ok
+        5, 2, 52, ok
+        6, 1, 61, ok
+        6, 2, 62, danificado
+        6, 3, 63, ok
+        6, 4, 64, ok
+}
+
+funcionarios = {
+	id:number, nome:string, cpf:number, fone:number, rg:string, endereco:string, salario:number, turno:string 
+	1, 'Aline Ramos', 111111, 39473892, 4973498, 'Rua dos Afogados, 33', 1500, M
+	2, 'Pedro Vix', 222222, 4793847, 9437458, 'Rua dos Viventes, 55', 2000, T
+	3, 'Vera Máximo', 333333, 93447239, 3987429, 'Avenida Santa Catarina, 111', 2000, N
+}
+
+vendas = {
+	cd:number, exemplar:number, funcionario:number, data:date, hora:string, formapgto:string
+	1, 1, 1, 2016-06-30, '17:00:00', cartao
+	1, 2, 3, 2016-07-30, '17:00:00', cartao 
+	3, 1, 2, 2016-08-30, '17:00:00', cartao 
+	4, 1, 2, 2016-09-30, '17:00:00', dinheiro 
+	6, 1, 3, 2016-06-20, '17:00:00', dinheiro 
+	6, 2, 3, 2016-06-10, '17:00:00', cheque
+	2, 1, 1, 2016-09-01, '17:00:00', cheque 
+}
