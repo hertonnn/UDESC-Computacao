@@ -16,9 +16,33 @@
 - Alguns exercícios de MT dos slides e do moodle (resoluções na pasta de exercícios)
 - Problemas 3.9 ao 3.13 do cáp.3 do Sipser (resoluções na pasta Cáp.3)
 
-**Ajudou?:** Não sei ainda...
+**Ajudou?:** Quase não caiu questão aos moldes dos problemas do livro ); 
 
-## 📝 Anotações exercícios 
+### ✅ O que caiu?
+
+- Qual a relação entre decidíveis e reconhecíveis?
+- Complemento de uma linguagem decidível, é uma decidível tb?
+- Intersecção de uma linguagem decidível e uma turing reconhecível
+
+## 📝 Anotações de exercícios e aulas
+
+**Algumas Linguagens Decidíveis**
+
+SAT = ⟨⟨φ⟩⟩ | φ é satisfazível
+
+1. VAFD₀ = ⟨⟨B⟩⟩ | B é um AFD tal que L(B) = ∅
+2. VAFD = ⟨⟨B⟩⟩ | B é um AFD tal que L(B) ≠ ∅
+3. TODOS = ⟨⟨B⟩⟩ | B é um AFD tal que L(B) = Σ\*
+
+---
+
+**Explicações abaixo:**
+
+1. Todos os autômatos que **não** aceitam nenhuma palavra
+2. Todos que aceitam ao menos **uma** palavra
+3. Todos que aceitam **todas as palavras**
+
+---
 
 ### 🔹 Problema 3.12 – Capítulo 3 (Sipser)
 "...quando a máquina está no estado lendo um 'a', a cabeça da máquina salta para a extremidade esquerda da fita..." Não tinha sacado de cara aqui que o ato de reiniciar é, obviamente, voltar até o início da fita.

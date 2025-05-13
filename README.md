@@ -19,7 +19,7 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - ENG - English ⏳
 # 2025/1
 - SOP: Sistemas Operacionais 📌
-- BAN1: Bancos de Dados I ⏳
+- BAN1: Bancos de Dados I 📌
 - TEC: Teoria da Computação 📌
 - AMS: Análise e Modelagem de Sistemas ⏳
 # 2024/2
