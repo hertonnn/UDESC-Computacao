@@ -39,6 +39,8 @@ Processo de organização dos dados para **eliminar redundâncias** e garantir i
 📌 Ajuda a evitar anomalias de inserção, exclusão e atualização.  
 🔗 Referência: *Database Systems: A Practical Approach to Design, Implementation, and Management* – Connolly & Begg
 
+**Video Aulas:**
+
 - [1FN](https://www.youtube.com/watch?v=eRaAMNjCFYw)
 - [2FN](https://www.youtube.com/watch?v=6ER9lWOk-cY)
 - [3FN](https://www.youtube.com/watch?v=usA8QKvEHWw)
@@ -60,6 +62,7 @@ Processo de organização dos dados para **eliminar redundâncias** e garantir i
 Aqui usaremos um dataset genérico de uma clínica para realizar exercícios no Relax. 
 
 🔗 Ferramenta: [RelaX Calculator](https://dbis-uibk.github.io/relax/landing)
+🔗 Video aulas que estudei: [DesCOMPlica, Oliba!](https://youtu.be/E-tIwv8jDhE?si=tVYi1ARuEkxF-wck)
 
 
 
