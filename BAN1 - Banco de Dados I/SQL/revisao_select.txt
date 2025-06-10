@@ -1,0 +1,136 @@
+HISTÓRICO DE CORREÇÕES SQL - SELECT
+=======================================
+
+1. Consulta 1 - Médicos com menos de 40 anos ou especialidade diferente de traumatologia
+   - Erro: Uso incorreto do operador =! e AND
+   - Correção: Troquei =! por != e AND por OR
+   - Resultado: SELECT nome, cpf FROM medicos WHERE idade < 40 OR especialidade != 'traumatologia'
+
+2. Consulta 2 - Consultas no período da tarde após 19/06/2006
+   - Erro: Formatação e clareza da condição do período
+   - Correção: Uso do BETWEEN e ajuste do limite superior para 17:59
+   - Resultado: SELECT * FROM consultas 
+                WHERE hora BETWEEN '12:00' AND '17:59' 
+                AND data > '2006-06-19'
+
+4. Consulta 4 - Horas das consultas antes de 14/06 e depois de 20/06
+   - Erro: Uso incorreto do AND que tornava a condição impossível
+   - Correção: Troquei AND por OR
+   - Resultado: SELECT hora FROM consultas 
+                WHERE data < '2006-06-14' OR data > '2006-06-20'
+
+5. Consulta 5 - Idade em meses dos pacientes
+   - Erro: Falta de alias para a coluna calculada
+   - Correção: Adicionado alias 'idade_meses'
+   - Resultado: SELECT nome, (idade * 12) as idade_meses 
+                FROM pacientes
+
+6. Consulta 6 - Cidades onde residem os funcionários
+   - Objetivo: Listar todas as cidades distintas onde os funcionários residem
+   - Solução: Uso do DISTINCT para evitar duplicatas
+   - Resultado: SELECT DISTINCT cidade 
+                FROM funcionarios
+                ORDER BY cidade
+
+7. Consulta 7 - Menor e maior salário dos funcionários de Florianópolis
+   - Erro: Falta de aliases
+   - Correção: Adicionado aliases descritivos 
+   - Resultado: SELECT MAX(salario) as maior_salario, 
+                MIN(salario) as menor_salario 
+                FROM funcionarios 
+                WHERE cidade = 'Florianopolis'
+
+8. Consulta 8 - Horário da última consulta do dia 13/06/2006
+   - Erro: Falta de alias para a coluna
+   - Correção: Adicionado alias 'ultima_consulta'
+   - Resultado: SELECT MAX(hora) as ultima_consulta 
+                FROM consultas 
+                WHERE data = '2006-06-13'
+
+9. Consulta 9 - Média de idade e total de ambulatórios dos médicos
+   - Erro: Uso de divisão manual para média e possível contagem duplicada de ambulatórios
+   - Correção: Uso da função AVG() e COUNT(DISTINCT)
+   - Resultado: SELECT AVG(idade) as media_idade_medicos,
+                COUNT(DISTINCT nroa) as total_ambulatorios  
+                FROM medicos
+
+10. Consulta 10 - Pacientes com idade entre 18 e 30 anos
+    - Erro: Uso incorreto do BETWEEN
+    - Correção: Ajuste o limite inferior para 18 e o superior para 30
+    - Resultado: SELECT nome, idade FROM pacientes WHERE idade BETWEEN 18 AND 30
+
+11. Consulta 11 - Funcionários com salário maior que 1000 e menor que 5000
+    - Erro: Uso incorreto do BETWEEN
+    - Correção: Ajuste o limite inferior para 1000 e o superior para 5000
+    - Resultado: SELECT nome, salario FROM funcionarios WHERE salario BETWEEN 1000 AND 5000
+
+12. Consulta 12 - Funcionários sem sequência '00000' no CPF
+    - Erro: Tentativa de usar LIKE em campo numérico
+    - Correção: Adicionado CAST para converter CPF em texto
+    - Resultado: SELECT nome, 
+                 cpf 
+                 FROM funcionarios
+                 WHERE CAST(cpf AS TEXT) NOT LIKE '%00000%'
+                 ORDER BY nome
+
+REVISÃO DE FORMATO DE STRINGS EM SQL
+============================================
+
+1. Operadores e Caracteres Especiais
+   - % : qualquer número de caracteres (0 ou mais)
+   - _ : exatamente um caractere
+   - [] : conjunto de caracteres
+   - [0-9] : qualquer dígito
+   - [A-Z] : qualquer letra maiúscula
+   - [a-z] : qualquer letra minúscula
+
+2. Padrões Comuns de Busca
+   a) Termina com 'a':
+      SELECT nome FROM funcionarios WHERE nome LIKE '%a'
+   
+   b) Começa com 'Jo':
+      SELECT nome FROM funcionarios WHERE nome LIKE 'Jo%'
+   
+   c) Contém 'silva' em qualquer lugar:
+      SELECT nome FROM funcionarios WHERE nome LIKE '%silva%'
+   
+   d) Começa com 'A' e termina com 'o':
+      SELECT nome FROM funcionarios WHERE nome LIKE 'A%o'
+   
+   e) Tem exatamente 5 caracteres:
+      SELECT nome FROM funcionarios WHERE nome LIKE '_____'
+
+3. Funções Úteis para Manipulação de Strings
+   - LOWER() : converte para minúsculas
+   - UPPER() : converte para maiúsculas
+   - TRIM() : remove espaços em branco
+   - CONCAT() ou || : concatena strings
+
+4. Dicas Importantes
+   - LIKE é case-sensitive em alguns bancos
+   - Use LOWER() para buscas case-insensitive
+   - Use TRIM() para remover espaços indesejados
+   - Combine padrões com OR para múltiplas condições
+   - Use NOT LIKE para exclusões
+
+5. Exemplos de Uso em Consultas
+   a) Busca case-insensitive:
+      WHERE LOWER(nome) LIKE '%silva%'
+   
+   b) Remoção de espaços:
+      WHERE TRIM(nome) LIKE '%silva%'
+   
+   c) Concatenação:
+      WHERE nome || ' ' || sobrenome LIKE '%Silva%'
+   
+   d) Múltiplas condições:
+      WHERE nome LIKE '%a' OR nome LIKE '%o'
+   
+   e) Exclusão de padrão:
+      WHERE nome NOT LIKE '%silva%'
+
+Observações:
+- Sempre teste os padrões em um pequeno conjunto de dados primeiro
+- Considere o impacto no desempenho ao usar LIKE com '%' no início
+- Use índices apropriados para melhorar a performance
+- Documente padrões complexos para manutenção futura 

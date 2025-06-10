@@ -216,6 +216,51 @@ Agora, use `P` para decidir se `L(J) = ∅`:
 
 Portanto, `Y` decide `AMT`. Isso é uma contradição, pois `AMT` é indecidível.
 
+----
+# Indecibilidade com AMT
+
+Anteriormente, foi provado que a linguagem AMT = {<M, w> | w pertence a L(M)} é indecidível. Com esse fato, podemos mostrar que alguma linguagem L é indecidível mostrando que essa linguagem é igual a AMT. Começamos supondo um decisor para essa linguagem e chegando a um absurdo.
+
+
+## Problema da Parada
+
+ParaMT = {<M, w> | M é uma MTD e w uma entrada para M}
+
+É possível dizer que M sempre para? R: Não.
+
+**Prova**
+
+Supondo que exista um decisor U tal que L(U) = ParaMT
+
+Construimos uma máquina X que rode U como subrotina e que tenha aceitação sempre que U aceite w' e rejeite sempre que haja rejeição ou um loop infinito.
+
+Se U aceitar, rode M' com entrada w' e responda o que M' responder.
+
+Com isso, é possível afirmar que X é um decisor para a linguagem AMT.
+
+Aí temos uma contradição, pois foi provado anteriormente que AMT é indecidível.
+
+
+**Exemplo 1:**
+
+VMT = {<M> | L(M) = ∅}
+
+Ou seja, máquinas de Turing que não aceitam nenhuma palavra.
+
+Supondo que exista um decisor P para L(P) = VMT. Construímos a máquina de Turing a seguir:
+Y tem como entrada <M, x> onde M é uma MTD e x é uma palavra.
+
+Construa a máquina J com entrada z.
+
+1. Rode M com entrada x e responda o que M responder.
+
+L(J) = Qualquer palavra se M aceitar x, ou conjunto vazio se x não pertencer a L(M)
+
+2. Rode P com a entrada J. Se P aceitar, rejeite. Se P rejeitar, aceite.
+
+Então L(Y) = AMT e Y é um decisor. Pela prova que AMT é indecidível, temos um absurdo.
+
+
 # Algumas Linguagens Decidíveis
 
 SAT = ⟨⟨φ⟩⟩ | φ é satisfazível
@@ -232,6 +277,233 @@ SAT = ⟨⟨φ⟩⟩ | φ é satisfazível
 2. Todos que aceitam ao menos **uma** palavra
 3. Todos que aceitam **todas as palavras**
 
+---
+
+# Demonstração da Indecidibilidade de RegularMT
+
+Definimos:
+
+- **RegularMT** = {⟨M⟩ | L(M) é uma linguagem regular}
+
+---
+
+## Suposição Inicial
+
+Suponha que **RegularMT** seja decidível.
+
+Então, existe uma máquina de Turing decisora chamada **UNNOME** tal que:
+
+- L(UNNOME) = RegularMT
+
+---
+
+## Construção da Máquina H
+
+Defina a máquina de Turing **H** que recebe como entrada o par ⟨M’, w⟩ e opera da seguinte forma:
+
+1. Construa a máquina **X** definida por:
+
+   **X**, com entrada x:
+
+   - Se x for da forma \(0^n 1^n\), aceite.
+   - Se x não for da forma \(0^n 1^n\), execute M’ com entrada w e responda o que M’ responder.
+
+2. Execute **UNNOME** com entrada ⟨X⟩.
+
+3. Responda o que **UNNOME** responder.
+
+---
+
+# EQMT = { <M1, M2> | L(M1) = L(M2) }
+
+
+
+Supondo que EQMT é decidível, ou seja, existe decisor ÉEQ tal que L(ÉEQ) = EQMT.
+
+Seja a máquina D a seguir:
+
+
+
+D, com entrada <M’>:
+
+	1.	Construa a máquina de Turing V a seguir:
+
+
+
+(diagrama da máquina V):
+
+
+
+→ (qR)  (qA)
+
+
+
+	2.	Execute ÉEQ com entrada <M’, V> e responda o que ÉEQ responder.
+
+
+
+Logo, D é uma decisora e L(D) = VMT.
+
+
+
+Como VMT é indecidível, a decidibilidade de EQMT é falsa.
+
+Portanto, EQMT é indecidível.
+
+---
+# AMTFL: ⟨A, w⟩ | A é uma MTFL e w ∈ L(A)
+
+
+
+# VMTFL3: ⟨A⟩ | A é uma MTFL e L(A) = ∅
+
+
+
+⸻
+
+
+
+Histórias de Computação:
+
+
+
+Sequência de configurações C₁, C₂, …, Ck de uma MT M com entrada w tal que:
+
+	•	C₁ = q₀w (config. inicial)
+
+	•	Para todo i, 1 ≤ i ≤ k, tem-se que Ci é obtido por Ci-1
+
+	•	Ck é uma config. de parada
+
+
+
+⸻
+
+
+
+Nº de configurações diferentes em uma MTFL com entrada w onde |w| = n:
+
+
+
+(k ^ n ) * n * m
+
+
+
+onde:
+
+	•	k = |Γ| (tamanho alfabeto da fita)
+
+	•	m = |Q| (nº de estados)
+
+	•	n = estado atual
+---
+## Conclusão
+
+- A máquina **H** é um decisor para a linguagem **AMT** (o problema da aceitação de máquinas de Turing).
+- Sabemos que **AMT** é indecidível.
+- Logo, a existência de **H** contradiz a indecidibilidade de **AMT**.
+- Portanto, a suposição de que **RegularMT** é decidível é **falsa**.
+
+---
+# Problema da Correspondência de Post
+
+
+
+Primeira peça (tipo 1):
+
+
+
+[#]
+
+[#q0w#]
+
+
+
+Tipo 2 - É um movimento à direita para cada δ(q,a) que resulta (r,b,D). Acrescente a peça:
+
+
+
+[q a]
+
+[b r]
+
+
+
+Tipo 3 - Final de configuração
+
+
+
+ É um movimento à esquerda para cada δ(q,a) que resulta (r,b,E). Acrescente a peça para cada γ ∈ Γ e a peça:
+
+
+
+[q a γ]
+
+[γ b r]
+
+
+
+Tipo 4 - Para cada símbolo do alfabeto da fita, acrescente a peça:
+
+
+
+[γ]
+
+[γ]
+
+
+
+Tipo 5 - Final de configuração. Acrescente as peças:
+
+
+
+[#]
+
+[#]
+
+
+
+e
+
+
+
+[#]
+
+[branco #]
+
+
+
+Tipo 6 - Aceitação. 
+
+Para cada γ ∈ Γ, acrescente as peças:
+
+
+
+[γqA]
+
+[qA]
+
+
+
+ou
+
+
+
+[qAγ]
+
+[qA]
+
+
+
+Tipo 7 - Última peça. 
+
+Acrescente:
+
+
+
+[qA # #]
+
+[#]
 ---
 ## 🧾 Prova 1 
 

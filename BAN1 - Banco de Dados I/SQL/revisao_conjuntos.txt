@@ -1,0 +1,46 @@
+HISTÓRICO DE CORREÇÕES SQL - CONJUNTOS
+============================================
+
+1. Consulta 1 - União de dados de médicos e pacientes
+   - Erro: Não havia consulta implementada
+   - Correção: Implementada consulta usando UNION com coluna adicional para identificar o tipo
+   - Resultado: SELECT nome, cpf, 'Médico' as tipo
+                FROM medicos
+                UNION
+                SELECT nome, cpf, 'Paciente' as tipo
+                FROM pacientes
+                ORDER BY tipo, nome
+
+Justificativa das alterações:
+1. UNION: Usado para combinar os resultados das duas consultas
+2. Coluna tipo: Adicionada para identificar a origem dos dados
+
+2. Consulta 2 - Pacientes que nunca consultaram o médico Pedro
+   - Erro: Falta de especificação do tipo de JOIN e falta de ordenação
+   - Correção: Adicionado INNER JOIN e ORDER BY
+   - Resultado: SELECT codp, nome 
+                FROM pacientes 
+                EXCEPT
+                SELECT p.codp, p.nome 
+                FROM pacientes p 
+                INNER JOIN consultas c ON p.codp = c.codp
+                INNER JOIN medicos m ON c.codm = m.codm
+                WHERE m.nome = 'Pedro'
+                ORDER BY nome
+
+3. Consulta 3 - Pacientes que nunca consultaram o médico Pedro
+   - Erro: Falta de especificação do tipo de JOIN e falta de ordenação
+   - Correção: Adicionado INNER JOIN e ORDER BY
+   - Resultado: SELECT codp, nome 
+                FROM pacientes 
+                EXCEPT
+                SELECT p.codp, p.nome 
+                FROM pacientes p 
+                INNER JOIN consultas c ON p.codp = c.codp
+                INNER JOIN medicos m ON c.codm = m.codm
+                WHERE m.nome = 'Pedro'
+                ORDER BY nome
+
+Observações:
+- O EXCEPT retorna registros da primeira consulta que não existem na segunda
+- O EXCEPT remove automaticamente duplicatas 

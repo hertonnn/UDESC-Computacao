@@ -1,0 +1,95 @@
+HISTÓRICO DE CORREÇÕES SQL
+
+1. Consulta 1 - Médicos que também são pacientes
+   - Erro: Falta de especificação do tipo de JOIN e formatação inconsistente
+   - Correção: Adicionado INNER JOIN e melhorada a formatação
+   - Resultado: SELECT DISTINCT m.nome,
+                m.cpf
+                FROM medicos m
+                INNER JOIN pacientes p ON m.cpf = p.cpf
+
+2. Consulta 2 - Ambulatórios utilizados por médicos ortopedistas
+   - Erro: Possível duplicação de resultados e falta de especificação do tipo de JOIN
+   - Correção: Adicionado DISTINCT e especificado INNER JOIN
+   - Resultado: SELECT DISTINCT a.nroa,
+                a.andar
+                FROM ambulatorios a
+                INNER JOIN medicos m ON a.nroa = m.nroa
+                WHERE m.especialidade = 'ortopedia'
+
+3. Consulta 3 - Médicos com consulta com a paciente Ana
+   - Erro: Possível duplicação de resultados e falta de especificação do tipo de JOIN
+   - Correção: Adicionado DISTINCT e especificado INNER JOIN
+   - Resultado: SELECT DISTINCT m.nome,
+                m.idade
+                FROM medicos m
+                INNER JOIN consultas c ON m.codm = c.codm
+                INNER JOIN pacientes p ON c.codp = p.codp
+                WHERE p.nome = 'Ana'
+
+4. Consulta 4 - Médicos no mesmo ambulatório que Pedro com consultas em 14/06/2006
+   - Erro: Possível duplicação de resultados, falta de especificação do tipo de JOIN e formatação da subconsulta
+   - Correção: Adicionado DISTINCT, especificado INNER JOIN e melhorada a formatação da subconsulta
+   - Resultado: SELECT DISTINCT m.codm,
+                m.nome 
+                FROM medicos m 
+                INNER JOIN consultas c ON m.codm = c.codm
+                INNER JOIN ambulatorios a ON m.nroa = a.nroa
+                WHERE m.nroa IN (
+                    SELECT nroa 
+                    FROM medicos 
+                    WHERE nome = 'Pedro'
+                ) 
+                AND c.data = '2006-06-14'
+
+5. Consulta 5 - Pacientes com consultas de ortopedistas antes do dia 16
+   - Erro: Possível duplicação de resultados, falta de especificação do tipo de JOIN e condição de data incorreta
+   - Correção: Adicionado DISTINCT, especificado INNER JOIN e corrigida a condição de data usando date_part
+   - Resultado: SELECT DISTINCT p.nome,
+                p.cpf,
+                p.idade
+                FROM pacientes p 
+                INNER JOIN consultas c ON p.codp = c.codp
+                INNER JOIN medicos m ON c.codm = m.codm
+                WHERE m.especialidade = 'ortopedia' 
+                AND date_part('DAY', data) < 16
+
+6. Consulta 6 - Dados de ambulatórios e médicos que os utilizam
+   - Erro: Sintaxe incorreta no SELECT (a*) e falta de ponto e vírgula
+   - Correção: Corrigido para a.* e adicionado ponto e vírgula
+   - Resultado: SELECT a.*, m.codm, m.nome
+                FROM ambulatorios a
+                LEFT JOIN medicos m ON a.nroa = m.nroa
+
+7. Consulta 7 - Médicos e seus pacientes com consultas
+   Versão 1:
+   SELECT DISTINCT m.cpf,
+          m.nome,
+          p.cpf AS cpf_paciente,
+          p.nome AS nome_paciente,
+          c.data
+   FROM medicos m 
+   LEFT JOIN consultas c ON m.codm = c.codm
+   LEFT JOIN pacientes p ON c.codp = p.codp
+
+   Versão 2:
+   SELECT DISTINCT m.cpf,
+          m.nome,
+          p.cpf,
+          p.nome,
+          c.data
+   FROM pacientes p 
+   JOIN consultas c ON p.codp = c.codp
+   RIGHT JOIN medicos m ON m.codm = c.codm
+
+   Análise de Equivalência:
+   - As consultas são semanticamente equivalentes, mas com diferenças importantes:
+     1. A primeira versão usa LEFT JOINs e aliases mais claros
+     2. A segunda versão usa RIGHT JOIN e não tem aliases para as colunas de pacientes
+     3. Ambas retornam o mesmo conjunto de resultados
+   
+   Recomendação:
+   - A primeira versão é preferível porque:
+     1. É mais legível com os aliases descritivos
+     2. Usa LEFT JOIN que é mais intuitivo para este caso
+     3. Mantém a consistência com a ordem lógica das tabelas (médicos -> consultas -> pacientes)

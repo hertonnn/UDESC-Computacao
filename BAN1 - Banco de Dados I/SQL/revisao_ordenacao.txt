@@ -1,0 +1,295 @@
+HISTÓRICO DE CORREÇÕES SQL - ORDENAÇÃO
+=====================================
+
+1. Consulta 1 - Médicos com consultas com todos os pacientes
+   Versão 1 (NOT EXISTS):
+   SELECT DISTINCT m.nome, m.cpf
+   FROM medicos m
+   WHERE NOT EXISTS (
+       SELECT p.codp
+       FROM pacientes p
+       WHERE NOT EXISTS (
+           SELECT 1
+           FROM consultas c
+           WHERE c.codm = m.codm
+           AND c.codp = p.codp
+       )
+   )
+   ORDER BY m.nome
+
+   Versão 2 (ALL):
+   SELECT DISTINCT m.nome, m.cpf
+   FROM medicos m
+   WHERE NOT EXISTS (
+       SELECT p.codp
+       FROM pacientes p
+       WHERE m.codm = ALL (
+           SELECT c.codm
+           FROM consultas c
+           WHERE c.codp = p.codp
+       )
+   )
+   ORDER BY m.nome
+
+   Análise das Versões:
+   - Ambas as versões retornam o mesmo resultado
+   - A primeira versão (NOT EXISTS) é mais clara e eficiente
+   - A segunda versão (ALL) é mais complexa e pode ser menos eficiente
+   
+   Justificativa:
+   1. NOT EXISTS: Mais direto para verificar existência
+   2. ALL: Requer mais processamento para comparação
+   3. ORDER BY: Mantido em ambas as versões
+   4. DISTINCT: Mantido em ambas as versões
+   5. Aliases: Usados para clareza em ambas as versões
+
+   Observações:
+   - A primeira versão é preferível por ser mais clara e eficiente
+   - A segunda versão demonstra o uso do operador ALL
+   - Ambas implementam a divisão relacional
+   - A ordenação facilita a leitura dos resultados
+   - O DISTINCT garante que não haja duplicatas 
+
+2. Consulta 2 - Médicos ortopedistas com consultas com todos os pacientes de Florianópolis
+   - Erro: Condições de filtro no lugar errado e formatação inconsistente
+   - Correção: Movidas as condições de filtro para os níveis apropriados e melhorada a formatação
+   - Resultado: SELECT DISTINCT m.nome, m.cpf
+                FROM medicos m 
+                WHERE m.especialidade = 'ortopedia'
+                AND NOT EXISTS (
+                    SELECT p.codp
+                    FROM pacientes p
+                    WHERE p.cidade = 'Florianopolis'
+                    AND NOT EXISTS (
+                        SELECT 1 
+                        FROM consultas c 
+                        WHERE c.codm = m.codm
+                        AND c.codp = p.codp
+                    )
+                )
+                ORDER BY m.nome
+
+Justificativa das alterações:
+1. Condições de filtro: Movidas para os níveis apropriados da consulta
+2. Formatação: Melhorada a indentação e espaçamento
+3. Lógica: Mantida a estrutura de NOT EXISTS aninhado
+4. ORDER BY: Mantido para organizar os resultados
+5. DISTINCT: Mantido para evitar duplicatas
+
+Observações:
+- A consulta filtra primeiro os médicos ortopedistas
+- Depois verifica se atendem todos os pacientes de Florianópolis
+- A ordenação facilita a leitura dos resultados
+- O DISTINCT garante que não haja duplicatas
+- A formatação das subconsultas torna o código mais legível
+- As condições de filtro estão nos níveis mais apropriados da consulta 
+
+4. Consulta 4 - Top 3 funcionários por salário e idade
+   - Erro: Múltiplas cláusulas ORDER BY e falta de LIMIT
+   - Correção: Combinadas as ordenações e adicionado LIMIT 3
+   - Resultado: SELECT * 
+                FROM funcionarios
+                ORDER BY salario DESC, idade ASC
+                LIMIT 3
+
+Justificativa das alterações:
+1. ORDER BY: Combinadas as ordenações em uma única cláusula
+2. LIMIT: Adicionado para retornar apenas os 3 primeiros registros
+3. Prioridade: Salário (DESC) tem prioridade sobre idade (ASC)
+4. Formatação: Melhorada a indentação e espaçamento
+
+Observações:
+- A ordenação é feita primeiro por salário (decrescente)
+- Para salários iguais, a ordenação é por idade (crescente)
+- LIMIT 3 retorna apenas os 3 primeiros registros após a ordenação
+- A formatação torna o código mais legível
+- A cláusula LIMIT deve vir após ORDER BY
+- Útil para implementar paginação ou top N resultados 
+
+5. Consulta 5 - Tuplas 3 a 5 de consultas ordenadas por data e hora
+   - Erro: Não havia consulta implementada
+   - Correção: Implementada consulta com JOINs, aliases e LIMIT/OFFSET
+   - Resultado: SELECT m.nome as nome_medico, p.nome as nome_paciente
+                FROM medicos m
+                INNER JOIN consultas c ON m.codm = c.codm
+                INNER JOIN pacientes p ON c.codp = p.codp
+                ORDER BY c.data, c.hora
+                LIMIT 3 OFFSET 2
+
+Justificativa das alterações:
+1. JOINs: Usados para relacionar médicos, consultas e pacientes
+2. Aliases: Adicionados para clareza nas colunas
+3. ORDER BY: Ordenação por data e hora
+4. LIMIT 3: Retorna 3 tuplas
+5. OFFSET 2: Pula as 2 primeiras tuplas (retorna 3, 4 e 5)
+6. INNER JOIN: Usado para garantir que só retorne consultas existentes
+
+Observações:
+- A ordenação é feita primeiro por data e depois por hora
+- OFFSET 2 pula as duas primeiras tuplas
+- LIMIT 3 retorna as três tuplas seguintes
+- Os aliases tornam o resultado mais claro
+- A formatação torna o código mais legível
+- Os JOINs garantem a integridade dos dados
+- Útil para implementar paginação de resultados 
+
+6. Consulta 6 - Total de médicos por idade
+   Explicação Detalhada do Funcionamento:
+
+   a) GROUP BY:
+      - Agrupa as linhas da tabela medicos por idade
+      - Cria grupos onde todas as linhas têm a mesma idade
+      - Exemplo:
+        Idade  |  Médicos
+        30     |  João, Maria
+        35     |  Pedro, Ana, Carlos
+        40     |  José, Luiza
+      
+   b) COUNT(*):
+      - Conta o número de linhas em cada grupo
+      - O asterisco (*) significa "todas as colunas"
+      - Exemplo:
+        Idade  |  COUNT(*)
+        30     |  2 (João e Maria)
+        35     |  3 (Pedro, Ana e Carlos)
+        40     |  2 (José e Luiza)
+
+   c) Processo de Execução:
+      1. A tabela medicos é lida
+      2. As linhas são agrupadas por idade
+      3. COUNT(*) é aplicado a cada grupo
+      4. O resultado é ordenado por idade
+
+   d) Exemplo Prático:
+      Tabela medicos:
+      codm | nome  | idade
+      1    | João  | 30
+      2    | Maria | 30
+      3    | Pedro | 35
+      4    | Ana   | 35
+      5    | Carlos| 35
+      6    | José  | 40
+      7    | Luiza | 40
+
+      Resultado:
+      idade | total_medicos
+      30    | 2
+      35    | 3
+      40    | 2
+
+   e) Observações Importantes:
+      - GROUP BY deve incluir todas as colunas não agregadas
+      - COUNT(*) conta todas as linhas, incluindo nulos
+      - A ordem dos grupos não é garantida sem ORDER BY
+      - Cada grupo gera uma única linha no resultado
+      - Funções de agregação (COUNT) são aplicadas por grupo
+
+   f) Vantagens:
+      - Permite análise estatística
+      - Reduz a quantidade de linhas no resultado
+      - Facilita a contagem por categorias
+      - Útil para relatórios e dashboards
+      - Eficiente para grandes conjuntos de dados 
+
+7. Consulta 7 - Andares com média de capacidade >= 40
+   - Erro: Faltava a cláusula HAVING para filtrar a média
+   - Correção: Adicionado HAVING AVG(capacidade) >= 40
+   - Resultado: SELECT andar, AVG(capacidade) AS media_capacidade
+                FROM ambulatorios
+                GROUP BY andar
+                HAVING AVG(capacidade) >= 40
+
+Justificativa das alterações:
+1. HAVING: Adicionado para filtrar grupos após agregação
+2. AVG: Mantida a função de média
+3. Alias: Mantido para clareza na coluna
+4. GROUP BY: Mantido para agrupar por andar
+5. Formatação: Melhorada a indentação
+
+Observações:
+- HAVING é usado para filtrar resultados de agregação
+- WHERE não pode ser usado com funções de agregação
+- A média é calculada por andar
+- Só retorna andares com média >= 40
+- O alias 'media_capacidade' torna o resultado mais claro
+- A formatação torna o código mais legível
+- Útil para análise de capacidade por andar 
+
+8. Consulta 8 - Médicos com mais de uma consulta
+   - Erro: GROUP BY incompleto (faltava m.codm)
+   - Correção: Adicionado m.codm no GROUP BY
+   - Resultado: SELECT m.nome 
+                FROM medicos m 
+                JOIN consultas c ON c.codm = m.codm
+                GROUP BY m.codm, m.nome
+                HAVING COUNT(*) > 1
+
+Justificativa das alterações:
+1. GROUP BY: Adicionado m.codm para garantir unicidade
+2. JOIN: Mantido para relacionar médicos e consultas
+3. HAVING: Mantido para filtrar médicos com mais de uma consulta
+4. Alias: Mantido para clareza nas tabelas
+5. Formatação: Melhorada a indentação
+
+Observações:
+- m.codm é necessário no GROUP BY para evitar ambiguidade
+- O JOIN garante que só retorne médicos com consultas
+- HAVING filtra médicos com mais de uma consulta
+- O alias 'm' torna o código mais legível
+- A formatação torna o código mais organizado
+- Útil para identificar médicos mais ativos
+- GROUP BY deve incluir todas as colunas não agregadas 
+
+9. Consulta 9 - Atualização de consultas do médico Pedro
+   - Erro: Não havia consulta implementada
+   - Correção: Implementada consulta com UPDATE e subconsulta
+   - Resultado: UPDATE consultas
+                SET data = '2006-11-21'
+                WHERE codm IN (
+                    SELECT codm 
+                    FROM medicos 
+                    WHERE nome = 'Pedro'
+                )
+                AND data < '2006-11-21'
+                AND hora < '12:00'
+
+Justificativa das alterações:
+1. UPDATE: Usado para modificar a data das consultas
+2. Subconsulta: Usada para encontrar o código do médico Pedro
+3. Condições: Adicionadas para filtrar consultas antes do meio-dia
+4. Formatação: Melhorada a indentação e espaçamento
+5. Data: Especificada no formato 'YYYY-MM-DD'
+
+Observações:
+- A subconsulta identifica o médico Pedro
+- As condições garantem que só consultas antigas sejam alteradas
+- A hora é comparada com '12:00' para identificar antes do meio-dia
+- A formatação torna o código mais legível
+- Útil para reagendamento de consultas
+- O UPDATE modifica apenas as linhas que atendem às condições
+- A subconsulta é mais eficiente que JOIN neste caso 
+
+10. Consulta 10 - Inserção do funcionário Caio como médico
+    - Erro: Não havia consulta implementada
+    - Correção: Implementada consulta com INSERT e SELECT
+    - Resultado: INSERT INTO medicos (codm, nome, idade, especialidade, cpf, cidade, nroa)
+                 SELECT 5, f.nome, f.idade, m.especialidade, f.cpf, f.cidade, m.nroa
+                 FROM funcionarios f
+                 CROSS JOIN medicos m
+                 WHERE f.codf = 3 
+                 AND m.codm = 2
+
+Justificativa das alterações:
+1. INSERT: Usado para adicionar novo médico
+2. SELECT: Usado para buscar dados do funcionário e da médica
+3. CROSS JOIN: Usado para combinar dados do funcionário e da médica
+4. WHERE: Filtra o funcionário Caio e a médica Maria
+5. Formatação: Melhorada a indentação e espaçamento
+
+Observações:
+- O código 5 é assumido como próximo código disponível
+- Dados pessoais vêm da tabela funcionarios
+- Especialidade e ambulatório vêm da tabela medicos
+- CROSS JOIN é usado para combinar os dados necessários
+- A formatação torna o código mais legível
+- Útil para promoç 

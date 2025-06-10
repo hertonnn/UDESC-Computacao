@@ -1,0 +1,149 @@
+REVISÃO GERAL SQL - PRINCIPAIS CONCEITOS E PADRÕES
+=================================================
+
+1. OPERADORES E FUNÇÕES BÁSICAS
+--------------------------------
+a) Comparação:
+   - =, !=, <, >, <=, >=
+   - BETWEEN (inclusivo)
+   - IN (lista de valores)
+   - LIKE (padrões de texto)
+   - IS NULL, IS NOT NULL
+
+b) Agregação:
+   - COUNT(*): conta todas as linhas
+   - COUNT(DISTINCT): conta valores únicos
+   - AVG(): média
+   - MAX(): maior valor
+   - MIN(): menor valor
+   - SUM(): soma
+
+c) Manipulação de Strings:
+   - LOWER(): minúsculas
+   - UPPER(): maiúsculas
+   - TRIM(): remove espaços
+   - CONCAT() ou ||: concatenação
+
+2. PADRÕES DE JUNÇÃO (JOIN)
+---------------------------
+a) Tipos de JOIN:
+   - INNER JOIN: apenas registros correspondentes
+   - LEFT JOIN: todos da esquerda + correspondentes
+   - RIGHT JOIN: todos da direita + correspondentes
+   - CROSS JOIN: produto cartesiano
+
+b) Boas Práticas:
+   - Sempre especificar o tipo de JOIN
+   - Usar aliases para clareza
+   - Incluir condições de JOIN no ON
+   - Filtrar com WHERE após JOIN
+
+3. AGRUPAMENTO E FILTRAGEM
+--------------------------
+a) GROUP BY:
+   - Agrupa linhas por valores
+   - Deve incluir todas as colunas não agregadas
+   - Útil para análises estatísticas
+
+b) HAVING:
+   - Filtra resultados de agregação
+   - Usado após GROUP BY
+   - Não pode usar WHERE com funções de agregação
+
+4. SUBCONSULTAS
+--------------
+a) Operadores:
+   - IN: valor em conjunto
+   - EXISTS: verifica existência
+   - ANY: pelo menos um
+   - ALL: todos
+
+b) Tipos:
+   - Correlacionada: referencia consulta externa
+   - Não correlacionada: independente
+   - Escalar: retorna um valor
+
+5. PADRÕES DE ORDENAÇÃO
+-----------------------
+a) ORDER BY:
+   - ASC: crescente (padrão)
+   - DESC: decrescente
+   - Múltiplas colunas: prioridade da esquerda
+
+b) LIMIT e OFFSET:
+   - LIMIT: número de linhas
+   - OFFSET: linhas a pular
+   - Útil para paginação
+
+6. PADRÕES DE RESOLUÇÃO
+-----------------------
+a) Análise do Problema:
+   1. Identificar tabelas necessárias
+   2. Definir relacionamentos
+   3. Estabelecer condições
+   4. Escolher operadores adequados
+
+b) Estrutura da Consulta:
+   1. SELECT: colunas desejadas
+   2. FROM: tabelas necessárias
+   3. JOIN: relacionamentos
+   4. WHERE: filtros básicos
+   5. GROUP BY: agrupamentos
+   6. HAVING: filtros de agregação
+   7. ORDER BY: ordenação
+   8. LIMIT/OFFSET: paginação
+
+7. BOAS PRÁTICAS
+----------------
+a) Formatação:
+   - Indentação consistente
+   - Aliases descritivos
+   - Espaçamento adequado
+   - Comentários claros
+
+b) Performance:
+   - Usar índices apropriados
+   - Evitar SELECT *
+   - Otimizar JOINs
+   - Considerar subconsultas vs JOINs
+
+c) Legibilidade:
+   - Nomes descritivos
+   - Estrutura clara
+   - Comentários explicativos
+   - Formatação consistente
+
+8. CASOS ESPECÍFICOS
+--------------------
+a) Contagem com DISTINCT:
+   - Usar COUNT(DISTINCT) para valores únicos
+   - Evitar duplicatas em agregações
+
+b) Filtros de Data:
+   - Usar formato 'YYYY-MM-DD'
+   - Comparar com operadores adequados
+
+c) Strings:
+   - Usar LIKE para padrões
+   - Considerar case-sensitivity
+   - Usar funções de manipulação
+
+9. PADRÕES DE SOLUÇÃO
+---------------------
+a) Análise de Dados:
+   - Agrupar por categorias
+   - Calcular estatísticas
+   - Filtrar resultados
+   - Ordenar dados
+
+b) Relacionamentos:
+   - Identificar chaves
+   - Estabelecer JOINs
+   - Manter integridade
+   - Evitar duplicatas
+
+c) Filtros Complexos:
+   - Usar subconsultas
+   - Combinar condições
+   - Considerar performance
+   - Manter legibilidade 
