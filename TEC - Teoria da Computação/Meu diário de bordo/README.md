@@ -505,84 +505,325 @@ Acrescente:
 
 [#]
 ---
-## 🧾 Prova 1 
+# Prova 1 - Correção
+1 - Responda às perguntas a seguir a partir da máquina de Turing
 
-### ✅ Estudei:
+    M = ({q0, q1, …, q7, qA, qR}, {#, 0, 1}, {#, 0, 1, x, _}, δ, q0, qA, qR)
+onde δ é representado no diagrama abaixo.
 
-- Alguns exercícios de MT dos slides e do moodle (resoluções na pasta de exercícios)
-- Problemas 3.9 ao 3.13 do cáp.3 do Sipser (resoluções na pasta Cáp.3)
+![img_q1](https://raw.githubusercontent.com/hertonnn/UDESC-Computacao/refs/heads/master/utils/img/img_tec_p1.jpeg)
 
-**Ajudou?:** Quase não caiu questão aos moldes dos problemas do livro ); 
+a) Qual a linguagem da máquina M?
 
-### ✅ O que caiu?
+     LM = {w#w | w ∈  {0,1}*}
 
-- Qual a relação entre decidíveis e reconhecíveis?
-- Complemento de uma linguagem decidível, é uma decidível tb?
-- Intersecção de uma linguagem decidível e uma turing reconhecível
+b) A palavra #xxx pertence à L(M)? Por quê?
 
-# Questões
-### 🔹 Problema 3.12 – Capítulo 3 (Sipser)
-"...quando a máquina está no estado lendo um 'a', a cabeça da máquina salta para a extremidade esquerda da fita..." Não tinha sacado de cara aqui que o ato de reiniciar é, obviamente, voltar até o início da fita.
+     #xxx não pertence, pois não respeita o formato w#w p/ w ∈ {0,1}*
 
-#### Passo a passo:
+c) M é uma decisora?
+    
+Se sim: seria possível obter uma máquina de Turing equivalente não 
+decisora? Por quê?
 
-Fita inicial:
-```txt
-... A B C D ...
-      ↑  (Cabeçote sobre B)
-```
-Marca aonde está o cabeçote:
-```txt
-... A *B C D ...
-       ↑
-```
-Copia tudo uma célua a direita(exceto a marca), reseta e anda até a marca:
-```txt
-... □ *A B C D ...
-       ↑     (Cabeçote sobre A)
-```
+Se não: indique uma entrada que entre em loop infinito.
 
----
+R: Sim, pois pra toda entrada w, há parada com aceitacão ou rejeição. Podemos criar uma máquina equivalente não decisora alterando os estados em que há rejeição por indefinição. Por exemplo, podemos fazer com que haja transições para um loop infinito ao invés da máquina parar por indecisão. 
 
-## ❓ Dúvidas em Aberto
+2 - 
 
-### 🔹 Problema 3.9(a) – Capítulo 3 (Sipser)  
-**Situação:** Não respondida  
-**Dúvida:**  
-Na resolução do problema, o livro apenas afirma (seguindo o Teorema 2.20) que nenhum autômato de pilha com uma única pilha (1-AP) reconhece a linguagem:  
-```
-B = { aⁿ bⁿ cⁿ | n ≥ 0 }
-```
-Em seguida, ele demonstra como um autômato com duas pilhas (2-AP) pode reconhecê-la.
+a) Por que, ao simular uma Máquina de Turing não determinista em uma Máquina de Turing determinista, não se deve fazer uma busca por profundidade na árvore das possíveis computações da máquina não determinista?
 
-**Questão:**  
-Se essa fosse uma questão de prova, eu deveria apenas partir do ponto em que sabemos que um 1-AP não reconhece tal linguagem (citando o Teorema 2.20), ou seria necessário justificar esse fato?
+R: Porque, ao realizar uma busca em profundidade (DFS) na árvore de possibilidades, corremos o risco de não alcançar um ramo aceitante mesmo que exista, especialmente se outro ramo entrar em um loop infinito. Já na busca em largura (BFS), todas as ramificações são percorridas por nível, garantindo que, se houver uma aceitação, ela será encontrada.
 
-**Possível justificativa para resposta discursiva:**  
-> "Um autômato com apenas uma pilha não consegue verificar três quantidades iguais simultaneamente. Isso é provado na Teoria da Computação: a linguagem `{ aⁿ bⁿ cⁿ | n ≥ 0 }` **não é livre de contexto**, e os autômatos de pilha reconhecem exatamente as **linguagens livres de contexto**."
+b) Sejam A e B linguagens quaisquer sobre o mesmo alfabeto. Se A é decidível e B é Turing-reconhecível, o que se pode afirmar a respeito de A ∩ B? Justifique sua resposta. 
 
----
+R: A ∩ B é reconhecível. Para verificar uma entrada w, basta rodar primeiro o decisor de A. Se w não estiver em A, rejeitamos imediatamente, pois w não poderá estar em A ∩ B. Se w estiver em A, simulamos a máquina que reconhece B com a entrada w. Caso essa segunda máquina aceite, concluímos que w pertence a A ∩ B e aceitamos. Se a segunda máquina não parar, ficamos em loop, o que garante que A ∩ B não seja decidível, mas sim apenas reconhecível.
 
-### 🔹 Problema 3.9(b) – Capítulo 3 (Sipser)  
-**Situação:** Não respondida  
-**Dúvida:**  
-Ainda tenho incerteza sobre como se dá a **configuração das duas pilhas** na simulação de uma Máquina de Turing (MT) por um autômato de pilha com duas pilhas (2-AP).  
+c) Uma configuração de uma máquina de Turing é uma sequência finita e tamanho n>=2, composta por 1 estado e n-1 símbolos do alfabeto da fita, que indica o conteúdo da fita, o estado corrente e a posição da fita. Explique porque sempre é possível obter uma configuração em qualquer momento da computação de uma máquina, mesmo sabendo que o tamanho da fita é infinito.
 
-**Questão específica:**  
-Se a entrada da MT tiver **comprimento par ou ímpar**, isso altera a lógica da simulação? Afinal, a fita da MT será "dividida" entre as duas pilhas, e o ponto central pode variar dependendo da paridade do comprimento da entrada.
+R: 
 
----
+R: A fita de uma Máquina de Turing pode ser infinita, mas, a cada momento da computação, apenas uma porção finita dela foi acessada e contém informação relevante. Por isso, podemos representar todas as informações do instante atual (estado e conteúdo não vazio da fita) por uma sequência finita, inserindo o estado atual no local em que o cabeçote se encontra.
 
-### 🔹 Problema 3.10 – Capítulo 3 (Sipser)  
-**Situação:** Não respondida  
-**Dúvida:**  
-Minha dificuldade está relacionada à **marcação da posição do cabeçote** original da MT.  
+3- Seja A uma linguagem decidível. Então o complemento  de A é reconhecível.
 
-**Questão específica:**  
-Durante a simulação da MT, essa posição precisa ser indicada na fita. No entanto, isso parece exigir **três informações por célula**:
-- O símbolo armazenado;
-- Uma marca de controle (por exemplo, um estado codificado);
-- A posição do cabeçote.
+R: Fato, Pelo teorema A é decicível <=> A é reconhecível e correconhecível. Se temos que A decicível, A também é reconhecível. Para encontrar o reconhecedor do complemento de A, podemos criar uma máquina M' que rode uma máquina M decisora de A com entrada w e inverta o que M responder. Com isso, temos que M' é reconhecedora e decisora da linguagem que é complemento de A.
 
-**Observação:**  
-A não ser que a posição do cabeçote seja representada de forma implícita (por exemplo, utilizando um símbolo "branco" para marcar a célula sob o cabeçote), não fica claro como isso é tratado de forma prática com apenas uma célula por posição na fita.
+
+b) Se M for uma máquina de Turing que entra em loop infinito para algumas entradas, então L(M) é uma linguagem indecidível.
+
+R: Não obrigatoriamente. O fato de uma máquina entrar em loop para algumas entradas não determina que sua linguagem não seja indecidível. É possível transformar uma máquina não-decidedora em uma decididora para a mesma linguagem, de maneira que a linguagem continue a mesma, mas apenas a máquina seja alterada.
+
+4.
+
+R:
+
+Máquina de Sipser que simula a de Zezinho
+
+Em todos os estados finais de aceitação, a MS faz com que as indefinições da função programa existentes nesses estados virem transições para o estado qAceita.
+
+O funcionamento da rejeição é parecida na MZ, apenas não utiliza um estado qRejeita. Logo, toda vez que a entrada for rejeitada, isso deve ocorrer por indefinição da função programa.
+
+Máquina de Zezinho que simula a de Sipser
+
+Todas as transições que vão para aceitação em qAceita da MS são feitas por indefinição em MZ. O estado de aceitação também não pode ter transições (pois o processamento poderia continuar a partir dele, o que não ocorre na máquina de Sipser)
+
+
+
+# Prova 2 - Correção 
+...
+
+
+# Decidibilidade por outro material... 
+
+A partir de desse ponto da disciplina usei o material da [UFMG](https://homepages.dcc.ufmg.br/~msalvim/courses/ftc/) de Teoria da computação para compreender algumas demonstrações que não havia entendido no material da professora. Portanto, aqui vou reproduzir as mesmas demonstrações que estão no diário de bordo, mas um pouco mais detalhadas iguais as da UFMG para revisar e estudar mesmo.
+
+Como visto anteriormente no material, podemos concluir:
+
+"Portanto, há linguagens para as quais não há MT correspondente. Estas
+linguagens não podem ser, portanto, Turing-reconhecíveis."
+
+## AMT: O Problema da Aceitacão para MTs concerne a seguinte linguagem:
+- AMT = {<M,w> | M é uma MT e M aceita w}.
+
+Antes de mais nada, sabemos que a AMT é Turing-reconhecível, já que é visto no material que a MT U (Máquina de Turing Universal) não decide a linguagem AMT, mas apenas a reconhece.
+
+### Demonstração
+
+A demonstração se dá por contradição. Assumimos que AMT seja decidível e derivamos um absurdo.
+
+Suponha que existe um decisor H para AMT, que se comporte da seguinte forma:
+
+    H(<M, w>) = 
+        aceite,   se M aceita w
+        rejeite,  se M não aceita w
+
+Se o decisor H existe, é possível construir uma nova MT D que utiliza H como uma subrotina.
+
+A MT D recebe uma MT M como entrada e pergunta ao decisor H se M, ao receber como entrada a cadeia <M> que representa sua própria descrição, aceita ou rejeita. O que o decisor responder, a MT D inverte seu comportamento.
+
+D = "Sobre a entrada <M>, onde M é uma MT:
+
+    1. Rode H sobre a entrada <M,<M>>.
+    2. Dê como saída o oposto do que H dá como saída: se H aceita, *rejeite*; se H rejeita, *aceite.*
+
+Note que D vai ter esse comportamento:
+
+    D(<M>) = 
+        aceite, se M não aceita <M>.
+        rejeite, se M aceita <M>.
+Agora que chegamos ao cerne da demonstração: verificamos o que acontece quando rodados a MT D com sua própria descrição <D> como entrada será:
+
+    D(<D>) = 
+        aceita, se D não aceita <D>.
+        rejeita se D aceita <D>.
+
+Mass note que isso é um absurdo:
+
+**D aceita a cadeia <D>** se, e somente se, **D não aceita a cadeia <D>!**
+
+Portanto, concluimos que a hipótese de que pode existir um decisor H para AMT é falsa, ou seja, AMT é indecidível.
+
+## Teorema: Uma linguagem é decidível se, e somente se, ela é Turing-reconhecível e co-Turing-reconhecível.
+
+- Antes de mais nada, uma linguagem é co-Turing-raconhecível (no material da Karina acho que é correconhecível apenas) se ela for o complemento de uma linguagem Turing-reconhecível.
+
+### Demonstração
+
+-> ida
+
+Bom, se uma linguagem A for decidível, então tanto A quanto seu complemento Ā  são Turing-reconhecíveis.
+
+Isso pois qualquer linguagem decidível é Turing-reconhecível, e o complemento de uma decidível é também decidível.
+
+<- volta
+
+Se tanto A quanto Ā são Turing-reconhecíveis, então existe um reconhecedor M1 para A e um reconhecedor M2 para Ā.
+
+Podemos então combinar M1 e M2 no seguinte decisor M para A.
+
+M = "Sobre a entrada w:
+
+    1. Rode ambas M1 e M2 sobre a entrada w em paralelo
+    2. Se M1 aceita, *aceite*; se M2 aceita, *rejeite.*
+ 
+Obs: Rodar as duas máquinas em paralelo significa que M tem duas fitas, uma para simular M1 e outra para simular M2, e M alternadamente simula um passo de cada na máquina até que uma delas aceite.
+
+Para ver que M decide A, note que toda cadeia w ou está em A ou está em Ā, logo ou M1 ou M2 deve necessariamente aceitar w. Como M pára sempre que ou M1 ou M2 aceita, M sempre pára. Além disso, M aceita todas as cadeias em A e rejeita todas as cadeias demais. Isto mostra que A é decidível.
+
+## Demonstração de que ĀMT (complemento de AMT) não é Turing-reconhecível
+
+Primeiro, note que já sabemos que AMT é Turing-reconhecével.
+
+Por contradição, assuma que AMT também seja Turing-reconhecível. Neste
+caso AMT seria co-Turing-reconhecível.
+
+Mas se AMT é Turing-reconhecível e co-Turing-reconhecível, AMT deve ser
+decicível.
+
+Mas isto é uma contradicão: já que demonstramos que AMT não é decidível.
+Logo AMT não pode ser Turing-reconhecível.
+
+## Redutibilidade 
+
+Como nem sempre é conveniente mostrar que um problema é indecidível de maneira direta, usamos a redutibilidade para demonstrar que problemas são indecidíveis (ou decidíveis).
+
+Para entender melhor sobre esse conceito indico ir nos slides da [UFMG sobre](https://homepages.dcc.ufmg.br/~msalvim/courses/ftc/Aula5_Redutibilidade%5bstill%5d.pdf). Aqui vou pular direto para as demonstrações usando redutibilidade que são o que me interessa para a prova.
+
+
+## PARAMT é indecidível
+- PARAMT = {<M, w> | M é uma MT e M para sobre a entrada w}.
+
+Algumas vezes nos referimos a AMT como "Problema da parada", porém, estritamente falando, o **Problema da Parada** é a linguagem PARAMT.
+
+### Demonstração 
+
+Por contradição.
+
+Suponha que PARAMT seja decidível.
+
+Então existe uma MT R que decide PARAMT (acredito que esse decisor diz se dado uma máquina e uma cadeia w essa maquina pára ou não), e poderíamos usar R para construir uma MT S que decide a linguagem AMT da seguinte forma. 
+
+S = "Sobre uma entrada <M, w>, uma codificação de uma MT M e de uma cadeia w:
+    
+    1. Rode a MT R sobre a entrada <M, w>. 
+    2. Se R rejeita, *rejeite*. (Ou seja, se R rejeita significa que a M não para quando recebe w, acredito...).
+    3. Se R aceita, simule M sobre w até que ela pare.
+    4. Se M aceitou, *aceite*; se M rejeitou, *rejeite.*
+
+Mas note que se R é capaz de decidir PARAMT (ou sejam R nunca entra em loop e sempre dá a resposta correta), então claramente S é um decisor para AMT (pois S também nunca entra em loop e sempre dá a resposta correta.).
+
+Mas isto é uma contradição, pois já determinamos que AMT é indecidível.
+
+Logo concluimos que PARAMT é indecidível.
+
+## VMT é indecidível
+- VMT = {<M> | M é uma MT e L(M) =  ∅}
+
+Este é o problema de se decidir se a linguagem reconhecida por uma MT é vazia.
+
+### Demonstração
+
+VMT = {<M> | L(M) = ∅}
+
+Ou seja, máquinas de Turing que não aceitam nenhuma palavra.
+
+Supondo que exista um decisor P para VMT. Construímos a máquina de Turing a seguir:
+
+S = "Tem como entrada <M, x> onde M é uma MTD e x é uma palavra:
+
+    1. Construa a máquina J: 
+            L(J) = Qualquer palavra,  se M aceitar x
+                   {∅}, se M rejeitar x
+    2. Rode P com a entrada J. Se P aceitar, rejeite. Se P rejeitar, aceite.
+
+Então L(S) = AMT e S é um decisor. Pela prova que AMT é indecidível, temos um absurdo.
+
+## REGULARMT é indecidível
+- REGULARMT = {<M> | M é uma MT e L(M) é uma linguagem regular}.
+
+Este é o problema de se decidir se dada uma MT, existe um AF equivalente a ela.
+
+Vamos supor que RegularMT é decidível.
+
+Logo, existe decisor R tal que L(R) = RegularMT.
+
+Seja H a seguinte máquina de Turing com entrada ⟨M’, w⟩:
+
+	1.	Construa a máquina X a seguir com entrada x:
+
+        I) Se x for da forma 0ⁿ1ⁿ, aceite.
+
+        II) Se x ≠ 0ⁿ1ⁿ, execute M’ com entrada w e responda o que M’ responder.
+
+	2.	Execute R com entrada ⟨X⟩. Responda o que R responder.
+
+Logo, H é um decisor para AMT.
+
+Como não é possível existir decisor para AMT, a suposição da decidibilidade de RegularMT é falsa.
+
+## EQMT é indecidível
+
+EQMT = { <M1, M2> | L(M1) = L(M2) }
+
+Este é o problema de se decidir se duas MTs reconhecem a mesma linguagem.
+
+Supondo que EQMT é decidível, ou seja, existe decisor R que decida EQMT.
+
+Seja a máquina D a seguir com entrada <M'>:
+
+	1.	Execute R com entrada <M’, Mv>, Mv é uma MT que rejeita todas as entradas.
+    2. Se R aceita, aceite; Se não, rejeite;
+
+
+Note que L(Mv) = ∅.
+
+Logo, ao decidir se uma MT M' de entrada é equivalente a Mv, D está decidindo VMT. 
+
+Como VMT é indecidível, a decidibilidade de EQMT é falsa.
+
+Portanto, EQMT é indecidível.
+
+
+## TUDOMT é indecidível
+
+TUDOMT = {<M> | M é uma MT e L(M) = Σ∗}
+
+Esse é o problema de se decidir se uma MT aceita qualquer palavra.
+
+Supondo que TUDOMT é decidível, ou seja, existe um decisor R que decide TUDOMT. Podemos usar R para construir uma MT S que seja um decisor de AMT da seguinte forma:
+
+S = "Sobre uma entrada <M, w> onde M é uma MT e w uma palavra:
+
+    1. Construa uma MT da seguinte forma:
+        Y: com entrada y (essa entrada y não utilizaremos. Pois essa MT serve apenas para rodar M sobre w)
+            (I) Roda M com entrada w e responda o que M responder.
+    2. Rode R com entrada <Y> e responda o que R responder. "
+
+Note que a L(Y) é Σ∗ quando M aceita w, e ∅ quando M não aceita w (independente se M rejeita w ou entra em loop infinito). Logo H é um decisor de AMT, o que é um absurdo. Portanto R não existe, ou seja, TUDOMT não é decidível.
+
+## 2wMT = {<M, w>} | M é uma MT e ww ∈ L(M)}
+
+Esse é o problema de se decidir se ww pertence a uma linguagem
+
+Seja uma MTD S a seguir: 
+
+S = "Sobre uma entrada <M, w> onde M é uma MT e w uma palavra:
+
+    1. Construa uma MT da seguinte forma:
+        Y: com entrada y
+            (I) se y != 1010, rejeite.
+            (II) se y = 1010, Rode M com entrada w e responda o que M responder.
+    2. Retorne <Y, 10> "  
+
+Tem-se que S é uma MT que computa uma função de mapeamento de AMT para 2wMT, uma vez que, se a entrada <M, w> de S pertence à AMT (ou seja, se w ∈ L(M)) então o par <Y, 10> pertence à 2wMT já que Y aceita 1010. Porém, se w ∉ L(M), então Y não aceita 1010, portanto <Y, 10> ∉ 2wMT. Como AMT ≤m 2wMT e AMT é indecidível, temos que 2wMT é indecidível.
+
+
+## SPVMT = {<M> | M é uma MT e ε ∉ L(M)}
+
+*parecida com 2wMT e um pouco REGULARMT*
+
+Esse é o problema de se decidir se dada uma MT o ε não pertence a L(M)
+
+Seja uma MTD S a seguir:
+
+S = "Sobre uma entrada <M, w> onde M é uma MT e w uma palavra:
+
+    1. Construa a seguinte MT:
+        Y: Com entrada y
+            (I) Se y != ε, aceite.
+            (II) Se y = ε, Rode M com entrada w e responda o que M responder.
+    2. Retorne <Y>
+
+Tem-se que L(Y) = Σ∗ quando e w ∈ L(M) e L(Y) = Σ* - {ε} quando w ∉ L(M). Ou seja, caso <M, w> ∈ ĀMT, temos que <X> ∈ SPMT; e se <M, w> ∉ ĀMT, então <X> ∉ SPVMT. Logo F é uma MT que computa uma função de redução de ĀMT para SPVMT. Como ĀMT é indecidível e ĀMT ≤m SPVMT, temos que SPVMT é indecidível.
+ 
+## Q = {<M> | M é uma MT e |L(M)| = 4}
+
+Note que Q pode ser vista como a linguagem de códigos das MTs que aceitam exatamente quatro palavras.
+
+Seja uma MTD S a seguir:
+
+S = "Sobre uma entrada <M> onde M é uma MT:
+    1. Construa uma MT Y da seguinte forma:
+        l(Y) =
