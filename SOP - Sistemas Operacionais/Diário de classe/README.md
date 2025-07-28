@@ -1,98 +1,87 @@
-# **📅 Cronograma de Sistemas Operacionais**  
+# 📘 Diário de Classe - Sistemas Operacionais (2025/1)
 
-### **📌 Aula 1 - 06/03/25**  
-**Introdução à disciplina**  
-- Apresentação do plano de ensino.  
+Registro cronológico das aulas, conteúdos e materiais da disciplina **Sistemas Operacionais** (2025/1) da **UDESC Joinville**.
 
 ---
 
-### **📌 Aula 2 - 11/03/25**  
-**Fundamentos de Sistemas Operacionais**  
-📚 **Conteúdo:**  
-- Definições e tipos de SO  
-- Conceitos básicos  
-- Chamadas de sistema  
-- Estruturas de SO  
+## 📅 Cronograma de Aulas
 
-📖 **Leitura obrigatória:**  
-- **Tanenbaum**, seções **1.1, 1.4 a 1.7**  
+### Março
 
-🔗 **Exercícios:**  
-- [Fundamentos de SO (PDF)](https://github.com/hertonnn/UDESC-Computacao/blob/d4f5467b76f7a0746e2d73f0b8a684858dc9637d/SOP%20-%20Sistemas%20Operacionais/Exercicios/sop-exerc-fundam.pdf)  
-
-📚 **Leitura adicional sugerida:**  
-1. **MINIX 3**: [Artigo "A Highly Reliable, Self-Repairing OS"](https://www.minix3.org/docs/jorrit-herder/osr-jul06.pdf) *(Tanenbaum et al.)*  
-2. **Unikernels**: [Rethinking Cloud Infrastructure](http://unikernel.org/)  
-
-🔧 **Tabelas de chamadas de sistema:**  
-| Sistema       | Link |
-|--------------|------|
-| **xv6 (x86)** | [MIT xv6 Book](https://pdos.csail.mit.edu/6.828/2018/xv6/book-rev11.pdf#Anchor%24fig%242d0%242d2) |
-| **FreeBSD** | [syscalls.master](https://cgit.freebsd.org/src/tree/sys/kern/syscalls.master) |
-| **Linux** | [syscall_64.tbl](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/x86/entry/syscalls/syscall_64.tbl) |
-| **Windows** | [Windows Syscalls](https://github.com/j00ru/windows-syscalls) |
+- **06/03/25** – Introdução à disciplina; plano de ensino  
+- **13/03/25** – [Fundamentos de SO](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286894)  
+  Leitura: Tanenbaum, seção 1.3  
+  PDF: [Stallings - Processador hipotético](https://moodle.joinville.udesc.br/pluginfile.php/368725/mod_label/intro/Stallings-processador-hipotetico.pdf)
 
 ---
 
-### **📌 Aula 3 - 13/03/25**  
-**Revisão de Hardware**  
-📖 **Leitura obrigatória:**  
-- **Tanenbaum**, seção **1.3**  
-- **Stallings**, *Operating Systems: Internals and Design Principles* (6ª Ed.), cap. 1 *(processador hipotético)*  
+### Abril
+
+- **22/04/25** – [Escalonamento de processos](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286896)  
+  Leitura: Tanenbaum, seção 2.4  
+  Complementar:  
+  - [Escalonamento de tempo real](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286897)  
+  - [Livro TR (cap. 2)](https://web.archive.org/web/20151117054452/http://romulosilvadeoliveira.eng.br/livro-tr.pdf)  
+  - [Tanenbaum, cap. 10](https://web.archive.org/web/20150315022335/http://esminfo.prenhall.com/tanenbaum_chapters/ch_10.pdf)
+
+- **24/04/25** – [Escalonamento no Linux](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286897)  
+  Leitura adicional:  
+  - [Linux CFS](https://developer.ibm.com/tutorials/l-completely-fair-scheduler/)  
+  - [Battle of the Schedulers (ATC18)](https://www.usenix.org/system/files/conference/atc18/atc18-bouron.pdf)
 
 ---
 
-### **📌 Aula 4 - 18/03/25**  
-**Processos**  
-📖 **Leitura obrigatória:**  
-- **Tanenbaum**, seção **2.1**  
-- **ALP**, cap. 3  
+### Maio
 
-📂 **Material:**  
-- [Processos (Conteúdo/Exercícios)](https://github.com/hertonnn/UDESC-Computacao/tree/b09f786fb89bd2fa7d0cbebaf83788d038d02b8d/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/processos)
+- **22/05/25** – [Sistemas de arquivos: arquivos e diretórios](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286899)  
+  Leitura: Tanenbaum, cap. 4 (seções 4.1 e 4.2)  
+  PDF: [Maziero, cap. 8](https://moodle.joinville.udesc.br/mod/url/view.php?id=286951)
 
----
+- **27/05/25** – [Sistemas de arquivos: exercícios de implementação](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286899)  
+  📄 [Exercícios de implementação com arquivos](https://moodle.joinville.udesc.br/mod/resource/view.php?id=287017)  
+  🌐 [Operações com descritores (Maziero)](https://moodle.joinville.udesc.br/mod/url/view.php?id=287018)
 
-### **⚠️ Aula 5 - 20/03/25** *(Início às 8:00)*  
-**Threads**  
-📖 **Leitura obrigatória:**  
-- **Tanenbaum**, seção **2.2**  
-
-📚 **Leitura adicional sugerida:**  
-- [Writing Reentrant and Threadsafe Code (IBM AIX)](LINK_AQUI) 
+- **29/05/25** – [Implementação de sistemas de arquivos](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286899)
 
 ---
 
-### **📌 Aula 6 - 25/03/25**  
-**Programação com Pthreads**  
-📖 **Leitura obrigatória:**  
-- **ALP**, Cap. 4  
-- [POSIX Threads Programming (Seções 1-5)](LINK_AQUI)  
+### Junho
 
-📂 **Material:**  
-- [Threads (Conteúdo/Exercícios)](https://github.com/hertonnn/UDESC-Computacao/tree/335e22085a7c8849b6d378ae3de3ef1c6457851d/SOP%20-%20Sistemas%20Operacionais/Di%C3%A1rio%20de%20classe/pthreads) 
+- **03/06/25** – Sistemas de arquivos no Linux;  
+  🧪 [Laboratório - sistema de arquivos ext2](https://moodle.joinville.udesc.br/mod/resource/view.php?id=287026)  
+  📁 [disk.zip](https://moodle.joinville.udesc.br/mod/resource/view.php?id=287027)  
+  💻 [dumpdir.c](https://moodle.joinville.udesc.br/mod/resource/view.php?id=287028)  
+  🌐 [Travessia de árvore de diretórios](https://moodle.joinville.udesc.br/mod/url/view.php?id=287019)
 
-## **📌 Aula 7 - 27/03/25**
-**[Comunicação interprocessos](https://github.com/hertonnn/UDESC-Computacao/tree/335e22085a7c8849b6d378ae3de3ef1c6457851d/SOP%20-%20Sistemas%20Operacionais/Exercicios): conceitos de concorrência, soluções com espera ocupada**
+- **05/06/25** – [Tópicos adicionais sobre sistemas de arquivos](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286899)
 
-📖 **Leitura obrigatória:** 
-- **Tanenbaum**, seções 2.3.1 a 2.3.3
+- **10/06/25** – [Gerência de E/S](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286900)  
+  Leitura: Tanenbaum, cap. 5 (seções 5.1 a 5.3)
 
-## **📌 Aula 8 - 01/04/25**
-**[Comunicação interprocessos](https://github.com/hertonnn/UDESC-Computacao/tree/335e22085a7c8849b6d378ae3de3ef1c6457851d/SOP%20-%20Sistemas%20Operacionais/Exercicios): sleep/wakeup, semáforos, mutexes, futexes**
+- **12/06/25** – [Discos magnéticos](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286900)
 
-📖 **Leitura obrigatória:** 
-- **Tanenbaum**, seções 2.3.4 a 2.3.6
+- **17/06/25** – [Discos SSD, E/S no Linux](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286900)  
+  📄 [E/S no Linux – OSTEP](https://pages.cs.wisc.edu/~remzi/OSTEP/file-ssd.pdf)
 
-📂 **Material:** 
+---
 
-- [Exercicios de IPC](https://github.com/hertonnn/UDESC-Computacao/tree/335e22085a7c8849b6d378ae3de3ef1c6457851d/SOP%20-%20Sistemas%20Operacionais/Exercicios)
+## 📦 Outros Materiais
 
-## *📌 Aula 9 - 03/04/25*
-**Comunicação interprocessos: monitores, passagem de mensagens e barreiras**
+- [Exemplos de IPC com Pthreads](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286964)  
+- [Exemplos com processos e threads](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286971)  
+- [Respostas: Gerência de E/S](https://moodle.joinville.udesc.br/mod/resource/view.php?id=286908)
 
-📖 **Leitura obrigatória:** 
-- **Tanenbaum**, seções 2.3.7 a 2.3.9; [Maziero](https://wiki.inf.ufpr.br/maziero/lib/exe/fetch.php?media=socm%3Asocm-08.pdf), cap. 8 (a partir da seção 8.3)
+---
 
+## 👨‍🏫 Professor
+
+**Rafael R. Obelheiro**  
+Departamento de Ciência da Computação – UDESC Joinville
+
+---
+
+## 📝 Observações
+
+Este README foi gerado automaticamente a partir do conteúdo da disciplina no Moodle. Caso algum link requeira autenticação, acesse com seu login institucional.
 
 
