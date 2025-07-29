@@ -17,6 +17,9 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 
 # OUTROS
 - ENG - English ⏳
+# 2025/2
+- PIM: Processamento de Imagens📌
+- CGR: Computação Gráfica📌
 # 2025/1
 - SOP: Sistemas Operacionais 📌
 - BAN1: Bancos de Dados I 📌
