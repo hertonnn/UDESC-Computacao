@@ -15,8 +15,6 @@ bem como trabalhos, projetos, materiais usados e arquivos diversos meus.
 
 obs: Essa relevância não é a relevância da disciplina no curso, e sim a quantidade e qualidade do material no presente repositório.
 
-# OUTROS
-- ENG - English ⏳
 # 2025/2
 - PIM: Processamento de Imagens📌
 - CGR: Computação Gráfica📌
@@ -24,7 +22,7 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - SOP: Sistemas Operacionais 📌
 - BAN1: Bancos de Dados I 📌
 - TEC: Teoria da Computação 📌
-- AMS: Análise e Modelagem de Sistemas 
+- AMS: Análise e Modelagem de Sistemas 📌
 # 2024/2
 - LFA: Linguagens Formais e Autômatos 📌
 - EDA II: Estrutura de Dados 2 
@@ -54,6 +52,8 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - LMA: Lógica Matemática ⏳
 - PFN: Programação Funcional 
 - AGT: Algoritmos ⏳
+# OUTROS
+- ENG - English ⏳
 
 # Sobre mim
 
