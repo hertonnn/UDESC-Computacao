@@ -1,0 +1,14 @@
+double maior (double a, int b)
+{
+  int m;
+  
+  if (a > b) {m = a;}
+  else {m = b;}
+  return m;
+}
+
+{
+  int a;
+  a = maior (2.5, 10);
+  return 0;
+}

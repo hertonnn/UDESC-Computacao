@@ -1,0 +1,25 @@
+int maior(int a, int b) {
+    if(a > b) {
+        return a;
+    }
+    return b;
+}
+
+int fat(int n) {
+    if (n == 0) {
+        return 1;
+    }
+    return n * fat(n - 1);
+}
+
+{
+    int a;
+    int b;
+    int c;
+    a = 10;
+    b = 100;
+
+    print(fat(5));
+
+    return;
+}
