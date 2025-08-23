@@ -16,8 +16,13 @@ bem como trabalhos, projetos, materiais usados e arquivos diversos meus.
 obs: Essa relevância não é a relevância da disciplina no curso, e sim a quantidade e qualidade do material no presente repositório.
 
 # 2025/2
-- PIM: Processamento de Imagens📌
-- CGR: Computação Gráfica📌
+- PIM: Processamento de Imagens
+- CGR: Computação Gráfica
+- COM: Compiladores📌
+- CAL: Complexidade de Algoritmos📌
+- MFO: Métodos Formais⏳
+- SOFT: Engenharia de Sotfware⏳
+- ETI: Ética em Informática⏳
 # 2025/1
 - SOP: Sistemas Operacionais 📌
 - BAN1: Bancos de Dados I 📌

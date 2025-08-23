@@ -1,32 +1,47 @@
-# Compiladores
+# 📘 Compiladores
+
 ![img_com](https://github.com/hertonnn/UDESC-Computacao/blob/master/utils/img/img_com.jpg?raw=true)
 
-Um compilador é um programa de computador (ou um grupo de programas) que, a partir de um código fonte escrito em uma linguagem compilada, cria um programa semanticamente equivalente, porém escrito em outra linguagem, código objeto. Classicamente, um compilador traduz um programa de uma linguagem textual facilmente entendida por um ser humano para uma linguagem de máquina, específica para um processador e sistema operacional.
+> Disciplina de **Compiladores** – UDESC  
+> Estudo dos princípios, técnicas e ferramentas para análise léxica, sintática e semântica, além da geração de código.
 
-# Materiais 
+---
 
-- [Repositório da disciplina](https://github.com/cdvasconcellos/Compiladores)
-- [Compiler Explorer](https://godbolt.org/)
-- [Documentação Happy](https://haskell-happy.readthedocs.io/en/latest/)
-- [Documentação Alex](https://haskell-alex.readthedocs.io/en/latest/index.html)
+## 🚀 O que é um Compilador?
 
-### Sobre o Professor
+Um **compilador** é um programa (ou conjunto de programas) que, a partir de um **código fonte** escrito em uma linguagem compilada, gera um **código objeto** semanticamente equivalente.  
 
-CRISTIANO DAMIANI VASCONCELLOS
+De forma clássica, um compilador traduz um programa de uma **linguagem textual de alto nível** para uma **linguagem de máquina**, específica para determinado processador e sistema operacional.  
 
-Possui graduação em Ciência da Computação pela Pontifícia Universidade Católica do Paraná (1993), mestrado em Engenharia Elétrica e Informática Industrial pela Universidade Tecnológica Federal do Paraná (1997) e doutorado em Ciências da Computação pela Universidade Federal de Minas Gerais (2004). (Research Gate, ORCID, DBLP, ACM DL).
+---
 
-Áreas de Interesse: Projeto, implementação e uso de linguagens de programação. Em particular, linguagens funcionais, sistemas de tipos e verificação formal.
+## 📂 Materiais da Disciplina
 
-[GitHub  (Materiais usados nas aulas)](https://github.com/cdvasconcellos/)
+- 📦 [Repositório da disciplina](https://github.com/cdvasconcellos/Compiladores)  
+- 🖥️ [Compiler Explorer](https://godbolt.org/)  
+- 📖 [Documentação Happy](https://haskell-happy.readthedocs.io/en/latest/)  
+- 📖 [Documentação Alex](https://haskell-alex.readthedocs.io/en/latest/index.html)  
 
-[Youtube (Videoaulas)](https://www.youtube.com/channel/UCZ0iWiwN2zy5qB4CevpD89Q)
+---
 
-Titulação: Mestrado em Mestre em Ciência da Computação
+## 👨‍🏫 Sobre o Professor
 
-### E-mail: 
-cristiano.vasconcellos@udesc.br
-### Lattes: 
-http://lattes.cnpq.br/7291640788372419
+**Cristiano Damiani Vasconcellos**  
 
+- 🎓 Graduação em Ciência da Computação (PUCPR, 1993)  
+- 🎓 Mestrado em Engenharia Elétrica e Informática Industrial (UTFPR, 1997)  
+- 🎓 Doutorado em Ciência da Computação (UFMG, 2004)  
+
+🔎 Áreas de Interesse: Projeto, implementação e uso de linguagens de programação.  
+Foco em **linguagens funcionais**, **sistemas de tipos** e **verificação formal**.  
+
+📌 Recursos:  
+- [📂 GitHub (Materiais de aula)](https://github.com/cdvasconcellos/)  
+- [▶️ YouTube (Videoaulas)](https://www.youtube.com/channel/UCZ0iWiwN2zy5qB4CevpD89Q)  
+
+📧 **E-mail:** cristiano.vasconcellos@udesc.br  
+📄 **Lattes:** [Clique aqui](http://lattes.cnpq.br/7291640788372419)  
+
+---
+_"Construir um compilador é aprender como funciona a alma de uma linguagem de programação."_ 🤓
 
