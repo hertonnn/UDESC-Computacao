@@ -5,6 +5,14 @@ Este repositório contém grande parte do conteúdo da grade curricular do curso
 Universidade do Estado de Santa Catarina - UDESC, contendo as principais disciplinas, 
 bem como trabalhos, projetos, materiais usados e arquivos diversos meus.
 
+---
+
+> ⚠️ **Atenção**  
+> Quer contribuir com este repositório?  
+> Entre em contato, compartilhe conteúdos e ajude a **enriquecer ainda mais esta base de conhecimento** 📚🤝  
+
+---
+
 ## Relevância de disciplinas 
 
 | Relevância | Símbolo    | Descrição                           |
@@ -21,7 +29,7 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - COM: Compiladores📌
 - CAL: Complexidade de Algoritmos📌
 - MFO: Métodos Formais⏳
-- SOFT: Engenharia de Sotfware⏳
+- SOFT: Engenharia de Sotfware
 - ETI: Ética em Informática⏳
 # 2025/1
 - SOP: Sistemas Operacionais 📌
