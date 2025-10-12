@@ -81,4 +81,8 @@ Banco de Dados, modelagem de dados semi-estruturados e gerenciamento de dados di
 
 ---
 
-
+*"O problema mais fundamental em Ciência da
+Computação é a tarefa de decomposição de
+problemas: como dividir um problema
+complexo em partes que possam ser resolvidas
+de forma independente" -- John Ousterhout*
