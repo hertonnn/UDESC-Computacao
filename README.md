@@ -28,7 +28,7 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - CGR: Computação Gráfica
 - COM: Compiladores📌
 - CAL: Complexidade de Algoritmos📌
-- MFO: Métodos Formais⏳
+- MFO: Métodos Formais📌
 - SOFT: Engenharia de Sotfware
 - ETI: Ética em Informática⏳
 # 2025/1
