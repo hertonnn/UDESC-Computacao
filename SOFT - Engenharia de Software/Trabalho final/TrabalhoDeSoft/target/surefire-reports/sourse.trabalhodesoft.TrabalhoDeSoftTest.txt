@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: sourse.trabalhodesoft.TrabalhoDeSoftTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.060 s <<< FAILURE! -- in sourse.trabalhodesoft.TrabalhoDeSoftTest
+sourse.trabalhodesoft.TrabalhoDeSoftTest.testMain -- Time elapsed: 0.031 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: The test case is a prototype.
+	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:38)
+	at org.junit.jupiter.api.Assertions.fail(Assertions.java:138)
+	at sourse.trabalhodesoft.TrabalhoDeSoftTest.testMain(TrabalhoDeSoftTest.java:48)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+

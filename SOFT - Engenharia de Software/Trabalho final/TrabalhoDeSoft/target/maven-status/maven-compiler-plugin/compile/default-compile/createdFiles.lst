@@ -1,0 +1,13 @@
+negocio\Sistema.class
+dados\Vacina.class
+dados\Filtro.class
+negocio\TrabalhoDeSoft.class
+dados\Usuario.class
+dados\ONG.class
+dados\StatusAdocao.class
+dados\Adocao.class
+dados\Comentario.class
+dados\Notificacao.class
+dados\Endereco.class
+dados\Animal.class
+negocio\Sistema$1.class
