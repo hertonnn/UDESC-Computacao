@@ -317,6 +317,14 @@ tComando contexto tfun tvar (While cond comandos) = do
   comandos' <- tBloco contexto tfun tvar comandos
   return (While cond' comandos')
 
+tComando contexto tfun tvar (For init cond incr comandos) = do
+  init' <- tComando contexto tfun tvar init
+  cond' <- tExprL tfun tvar cond
+  incr' <- tComando contexto tfun tvar incr
+  comandos'    <- tBloco contexto tfun tvar comandos
+  return (For init' cond' incr' comandos')
+
+
 tComando contexto tfun tvar (Imp e) = do
   (_, e') <- tExpr tfun tvar e
   return (Imp e')
@@ -494,5 +502,27 @@ progTeste3 = Prog
       [ Const (CDouble 2.5)
       , Const (CInt 10)
       ])
+  , Ret (Just (Const (CInt 0)))
+  ]
+-- Cole isto no final do seu Semantico.hs para testar
+progTesteFor = Prog
+  [ "somaFor" :->: (["n" :#: (TInt,0)], TInt) ]
+  [ ("somaFor"
+    , ["i" :#: (TInt,0), "s" :#: (TInt,0), "n" :#: (TInt,0)]
+    , [ Atrib "s" (Const (CInt 0))
+      , For (Atrib "i" (Const (CInt 0)))                 -- 1. Comando (init)
+            (Rel (Rlt (IdVar "i") (IdVar "n")))         -- 2. ExprL (cond)
+            (Atrib "i" (Add (IdVar "i") (Const (CInt 1)))) -- 3. Comando (inc)
+            [ Atrib "s" (Add (IdVar "s") (IdVar "i")) ] -- 4. Bloco (body)
+      , Ret (Just (IdVar "s"))
+      ]
+    )
+  ]
+  [ "resultado" :#: (TInt,0), "num" :#: (TInt,0) ]
+  [ Imp (Lit "Digite um numero:")
+  , Leitura "num"
+  , Atrib "resultado" (Chamada "somaFor" [IdVar "num"])
+  , Imp (Lit "Resultado:")
+  , Imp (IdVar "resultado")
   , Ret (Just (Const (CInt 0)))
   ]

@@ -22,6 +22,7 @@ genExpr fun tab (Const (CDouble d)) = return (TDouble, genDouble d)
 genExpr fun tab (IdVar v) = case lookupVar v tab of
   Just (TInt, n)    -> return (TInt, "\tiload " ++ show n ++ "\n")
   Just (TDouble, n) -> return (TDouble, "\tdload " ++ show n ++ "\n")
+  Just (TString, n) -> return (TString, "\taload " ++ show n ++ "\n")
   _                 -> error ("Variável não encontrada ou tipo inválido: " ++ v)
 genExpr fun tab (Add e1 e2) = do
   (t1, e1') <- genExpr fun tab e1
@@ -160,15 +161,29 @@ gerar nome prog =
   let (codigo, _) = runState (genProg nome prog) 0
   in codigo
 
--- Função que gera o código do programa
+
 genProg :: String -> Programa -> State Int String
 genProg nome (Prog funs corpos vars cmds) = do
   cab <- genCab nome
   funs' <- mapM (genFunComCorpo funs corpos) funs
-  mainCab <- genMainCab 20 (length vars + 1)
+  
+  -- AQUI ESTÁ A CORREÇÃO (para a função 'main'):
+  let nvarsMain = calcTamanhoLocals vars -- Calcula o limite real para main
+  mainCab <- genMainCab 20 nvarsMain -- Usa o nvarsMain correto
+  
   corpoMain <- genBloco funs vars cmds
   let mainFun = mainCab ++ corpoMain ++ "\treturn\n.end method\n"
   return $ cab ++ concat funs' ++ mainFun
+
+
+calcTamanhoLocals :: [Var] -> Int
+calcTamanhoLocals [] = 0
+calcTamanhoLocals vars = maximum (map varTamanho vars)
+  where
+    varTamanho (_ :#: (TInt, n))    = n + 1
+    varTamanho (_ :#: (TString, n)) = n + 1 -- Adicionado para TString
+    varTamanho (_ :#: (TDouble, n)) = n + 2
+    varTamanho (_ :#: (TVoid, n))   = n -- Não deve acontecer, mas cobre o caso
 
 -- Gera o código de um bloco de comandos
 genBloco :: [Funcao] -> [Var] -> [Comando] -> State Int String
@@ -183,6 +198,7 @@ genCmd fun tab (Atrib v e) = do
   case lookupVar v tab of
     Just (TInt, n)    -> return (e' ++ "\tistore " ++ show n ++ "\n")
     Just (TDouble, n) -> return (e' ++ "\tdstore " ++ show n ++ "\n")
+    Just (TString, n) -> return (e' ++ "\tastore " ++ show n ++ "\n")
     _                 -> error ("Variável não encontrada ou tipo inválido: " ++ v)
 
 -- If <cond> then <cmdsThen> else <cmdsElse>
@@ -211,6 +227,37 @@ genCmd fun tab (While cond bloco) = do
     bloco' ++
     "\tgoto " ++ lInicio ++ "\n" ++
     lFim ++ ":\n"
+
+genCmd fun tab (For init cond inc bloco) = do
+  -- 1. Gerar código para 'init'. Roda SÓ UMA VEZ.
+  init' <- genCmd fun tab init
+
+  -- 2. Criar os labels.
+  lInicio <- novoLabel  -- Label para o TESTE DA CONDIÇÃO
+  lTrue   <- novoLabel  -- Label para o CORPO
+  lInc    <- novoLabel  -- Label para o INCREMENTO
+  lFim    <- novoLabel  -- Label para SAIR do loop
+
+  -- 3. Gerar código da condição (pula para lTrue se VERDADEIRO, lFim se FALSO)
+  cond'   <- genExprL fun tab lTrue lFim cond
+
+  -- 4. Gerar o corpo do loop
+  bloco'  <- genBloco fun tab bloco
+
+  -- 5. Gerar o código de incremento
+  inc'    <- genCmd fun tab inc
+
+  -- 6. Montar tudo na ordem correta
+  return $
+    init' ++                -- 1. Executa a inicialização
+    lInicio ++ ":\n" ++     -- 2. Label do início (teste)
+    cond' ++                -- 3. Código da condição (com pulos)
+    lTrue ++ ":\n" ++       -- 4. Label do corpo
+    bloco' ++               -- 5. Código do corpo
+    lInc ++ ":\n" ++        -- 6. Label do incremento
+    inc' ++                 -- 7. Código do incremento
+    "\tgoto " ++ lInicio ++ "\n" ++ -- 8. Volta para o TESTE (lInicio)
+    lFim ++ ":\n"           -- 9. Label de saída
 
 
 -- Adaptado de https://stackoverflow.com/a/32154621
@@ -266,23 +313,23 @@ genCmd fun tab (Proc id args) = do
         (codeArgs ++ "\tinvokestatic Teste/" ++ id ++ "(" ++ concatMap tipoJVM tiposArgs ++ ")" ++ tipoJVM tipoRet ++ "\n")
     Nothing -> error $ "Processo nao declarado: " ++ id
 
-    
--- Gera uma função com seu cabeçalho e corpo
+
+
 genFunComCorpo :: [Funcao] -> [(Id, [Var], Bloco)] -> Funcao -> State Int String
 genFunComCorpo funs corpos (nome :->: (args, tipo)) =
   case lookup nome (map (\(n, a, b) -> (n, (a, b))) corpos) of
     Just (vars, bloco) -> do
       corpo <- genBloco funs vars bloco
       let tiposArgs = map (\(_ :#: (t, _)) -> t) args
-      cab <- genFunCab tipo nome tiposArgs (length vars + 1) 20
+      
+      -- AQUI ESTÁ A CORREÇÃO:
+      let nvars = calcTamanhoLocals vars -- Calcula o limite real
+      cab <- genFunCab tipo nome tiposArgs nvars 20 -- Usa o nvars correto
+      
       return $ cab ++ corpo ++ (if tipo == TVoid then "\treturn\n" else "") ++ ".end method\n\n"
     Nothing -> error $ "Função " ++ nome ++ " sem corpo encontrado"
   where
-    -- retorno correspondente
-    retInstr TInt = "ireturn"
-    retInstr TDouble = "dreturn"
-    retInstr TString = "areturn"
-    retInstr TVoid = "return"
+    -- ... (o resto da função retInstr)
 
 -- Gera o cabeçalho de uma função com tipo de retorno, nome, tamanho da pilha e número de variáveis locais
 genFunCab :: Tipo -> String -> [Tipo] -> Int -> Int -> State Int String

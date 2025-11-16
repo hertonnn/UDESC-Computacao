@@ -28,6 +28,7 @@ tokens :-
 <0> "if" {\s -> TIF}  
 <0> "else" {\s -> TELSE}
 <0> "while" {\s -> TWHILE}
+<0> "for"   {\s -> TFOR}
 <0> "read" {\s -> TREAD}
 <0> "print" {\s -> TPRINT}
 <0> "return" {\s -> TRETURN}

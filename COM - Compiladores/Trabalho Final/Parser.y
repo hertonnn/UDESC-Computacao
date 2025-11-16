@@ -54,6 +54,7 @@ import qualified Lex as L
   print   { TPRINT }
 
   while   { TWHILE }
+  for     { TFOR }
   if      { TIF }
   else    { TELSE }
 
@@ -139,6 +140,7 @@ ListaCmd  : ListaCmd Comando  {$1 ++ [$2]}
 
 Comando : CmdSe {$1}
         | CmdEnquanto {$1}
+        | CmdFor      {$1}
         | CmdAtrib    {$1}
         | CmdEscrita  {$1}
         | CmdLeitura  {$1}
@@ -154,8 +156,16 @@ CmdSe : if '(' ExprL ')' Bloco            {If $3 $5 []}
 
 CmdEnquanto : while '(' ExprL ')' Bloco { While $3 $5 }
 
+CmdFor : for '(' AtribSimples ';' ExprL ';' AtribSimples ')' Bloco { For $3 $5 $7 $9 }
+
 CmdAtrib  : id '=' Expr ';'     {Atrib $1 $3}
           | id '=' literal ';'  {Atrib $1 (Lit $3)}
+
+AtribSimples  : id '=' Expr      {Atrib $1 $3}
+              | id '=' literal   {Atrib $1 (Lit $3)}
+              | Tipo id '=' Expr      {Atrib $2 $4}
+              | Tipo id '=' literal   {Atrib $2 (Lit $4)}
+
 
 CmdEscrita  : print '(' Expr ')' ';'    {Imp $3} 
             | print '(' literal ')' ';' {Imp (Lit $3)}
