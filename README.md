@@ -29,8 +29,8 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - COM: Compiladores📌
 - CAL: Complexidade de Algoritmos📌
 - MFO: Métodos Formais📌
-- SOFT: Engenharia de Sotfware
-- ETI: Ética em Informática⏳
+- SOFT: Engenharia de Sotfware📌
+- ETI: Ética em Informática📌
 # 2025/1
 - SOP: Sistemas Operacionais 📌
 - BAN1: Bancos de Dados I 📌
