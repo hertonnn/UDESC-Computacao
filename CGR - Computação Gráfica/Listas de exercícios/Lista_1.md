@@ -30,4 +30,3 @@ Este documento agrupa os principais conceitos revisados através da Lista 1 de C
 - Algumas operações são comutativas (Escala $\rightarrow$ Escala; Translação $\rightarrow$ Translação). Porém, combinações mistas (Translação $\rightarrow$ Rotação) **NÃO** são comutativas. A ordem das matrizes muda completamente o resultado final.
 
 ---
-*Dica de estudo: Revise a matemática das matrizes de Rotação, pois entender os senos/cossenos na matriz 4x4 é essencial nas provas.*
