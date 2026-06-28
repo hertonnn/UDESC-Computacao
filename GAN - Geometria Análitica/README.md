@@ -1,6 +1,6 @@
 # Geometria Analítica
 
-![img_gan](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_gan.jpg)
+![img_gan](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/main/utils/img/img_gan.jpg)
 
 A Geometria Analítica é o campo da Matemática que estuda a Geometria associada à Álgebra. Nessa abordagem, os objetos geométricos são relacionados a sistemas de coordenadas e equações que são analisadas algebricamente. Essa interação expande as possibilidades e os resultados da Geometria Plana e Espacial, permitindo a exploração de novas ferramentas matemáticas.
 

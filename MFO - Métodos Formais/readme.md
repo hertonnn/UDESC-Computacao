@@ -1,7 +1,7 @@
 # Métodos Formais  
 *Fundamentos matemáticos para software confiável*  
 
-![imag_mfo](https://github.com/hertonnn/UDESC-Computacao/blob/master/utils/img/img_mfo.jpg?raw=true)
+![imag_mfo](https://github.com/hertonnn/UDESC-Computacao/blob/main/utils/img/img_mfo.jpg?raw=true)
 
 ---
 

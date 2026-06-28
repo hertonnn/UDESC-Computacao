@@ -1,6 +1,6 @@
 # 💾 Banco de Dados 1
 
-![Banco de Dados](https://github.com/hertonnn/UDESC-Computacao/blob/master/utils/img/img_ban1.png?raw=true)
+![Banco de Dados](https://github.com/hertonnn/UDESC-Computacao/blob/main/utils/img/img_ban1.png?raw=true)
 
 Os **bancos de dados** são conjuntos organizados de dados, geralmente contendo registros sobre pessoas, lugares ou informações em geral. São fundamentais para **sistemas de informação** e **segurança**, muitas vezes mantendo sua estrutura inalterada por longos períodos.
 

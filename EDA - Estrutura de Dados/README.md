@@ -1,7 +1,7 @@
 
 # Estrutura de Dados
 
-![img_eda](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_eda.jpg)
+![img_eda](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/main/utils/img/img_eda.jpg)
 
 Uma estrutura de dados (ED), em ciência da computação, é uma coleção tanto de valores (e seus relacionamentos) quanto de operações (sobre os valores e estruturas decorrentes). É uma implementação concreta de um tipo abstrato de dado (TAD) ou um tipo de dado (TD) básico ou primitivo. Assim, o termo ED pode ser considerado sinônimo de TD, se considerado TAD um hipônimo de TD, isto é, se um TAD for um TD.
 

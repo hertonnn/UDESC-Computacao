@@ -1,6 +1,6 @@
 
 # Teoria da Computação
-![img_tec](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_tec.jpg)
+![img_tec](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/main/utils/img/img_tec.jpg)
 
 A teoria da computação é um subcampo da ciência da computação e matemática que busca determinar quais problemas podem ser computados em um dado modelo de computação. A computação pode ser definida como a solução de um problema ou, formalmente, o cálculo de uma função por meio de um algoritmo. Apesar de intuitivo na história humana, o conceito de execução de uma tarefa com passos finitos a fim de se obter um resultado, ou seja, um algoritmo, não possuía uma definição formal até a conceituação do modelo de Máquina Universal de Turing.
 

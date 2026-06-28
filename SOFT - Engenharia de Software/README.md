@@ -1,6 +1,6 @@
 # 🚀 Engenharia de Software  
 
-![img_soft](https://github.com/hertonnn/UDESC-Computacao/blob/master/utils/img/img_soft.jpg?raw=true)
+![img_soft](https://github.com/hertonnn/UDESC-Computacao/blob/main/utils/img/img_soft.jpg?raw=true)
 
 > Área da Computação destinada a investigar os desafios e propor soluções para desenvolver sistemas de software — principalmente os **mais complexos e de maior escala** — de forma **produtiva e com qualidade**.
 

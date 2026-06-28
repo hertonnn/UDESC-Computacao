@@ -1,7 +1,7 @@
 
 # Teoria do Grafos
 
-![img_grafo](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_grafo.png)
+![img_grafo](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/main/utils/img/img_grafo.png)
 
 A teoria dos grafos ou de grafos é um ramo da matemática que estuda as relações entre os objetos de um determinado conjunto. Para tal são utilizadas estruturas chamadas de grafos, 𝐺(𝑉,𝐸)
 é um conjunto não vazio de objetos denominados vértices (ou nós) e é um subconjunto de pares não ordenados de V.

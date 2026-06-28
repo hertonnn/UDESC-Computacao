@@ -1,5 +1,5 @@
 # Cálculo Diferencial e Integral 2
-![img_cdi2](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_cdi2.jpg)
+![img_cdi2](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/main/utils/img/img_cdi2.jpg)
 
 O Cálculo Diferencial e Integral é uma das mais notáveis ferramentas desenvolvidas pelo intelecto humano, sendo capaz de dar conta da descrição da variação de grandezas de diversos tipos. Hoje utilizamos esta teoria como espinha dorsal de diversos ramos das Ciências Exatas, como a Física, as Engenharias e muitas outras.
 

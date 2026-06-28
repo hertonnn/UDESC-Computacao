@@ -1,6 +1,6 @@
 
 # Sistemas Operacionais
-![img_sop](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_sop.png)
+![img_sop](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/main/utils/img/img_sop.png)
 
 A disciplina de Sistemas Operacionais é de extrema importância para seu curso
 e para sua carreira profissional, já que se trata do sistema gestor de qualquer

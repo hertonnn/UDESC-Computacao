@@ -1,7 +1,7 @@
 
 # Linguagens Formais de Autômatos
 
-![img_lfa](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/master/utils/img/img_lfa.jpg)
+![img_lfa](https://github.com/hertonnn/UDESC_Ciencia_da_Computacao/blob/main/utils/img/img_lfa.jpg)
 
 Entende-se por Teoria das Linguagens Formais e dos Autômatos o estudo de modelos
 matemáticos que possibilitam a especificação e o reconhecimento de linguagens (no sentido

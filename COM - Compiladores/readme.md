@@ -1,6 +1,6 @@
 # 📘 Compiladores
 
-![img_com](https://github.com/hertonnn/UDESC-Computacao/blob/master/utils/img/img_com.jpg?raw=true)
+![img_com](https://github.com/hertonnn/UDESC-Computacao/blob/main/utils/img/img_com.jpg?raw=true)
 
 > Disciplina de **Compiladores** – UDESC  
 > Estudo dos princípios, técnicas e ferramentas para análise léxica, sintática e semântica, além da geração de código.
