@@ -1,0 +1,8 @@
+**/hidden/
+hidden/
+.vscode
+utils/notes.md
+utils/prompts/
+utils/scripts/
+utils/tests/
+utils/workflows/

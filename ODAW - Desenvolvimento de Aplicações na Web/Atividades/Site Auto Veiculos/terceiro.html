@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Veículos - Experiência Completa</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Auto Veículos Experiência</h1>
+        <p>Inovação, tecnologia e aventura em cada detalhe</p>
+    </header>
+
+    <nav>
+        <a href="primeiro.html">Início</a>
+        <a href="segundo.html">Catálogo</a>
+        <a href="#midia">Mídia</a>
+        <a href="#simulador">Personalização</a>
+    </nav>
+
+    <main class="container">
+
+        <section id="midia" class="card">
+            <h2>Conheça nossos veículos em ação</h2>
+
+            <article>
+                <h3>Áudio</h3>
+                <p>Ouça a potência do motor:</p>
+                <audio controls>
+                    <source src="motor.mp3" type="audio/mpeg">
+                    <source src="motor.ogg" type="audio/ogg">
+                </audio>
+            </article>
+
+            <hr>
+
+            <article>
+                <h3>Test Drive Virtual</h3>
+                <p>Confira nossa análise em vídeo:</p>
+                <video width="100%" style="max-width: 600px; border-radius: 8px;" controls poster="poster-video.jpg">
+                    <source
+                        src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4"
+                        type="video/mp4">
+                    Seu navegador não suporta a tag de vídeo nativa.
+                </video>
+            </article>
+        </section>
+
+        <section id="graficos" class="card">
+            <h2>Tecnologia Visual</h2>
+
+            <article>
+                <h3>Nossa Marca (SVG)</h3>
+                <svg width="120" height="120" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" stroke="#0f172a" stroke-width="5" fill="#bae6fd" />
+                    <circle cx="50" cy="50" r="15" stroke="#0f172a" stroke-width="3" fill="none" />
+                    <line x1="50" y1="5" x2="50" y2="95" stroke="#0f172a" stroke-width="2" />
+                    <line x1="5" y1="50" x2="95" y2="50" stroke="#0f172a" stroke-width="2" />
+                </svg>
+            </article>
+        </section>
+
+        <section id="simulador" class="card">
+            <h2>Personalize seu Próximo Veículo</h2>
+            <p>Preencha o formulário abaixo para iniciarmos seu atendimento.</p>
+
+            <form action="#" method="POST">
+                <fieldset style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px;">
+                    <legend style="font-weight: bold; color: #0f172a; padding: 0 10px;">Dados de Interesse</legend>
+
+                    <div class="form-group">
+                        <label for="telefone">Telefone (WhatsApp):</label>
+                        <input type="tel" id="telefone" name="telefone" class="form-control"
+                            pattern="[0-9]{2} [0-9]{5}-[0-9]{4}" placeholder="47 99999-9999" required>
+                        <small style="color: #64748b; display: block; margin-top: 5px;">Formato esperado: 47
+                            99999-9999</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modelo_fav">Série de Interesse:</label>
+                        <input list="modelos" id="modelo_fav" name="modelo_fav" class="form-control"
+                            placeholder="Selecione ou digite a série...">
+                        <datalist id="modelos">
+                            <option value="Série Colossus">
+                            <option value="Série Arrakis">
+                            <option value="Série Grand Line">
+                            <option value="Nivus Highline">
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mes_compra">Mês planejado para a compra:</label>
+                        <input type="month" id="mes_compra" name="mes_compra" class="form-control" style="width: auto;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cor_veiculo">Cor Externa Customizada:</label>
+                        <input type="color" id="cor_veiculo" name="cor_veiculo" value="#1e3a8a"
+                            style="display: block; margin-top: 5px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="potencia">Expectativa de Potência (Cavalos):</label><br>
+                        <input type="range" id="potencia" name="potencia" min="100" max="500" step="10" value="150"
+                            oninput="document.getElementById('valorPotencia').innerText = this.value + ' cv'"
+                            style="width: 200px; margin-top: 10px;">
+                        <span id="valorPotencia" class="text-highlight" style="margin-left: 10px;">150 cv</span>
+                    </div>
+
+
+
+                    <button type="submit" class="btn-primary">Salvar Configuração</button>
+                </fieldset>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Auto Veículos. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+
+</html>

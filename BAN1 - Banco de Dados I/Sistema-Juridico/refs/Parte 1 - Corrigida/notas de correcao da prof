@@ -1,0 +1,25 @@
+A seguir, algumas observações:
+
+- Sumário executivo: ok
+
+- Esquema EER:
+
+  - As cardinalidades estão invertidas
+
+  - Não está certo colocar idcomarca em Vara! Tem vários casos assim, conceito de "chave estrangeira" no modelo conceitual. Infelizmente isso abaixa a nota consideravelmente quanto ao modelo conceitual.
+
+  - Participa não pode ser uma entidade associativa. O mesmo para tramita_lei.
+
+  - Lei não tem atributo identificador
+
+- Dicionário de dados: 
+
+  - Em Pessoa não se pode colocar chave estrangeira para email - assim a pessoa poderá ter apenas 1 email e não vários como está no conceitual. O mesmo para telefone.
+
+  - Em Funcionário (que acho que deveria ser AgenteJudiciario) pq colocar comarca_lotacao se tem uma chave estrangeira para Comarca? Redundância de Dados! Aliás, chave estrangeira para comarca em Funcionário não está de acordo com o modelo conceitual. Problemas semelhantes em Tramite.
+
+  - Em Processo não deveria haver chave estrangeira para Vara. Ou então o modelo conceitual está errado quanto aos relacionamentos que lá estão.
+
+  - Está faltando artigo em Lei
+
+  - Faltou mapear o relacionamento "Participa"

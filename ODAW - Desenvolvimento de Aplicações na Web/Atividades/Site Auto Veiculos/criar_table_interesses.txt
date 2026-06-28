@@ -1,0 +1,15 @@
+CREATE DATABASE autoveiculos_db;
+USE autoveiculos_db;
+
+CREATE TABLE interesses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    condicao VARCHAR(20),
+    modelo VARCHAR(50),
+    opcionais VARCHAR(255),
+    data_visita DATE,
+    mensagem TEXT,
+    data_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

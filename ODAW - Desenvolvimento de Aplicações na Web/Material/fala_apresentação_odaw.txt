@@ -1,0 +1,60 @@
+Embora frequentemente confundidos, usabilidade e acessibilidade são conceitos com origens, escopos e
+métricas distintas — mas que se complementam de forma essencial. Usabilidade foca na eficiência e satisfação
+do usuário geral. Acessibilidade foca na remoção de barreiras para usuários com deficiências ou limitações
+específicas.
+
+1. ISO 9241-11: O que é Usabilidade?
+A norma ISO 9241-11 é o padrão oficial que define a usabilidade de um sistema. 
+Ela estabelece que a usabilidade depende de como um produto é usado por usuários
+específicos para alcançar objetivos específicos em um contexto específico.
+
+Eficácia: O usuário consegue completar a tarefa? (Foco em precisão e completude).
+
+Eficiência: Quanto esforço ou tempo foi gasto para completar a tarefa? (Foco em produtividade e recursos).
+
+Satisfação: O usuário se sentiu confortável e teve uma atitude positiva ao usar o sistema? (Foco na experiência e conforto).
+
+Dica para o slide: A ISO não dita "como" fazer a interface, mas sim "como medir" se ela funciona 
+(Eficácia + Eficiência + Satisfação).
+
+
+2. As 10 Heurísticas de Jakob Nielsen
+Enquanto a ISO define a usabilidade, as Heurísticas de Nielsen são 10 regras de ouro (ou princípios) práticas para criar
+ou avaliar o design de uma interface.
+
+1.1 - Visibilidade do status do sistema: O usuário deve sempre saber o que está acontecendo (ex: barra de carregamento).
+1.2 - Controle e liberdade do usuário: Oferecer "saídas de emergência", como botões de "Desfazer" e "Refazer".
+...
+
+Resumo 
+
+A ISO 9241-11 é o objetivo: garantir que a experiência seja eficaz, eficiente e satisfatória.
+
+As Heurísticas de Nielsen são o caminho: as regras práticas de design que aplicamos na interface para alcançar esse 
+objetivo.
+
+
+-------------
+
+2 - WCAG 2.1 e 2.2
+A WCAG (Web Content Accessibility Guidelines) é o manual global que define como tornar o conteúdo da web acessível 
+para pessoas com deficiência (visual, auditiva, motora ou cognitiva).
+
+Dica para o slide: A WCAG é dividida em 3 níveis de conformidade: A (mínimo), AA (o padrão recomendado para o mercado)
+e AAA (o nível mais alto e rígido).
+
+3 - WAI-ARIA: A Ponte para Tecnologias Assistivas
+ARIA (Accessible Rich Internet Applications) não é uma diretriz de design, mas sim uma ferramenta técnica. 
+São atributos de código (adicionados ao HTML) que ajudam as tecnologias assistivas (como leitores de tela) 
+a entenderem componentes complexos e dinâmicos de uma página web.
+
+A Regra de Ouro do ARIA: "Nenhum ARIA é melhor do que um ARIA ruim". A recomendação oficial é sempre usar HTML semântico
+nativo (como <button> ou <nav>) e usar o ARIA apenas quando o HTML básico não dá conta de explicar a interface.
+
+
+
+"Para terminar, gostava de reforçar que o nosso papel enquanto developers vai muito além da tecnologia. A cada linha 
+de código que escrevemos, estamos a decidir quem consegue e quem não consegue usar o nosso sistema. Interfaces inclusivas
+ não são uma exceção; são o padrão básico de qualidade. E, como o Steve Krug tão bem resume aqui ao lado: a acessibilidade
+ não é uma característica especial. É pura e simplesmente a garantia de que o que construímos pode ser utilizado por todos.
+ Muito obrigado."

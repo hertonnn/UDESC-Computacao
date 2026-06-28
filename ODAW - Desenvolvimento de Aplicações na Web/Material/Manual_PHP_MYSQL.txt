@@ -1,0 +1,17 @@
+segue os comandos.. dependendo da instalação o apache ja vem por padrão. no VDI tambem está instalado
+
+
+sudo apt-get update -y && sudo apt-get upgrade -y
+
+#apache
+sudo apt-get install apache2 -y
+
+#php
+sudo apt install php libapache2-mod-php -y
+sudo apt install php-mysql php-gd
+
+
+#mysql
+sudo apt update -y
+sudo apt install mysql-server -y
+sudo apt install mysql-client -y

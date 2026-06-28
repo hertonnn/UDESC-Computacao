@@ -1,0 +1,195 @@
+HISTÓRICO DE CORREÇÕES SQL - SUBCONSULTAS
+=========================================
+
+1. Consulta 1 - Médicos que também são pacientes
+   - Erro: Falta de DISTINCT, ORDER BY e formatação inconsistente
+   - Correção: Adicionado DISTINCT, ORDER BY e melhorada a formatação
+   - Resultado: SELECT DISTINCT nome, cpf
+                FROM medicos 
+                WHERE cpf IN (SELECT cpf FROM pacientes)
+                ORDER BY nome
+
+Justificativa das alterações:
+- IN: Mantido o operador conforme solicitado
+
+7. Consulta 7 - Médico mais jovem
+   - Erro: Não havia consulta implementada
+   - Correção: Implementada consulta usando ALL para encontrar a menor idade
+   - Resultado: SELECT nome, idade
+                FROM medicos
+                WHERE idade <= ALL (
+                    SELECT idade
+                    FROM medicos
+                )
+                ORDER BY nome
+
+Observações:
+- O operador ALL com <= retorna médicos com a menor idade
+- Esta abordagem é alternativa ao uso da função MIN
+
+9. Consulta 9 - Médicos com consulta com a paciente Ana
+   - Erro: Falta de correlação com a consulta externa, ORDER BY, especificação do tipo de JOIN e formatação inconsistente
+   - Correção: Adicionada correlação, ORDER BY, INNER JOIN e melhorada a formatação
+   - Resultado: SELECT DISTINCT nome, idade 
+                FROM medicos m
+                WHERE EXISTS (
+                    SELECT 1
+                    FROM consultas c 
+                    INNER JOIN pacientes p ON c.codp = p.codp
+                    WHERE p.nome = 'Ana'
+                    AND c.codm = m.codm
+                )
+                ORDER BY nome
+
+Justificativa das alterações:
+1. Correlação: Adicionada condição c.codm = m.codm para correlacionar com a consulta externa
+6. Alias: Adicionado alias 'm' para a tabela medicos
+
+Observações:
+- A subconsulta é usada para verificar a existência de consultas com Ana
+- O operador EXISTS é mais eficiente que IN para este caso
+- A correlação com a consulta externa é essencial
+
+10. Consulta 10 - Ambulatório com maior capacidade
+    - Erro: Não havia consulta implementada
+    - Correção: Implementada consulta usando NOT EXISTS para encontrar a maior capacidade
+    - Resultado: SELECT nroa
+                 FROM ambulatorios a1
+                 WHERE NOT EXISTS (
+                     SELECT 1
+                     FROM ambulatorios a2
+                     WHERE a2.capacidade > a1.capacidade
+                 )
+                 ORDER BY nroa
+
+Justificativa das alterações:
+1. NOT EXISTS: Usado para encontrar ambulatórios sem capacidade maior
+2. Self-join: Implementado através de aliases diferentes (a1, a2)
+3. ORDER BY: Adicionado para organizar os resultados
+4. Formatação: Melhorada a indentação e espaçamento da subconsulta
+5. Aliases: Usados para clareza na comparação
+
+Observações:
+- A subconsulta é usada para verificar se existe algum ambulatório com capacidade maior
+- O NOT EXISTS retorna ambulatórios que não têm nenhum outro com capacidade maior
+- Esta é uma alternativa ao uso da função MAX
+- A ordenação facilita a leitura dos resultados
+- A formatação da subconsulta torna o código mais legível
+- Pode retornar mais de um ambulatório se houver empate na maior capacidade 
+
+REVISÃO ANY/ALL 
+==================================
+- Exemplos Práticos
+   a) ANY:
+      SELECT nome 
+      FROM medicos 
+      WHERE idade > ANY (
+          SELECT idade 
+          FROM pacientes
+      )
+      -- Retorna médicos mais velhos que pelo menos um paciente
+
+   b) ALL:
+      SELECT nome 
+      FROM medicos 
+      WHERE idade > ALL (
+          SELECT idade 
+          FROM pacientes
+      )
+      -- Retorna médicos mais velhos que todos os pacientes
+
+- Dicas de Uso
+   - Use ANY quando precisar de uma condição "pelo menos um"
+   - Use ALL quando precisar de uma condição "todos"
+   - Considere a performance com grandes conjuntos de dados
+   - Verifique se a subconsulta retorna valores apropriados
+   - Teste com diferentes conjuntos de dados 
+
+REVISÃO DO OPERADOR EXISTS
+============================
+
+1. Sintaxe Básica
+   - Uso: WHERE EXISTS (subconsulta)
+   - Retorna TRUE se a subconsulta retornar pelo menos uma linha
+   - Retorna FALSE se a subconsulta não retornar nenhuma linha
+   - A subconsulta pode referenciar colunas da consulta externa
+
+2. Exemplos Básicos
+   a) Verificar existência:
+      SELECT nome 
+      FROM medicos m
+      WHERE EXISTS (
+          SELECT 1 
+          FROM consultas c 
+          WHERE c.codm = m.codm
+      )
+      -- Retorna médicos que têm pelo menos uma consulta
+
+   b) Verificar não existência:
+      SELECT nome 
+      FROM medicos m
+      WHERE NOT EXISTS (
+          SELECT 1 
+          FROM consultas c 
+          WHERE c.codm = m.codm
+      )
+      -- Retorna médicos que não têm nenhuma consulta
+
+3. Comparação com OUTROS Operadores
+   - EXISTS vs IN:
+     * EXISTS é geralmente mais eficiente
+     * EXISTS pode usar índices melhor
+     * EXISTS não precisa comparar valores específicos
+   
+   - EXISTS vs JOIN:
+     * EXISTS é mais eficiente para verificar existência
+     * JOIN pode retornar duplicatas
+     * EXISTS é mais claro para verificações de existência
+
+4. Casos de Uso Comuns
+   - Verificar existência de registros relacionados
+   - Encontrar registros sem correspondências
+   - Verificar condições em tabelas relacionadas
+   - Implementar lógica de "existe pelo menos um"
+   - Implementar lógica de "não existe nenhum"
+
+5. Boas Práticas
+   - Use SELECT 1 na subconsulta (não precisa retornar dados)
+   - Evite SELECT * na subconsulta
+   - Use aliases para clareza
+   - Considere a performance com grandes conjuntos de dados
+   - Use NOT EXISTS para verificar não existência
+
+6. Exemplos Práticos
+   a) Médicos com pacientes:
+      SELECT nome 
+      FROM medicos m
+      WHERE EXISTS (
+          SELECT 1 
+          FROM consultas c 
+          JOIN pacientes p ON c.codp = p.codp
+          WHERE c.codm = m.codm
+      )
+
+   b) Ambulatórios sem médicos:
+      SELECT nroa 
+      FROM ambulatorios a
+      WHERE NOT EXISTS (
+          SELECT 1 
+          FROM medicos m 
+          WHERE m.nroa = a.nroa
+      )
+
+7. Vantagens do EXISTS
+   - Melhor performance que IN para grandes conjuntos
+   - Mais eficiente que JOIN para verificações de existência
+   - Pode usar índices efetivamente
+   - Código mais limpo e legível
+   - Mais flexível para condições complexas
+
+8. Observações Importantes
+   - A subconsulta deve ser correlacionada com a consulta externa
+   - O resultado da subconsulta não importa, apenas sua existência
+   - Pode ser combinado com outros operadores (AND, OR)
+   - Útil para consultas aninhadas complexas
+   - Bom para verificações de existência em múltiplas tabelas 

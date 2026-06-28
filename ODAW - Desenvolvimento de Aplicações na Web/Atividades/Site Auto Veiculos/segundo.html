@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Veículos - Catálogo e Contato</title>
+    <script src="script.js" defer></script>
+</head>
+
+<body style="font-family: Arial, sans-serif; margin: 20px;">
+
+    <h1 style="color: darkblue;">Auto Veículos</h1>
+    <hr>
+
+    <h2>1. Nossos Serviços e Processos</h2>
+
+    <h3>Nossos Diferenciais (Lista Não Ordenada)</h3>
+    <ul>
+        <li>Veículos 100% periciados</li>
+        <li>Garantia de 1 ano para motor e câmbio</li>
+        <li>As melhores taxas de financiamento</li>
+    </ul>
+
+    <h3>Passo a Passo para Comprar (Lista Ordenada)</h3>
+    <ol>
+        <li>Escolha o veículo em nosso site</li>
+        <li>Agende um test drive conosco</li>
+        <li>Aprove o seu crédito na hora</li>
+        <li>Assine o contrato e saia dirigindo!</li>
+    </ol>
+
+    <h3>Glossário Automotivo (Lista de Definição)</h3>
+    <dl>
+        <dt><b>ABS</b></dt>
+        <dd>Sistema de freio antitravamento, que garante mais segurança nas frenagens.</dd>
+        <dt><b>SUV</b></dt>
+        <dd>Veículo Utilitário Esportivo, carros geralmente maiores e mais altos.</dd>
+    </dl>
+
+    <hr>
+
+    <h2>2. Tabela de Preços e Modelos</h2>
+
+    <table border="1" style="border-collapse: collapse; width: 80%; text-align: center;">
+        <thead style="background-color: #d3e0ea;">
+            <tr>
+                <th>Marca / Modelo</th>
+                <th>Ano</th>
+                <th>Cor</th>
+                <th>Preço (R$)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Honda Civic Sedã</td>
+                <td>2021</td>
+                <td>Prata</td>
+                <td>115.000,00</td>
+            </tr>
+            <tr>
+                <td>Toyota Corolla XEi</td>
+                <td>2022</td>
+                <td>Branco</td>
+                <td rowspan="2" style="vertical-align: middle;">120.000,00</td>
+            </tr>
+            <tr>
+                <td>VW Nivus Highline</td>
+                <td>2022</td>
+                <td>Preto</td>
+            </tr>
+        </tbody>
+
+        <tfoot style="background-color: #f2f2f2;">
+            <tr>
+                <td colspan="4" style="text-align: right; padding-right: 10px;">
+                    <small><em>* Valores sujeitos a alteração sem aviso prévio.</em></small>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <hr>
+
+    <h2>3. Formulário de Interesse</h2>
+
+    <form action="#" method="POST">
+        <label for="nome">Nome Completo:</label><br>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required><br><br>
+
+        <label for="email">E-mail:</label><br>
+        <input type="email" id="email" name="email" placeholder="exemplo@email.com" required><br><br>
+
+        <label for="senha">Crie uma senha de acesso:</label><br>
+        <input type="password" id="senha" name="senha" required><br><br>
+
+        <label>Condição do Veículo Desejado:</label><br>
+        <input type="radio" id="novo" name="condicao" value="novo">
+        <label for="novo">Zero KM</label><br>
+        <input type="radio" id="seminovo" name="condicao" value="seminovo" checked>
+        <label for="seminovo">Seminovo</label><br><br>
+
+        <label for="modelo">Modelo de Interesse:</label><br>
+        <select id="modelo" name="modelo">
+            <option value="" disabled selected>Selecione um carro...</option>
+            <option value="civic">Honda Civic</option>
+            <option value="corolla">Toyota Corolla</option>
+            <option value="nivus">VW Nivus</option>
+        </select><br><br>
+
+        <label>Opcionais Desejados:</label><br>
+        <input type="checkbox" id="couro" name="opcionais" value="banco_couro">
+        <label for="couro">Bancos em Couro</label><br>
+        <input type="checkbox" id="teto" name="opcionais" value="teto_solar">
+        <label for="teto">Teto Solar</label><br>
+        <input type="checkbox" id="multimidia" name="opcionais" value="kit_multimidia">
+        <label for="multimidia">Kit Multimídia</label><br><br>
+
+        <label for="data_visita">Melhor data para visita:</label><br>
+        <input type="date" id="data_visita" name="data_visita"><br><br>
+
+        <label for="mensagem">Mensagem Adicional:</label><br>
+        <textarea id="mensagem" name="mensagem" rows="4" cols="40"
+            placeholder="Escreva suas dúvidas aqui..."></textarea><br><br>
+
+        <input type="submit" value="Enviar Interesse"
+            style="background-color: darkblue; color: white; padding: 5px 15px;">
+        <input type="reset" value="Limpar Formulário">
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Exercícios de JavaScript Unificados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+
+        section {
+            background-color: #ffffff;
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            color: #007BFF;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 5px;
+        }
+    </style>
+
+    <script>
+        function transformarTexto(tipo) {
+            var c1 = document.getElementById('campo1');
+            var c2 = document.getElementById('campo2');
+            var c3 = document.getElementById('campo3');
+            var chkMaiuscula = document.getElementById('chkMaiuscula');
+            var chkMinuscula = document.getElementById('chkMinuscula');
+
+            if (tipo === 'maiuscula' && chkMaiuscula.checked) {
+                chkMinuscula.checked = false;
+                c1.value = c1.value.toUpperCase();
+                c2.value = c2.value.toUpperCase();
+                c3.value = c3.value.toUpperCase();
+            } else if (tipo === 'minuscula' && chkMinuscula.checked) {
+                chkMaiuscula.checked = false;
+                c1.value = c1.value.toLowerCase();
+                c2.value = c2.value.toLowerCase();
+                c3.value = c3.value.toLowerCase();
+            }
+        }
+        function validarFormulario() {
+            var nome = document.getElementById('nome').value;
+            var email = document.getElementById('email').value;
+            var ra = document.getElementById('ra').value;
+            var curso = document.getElementById('curso').value;
+
+            if (nome === "" || email === "" || ra === "" || curso === "") {
+                alert("Erro ocorrido: Todos os 4 campos são obrigatórios e devem ser preenchidos.");
+                return false;
+            } else {
+                alert("Sucesso! Dados enviados.");
+                return false;
+            }
+        }
+        function gerarSaudacao() {
+            var nomeUsuario = prompt("Por favor, informe seu nome:", "Herton");
+
+            if (nomeUsuario === null || nomeUsuario === "") {
+                nomeUsuario = "Visitante";
+            }
+
+            var dataAtual = new Date();
+            var hora = dataAtual.getHours();
+            var saudacao = "";
+
+            if (hora >= 5 && hora < 12) {
+                saudacao = "Bom dia";
+            } else if (hora >= 12 && hora < 18) {
+                saudacao = "Boa tarde";
+            } else {
+                saudacao = "Boa noite";
+            }
+
+            var diasSemana = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
+            var diaSemanaTexto = diasSemana[dataAtual.getDay()];
+
+            var dia = String(dataAtual.getDate()).padStart(2, '0');
+            var mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+            var ano = dataAtual.getFullYear();
+
+            var mensagem = saudacao + ", " + nomeUsuario + ", hoje é " + diaSemanaTexto + ", " + dia + "/" + mes + "/" + ano + ".";
+
+            // Injeta o HTML diretamente na div designada
+            document.getElementById('areaSaudacao').innerHTML = "<h3>" + mensagem + "</h3>";
+        }
+
+        function verificarResposta() {
+            var opcoes = document.getElementsByName('obra');
+            var respostaSelecionada = "";
+
+            for (var i = 0; i < opcoes.length; i++) {
+                if (opcoes[i].checked) {
+                    respostaSelecionada = opcoes[i].value;
+                    break;
+                }
+            }
+
+            if (respostaSelecionada === "certa") {
+                alert("Correto! Denis Villeneuve é o diretor responsável por obras como A Chegada e Duna.");
+            } else if (respostaSelecionada === "") {
+                alert("Atenção: Você precisa selecionar uma opção!");
+            } else {
+                alert("Resposta incorreta. Tente novamente!");
+            }
+        }
+
+        // Executa a saudação automaticamente assim que a página terminar de carregar
+        window.onload = function () {
+            gerarSaudacao();
+        };
+    </script>
+</head>
+
+<body>
+
+    <h1>Lista de Exercícios: Introdução a JavaScript</h1>
+
+    <section>
+        <h2>Exercício 3: Mensagem de Saudação Dinâmica</h2>
+        <div id="areaSaudacao">
+        </div>
+        <button onclick="gerarSaudacao()">Testar prompt novamente</button>
+    </section>
+
+    <section>
+        <h2>Exercício 1: Formulário de Textos (Maiúsculas/Minúsculas)</h2>
+        <form name="form1">
+            Campo 1: <input type="text" id="campo1" value="Texto Um"><br><br>
+            Campo 2: <input type="text" id="campo2" value="Texto Dois"><br><br>
+            Campo 3: <input type="text" id="campo3" value="Texto Três"><br><br>
+
+            <input type="checkbox" id="chkMaiuscula" onclick="transformarTexto('maiuscula')"> Tudo Maiúsculo
+            <input type="checkbox" id="chkMinuscula" onclick="transformarTexto('minuscula')"> Tudo Minúsculo
+        </form>
+    </section>
+
+    <section>
+        <h2>Exercício 2: Validação de Campos Obrigatórios</h2>
+        <form name="form2" onsubmit="return validarFormulario()">
+            Nome: <input type="text" id="nome"><br><br>
+            E-mail: <input type="text" id="email"><br><br>
+            Matrícula: <input type="text" id="ra"><br><br>
+            Curso: <input type="text" id="curso"><br><br>
+            <input type="submit" value="Enviar Dados para Validação">
+        </form>
+    </section>
+
+    <section>
+        <h2>Exercício 4: Quiz Interativo (Exemplo Livre)</h2>
+        <form name="quizForm">
+            <p><strong>Qual das obras abaixo foi dirigida pelo cineasta Denis Villeneuve?</strong></p>
+
+            <input type="radio" name="obra" value="errada1"> The Office<br>
+            <input type="radio" name="obra" value="certa"> Arrival (A Chegada)<br>
+            <input type="radio" name="obra" value="errada2"> Shadow of the Colossus<br>
+            <input type="radio" name="obra" value="errada3"> One Piece<br>
+            <br>
+
+            <input type="button" value="Verificar Resposta" onclick="verificarResposta()">
+            <input type="reset" value="Limpar Seleção">
+        </form>
+    </section>
+
+</body>
+
+</html>

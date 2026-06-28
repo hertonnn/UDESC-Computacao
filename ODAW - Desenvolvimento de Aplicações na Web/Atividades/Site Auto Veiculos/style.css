@@ -1,0 +1,118 @@
+/* =========================================
+   1. REDEFINIÇÃO DE TAGS HTML GLOBAIS
+   ========================================= */
+* {
+    box-sizing: border-box; /* Facilita o cálculo de larguras e margens */
+}
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    background-color: #f0f4f8; 
+    color: #333;
+}
+
+header, footer { 
+    background-color: #0f172a; /* Azul escuro mais moderno */
+    color: white; 
+    text-align: center; 
+    padding: 2em 0; 
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    color: #0f172a;
+}
+
+header h1 {
+    color: white;
+}
+
+nav { 
+    background-color: #e2e8f0; 
+    padding: 15px; 
+    text-align: center; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+nav a { 
+    margin: 0 15px; 
+    text-decoration: none; 
+    color: #1e293b; 
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #3b82f6;
+}
+
+hr {
+    border: 0; 
+    border-top: 2px solid #e2e8f0; 
+    margin: 30px 0;
+}
+
+/* =========================================
+   2. CRIAÇÃO DE NOVAS CLASSES (Utilitários)
+   ========================================= */
+
+/* Classe para centralizar e limitar a largura do conteúdo principal */
+.container {
+    padding: 20px; 
+    max-width: 900px; 
+    margin: 20px auto;
+}
+
+/* Classe estilo "Cartão" para agrupar seções */
+.card {
+    background: white; 
+    margin-bottom: 30px; 
+    padding: 25px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+/* Classe para botões principais */
+.btn-primary {
+    background-color: #2563eb; 
+    color: white; 
+    padding: 12px 24px; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* Classes para organização de formulários */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+/* Classe para destacar textos importantes */
+.text-highlight {
+    font-weight: bold; 
+    color: #2563eb;
+}
