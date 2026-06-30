@@ -1,6 +1,6 @@
 # 📘 Ética em Informática: Guia de Estudos
 
-![img](https://www.iberdrola.com/documents/20125/40036/etica_746x419.jpg/625de10e-59f3-3ac2-fdf7-5a6c305574bb?t=1626842641796)
+![img](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiV6I1jnwZ70aOBVn3cNp0k1QmW350_kCPey8JnUdC7ZseQyX_5Rsa6YtDh-bkeeTkwJ9Ibs5p5gdQx5JMmMS3gminKC57ojyPgd8b3vsawbTA74pIgXYhGvbV79GLBH4IR2vMlaxXU1bo/s1600/Etica+na+TI_1.png)
 
 ![Status](https://img.shields.io/badge/Status-Revisão_Completa-success)
 ![Category](https://img.shields.io/badge/Categoria-Humanidades_e_Direito-blue)
