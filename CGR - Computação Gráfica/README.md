@@ -148,15 +148,15 @@ Entendendo a física e a biologia por trás da percepção visual:
 * 📄 [**Uso de textura em modelos de iluminação local**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332278) *(Arquivo Moodle)*
   * Textura Procedural, Environment Mapping, Shadow Map, Bump Mapping, Normal Mapping, Displacement Mapping.
 * 📝 [**TC4 - Textura**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332279): Tire fotos de algum objeto simples e crie o modelo geométrico usando a imagem como textura.
-* 🔗 [**Túnel - exemplo de textura simples**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332272)
-* 🔗 [**Skybox (e uma caixa)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332273)
-* 🔗 [**UV mapping**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332274)
-* 🔗 [**Textura em partículas (fogo e fumaça)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332275)
-* 🎥 [**Vídeo: O melhor site para TEXTURAS DE GRAÇA**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332276)
-* 🔗 [**TinyObjLoader - wavefront obj loader**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332280)
-* 🔗 [**Open Asset Import Library (assimp)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332281)
-* 🔗 [**rapidobj**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332282)
-* 🔗 [**fast_obj**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332283)
+* 🔗 [**Túnel - exemplo de textura simples**](https://www.youtube.com/watch?v=STTi6qzHXUA)
+* 🔗 [**Skybox (e uma caixa)**](https://www.youtube.com/watch?v=wyuGqgjFXYw)
+* 🔗 [**UV mapping**](https://www.youtube.com/watch?v=Q_AYQh8r_GQ)
+* 🔗 [**Textura em partículas (fogo e fumaça)**](https://www.youtube.com/watch?v=c1PSM30LZGM)
+* 🎥 [**Vídeo: O melhor site para TEXTURAS DE GRAÇA**](https://www.youtube.com/watch?v=o0-CfeRVIAo)
+* 🔗 [**TinyObjLoader - wavefront obj loader**](https://github.com/tinyobjloader/tinyobjloader)
+* 🔗 [**Open Asset Import Library (assimp)**](https://github.com/assimp/assimp)
+* 🔗 [**rapidobj**](https://github.com/guybrush77/rapidobj)
+* 🔗 [**fast_obj**](https://github.com/thisistherk/fast_obj)
 
 ## 💡 Iluminação em OpenGL
 * 📄 [**Iluminação em OpenGL**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332266) *(Arquivo Moodle)*
@@ -167,27 +167,27 @@ Entendendo a física e a biologia por trás da percepção visual:
 * 📄 [**POVRay**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332304) *(Arquivo Moodle)*
 * 📝 [**TC5 - Iluminação Global**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332301): Tire fotos de algum objeto simples e crie o modelo geométrico usando a imagem como textura, visualizando o modelo através de um método de iluminação global (RT, Radiosidade,...).
 * 📝 [**Trabalho Complementar 6**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=353978) - [Tema Escolhido TC6](https://udesc-my.sharepoint.com/:w:/g/personal/90873602072_udesc_br/IQAUXSizdVN9RIoNGEjNbU2xAZBi0AxhY7bzYlq42Pd4m14?e=F0jd6I)
-* 🔗 [**Ray Tracing in One Weekend**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332302)
-* 🎥 [**Render engine speed comparison (Blender Guru)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332305)
-* 🎥 [**Blender Cycles, Renderman & Redshift Render Comparison (Small Robot Studio)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332307)
-* 🎥 [**Blender 3D Eevee, SSGI, Cycles & Redshift Render Comparison (Small Robot Studio)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332306)
-* 🔗 [**Learn Computer Graphics From Scratch**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332303)
-* 🔗 [**O que tem de novo? DirectX e Ray Tracing**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332291)
-* 🔗 [**Bounding volume**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332293)
-* 🔗 [**Bounding Volume Hierarchy (BVH)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332294)
-* 📄 [**Paper nVidia: BVHs, Octrees e k-d Trees**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332295) *(PDF)*
-* 🔗 [**NVIDIA Turing Architecture In-Depth**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332296)
-* 🔗 [**NVIDIA Ada Lovelace Architecture**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332297)
-* 🔗 [**NVIDIA DLSS 4 Introduces Multi Frame Generation**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332298)
+* 🔗 [**Ray Tracing in One Weekend**](https://raytracing.github.io/)
+* 🎥 [**Render engine speed comparison (Blender Guru)**](https://www.youtube.com/watch?v=myg-VbapLno)
+* 🎥 [**Blender Cycles, Renderman & Redshift Render Comparison (Small Robot Studio)**](https://www.youtube.com/watch?v=6v7ZuFXPPQg)
+* 🎥 [**Blender 3D Eevee, SSGI, Cycles & Redshift Render Comparison (Small Robot Studio)**](https://www.youtube.com/watch?v=ljkaCQIXs_I)
+* 🔗 [**Learn Computer Graphics From Scratch**](https://www.scratchapixel.com/)
+* 🔗 [**O que tem de novo? DirectX e Ray Tracing**](https://www.youtube.com/watch?v=VHfN_w5ll4o)
+* 🔗 [**Bounding volume**](https://en.wikipedia.org/wiki/Bounding_volume)
+* 🔗 [**Bounding Volume Hierarchy (BVH)**](https://en.wikipedia.org/wiki/Bounding_volume_hierarchy)
+* 📄 [**Paper nVidia: BVHs, Octrees e k-d Trees**](https://research.nvidia.com/sites/default/files/pubs/2012-06_Maximizing-Parallelism-in/karras2012hpg_paper.pdf) *(PDF)*
+* 🔗 [**NVIDIA Turing Architecture In-Depth**](https://developer.nvidia.com/blog/nvidia-turing-architecture-in-depth/)
+* 🔗 [**NVIDIA Ada Lovelace Architecture**](https://www.nvidia.com/en-us/geforce/news/rtx-40-series-graphics-cards-announcements/)
+* 🔗 [**NVIDIA DLSS 4 Introduces Multi Frame Generation**](https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/)
 
 ## 🎬 Animação Computacional
 * 📄 [**Animação Computacional**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332323) *(Arquivo Moodle)*
-* 🔗 [**Multidão de personagens animados (The Hobbit)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332324)
-* 🔗 [**Character Articulation through Profile Curves (Pixar)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332326)
-* 🔗 [**The Power Particle-In-Cell Method**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332327)
-* 🔗 [**(nVidia / SIGGRAPH 2025) Neurally Integrated Finite Elements for Differentiable Elasticity on Evolving Domains**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332330)
-* 🔗 [**Quadtree Tall Cells for Eulerian Liquid Simulation (SIGGRAPH 2025)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332331)
-* 🔗 [**AnyTop: Character Animation Diffusion with Any Topology (SIGGRAPH 2025)**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332332)
+* 🔗 [**Multidão de personagens animados (The Hobbit)**](https://www.youtube.com/watch?v=qkyLDE_o0FM&t=0s)
+* 🔗 [**Character Articulation through Profile Curves (Pixar)**](https://vimeo.com/707052757)
+* 🔗 [**The Power Particle-In-Cell Method**](https://www.youtube.com/watch?v=fhq0HpAUkLY)
+* 🔗 [**(nVidia / SIGGRAPH 2025) Neurally Integrated Finite Elements for Differentiable Elasticity on Evolving Domains**](https://research.nvidia.com/labs/toronto-ai/flexisim/)
+* 🔗 [**Quadtree Tall Cells for Eulerian Liquid Simulation (SIGGRAPH 2025)**](https://graphics.c.u-tokyo.ac.jp/hp/en/archives/3252)
+* 🔗 [**AnyTop: Character Animation Diffusion with Any Topology (SIGGRAPH 2025)**](https://anytop2025.github.io/Anytop-page/)
 
 ## 🪄 Processamento de Imagens
 * 📄 [**Processamento de Imagens**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332313) *(Arquivo Moodle)*
@@ -197,17 +197,17 @@ Entendendo a física e a biologia por trás da percepção visual:
 
 ## 🧠 Redes Neurais Convolucionais
 * 📄 [**Redes Neurais Convolucionais**](https://moodle.joinville.udesc.br/mod/resource/view.php?id=332314) *(Arquivo Moodle)*
-* 🖼️ **Comparativo arquiteturas GPU vs NPU para IA (Snapdragon):** `NPU_comparativo.png` na pasta `Curso_ 2026_1 CCT COMPUTAÇÃO GRÁFICA _ CCT_files`
+* 🖼️ **Comparativo arquiteturas GPU vs NPU para IA (Snapdragon):
+
+![NPU_comparativo](/utils/img/NPU_comparativo.png)
 
 ## 🌋 Vulkan
-> *(Seção atualmente não disponível no Moodle)*
 * 🔗 *Material de apoio extraído:* [**Vulkan Tutorials**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332216)
 * 🔗 *Material de apoio extraído:* [**Instalar Vulkan**](https://moodle.joinville.udesc.br/mod/url/view.php?id=332227)
 
 ## 🔬 Laboratórios e Pesquisa
 
 **LARVA** - *LAboratory for Research on Visual Applications*
-> *(Seção atualmente não disponível no Moodle)*
 
 ---
 
