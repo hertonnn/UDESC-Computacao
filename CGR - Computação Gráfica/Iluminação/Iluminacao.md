@@ -31,7 +31,16 @@ $$I_{\lambda} = I_{a\lambda} k_a O_{\lambda} + \sum_{i=1}^m f_{att_i} I_{p\lambd
 Enquanto a equação de iluminação calcula a cor **num ponto**, o modelo de sombreamento dita **como preencher** um polígono inteiro.
 
 - **Flat Shading (Constante):** Calcula a equação da luz **apenas uma vez** por polígono (usando a normal da face inteira) e pinta ele de uma cor sólida. A aparência fica altamente facetada e "quadrada", evidenciando os polígonos.
+
 - **Interpolated Shading:** Interpola cores linearmente ao longo do triângulo, mas não resolve arestas facetadas. Sofre com a ilusão óptica das **Bandas de Mach** (Mach Bands).
+    - Efeito de Mach Band
+        - Diferença da intensidade em uma aresta é
+        acentuada se existe uma descontinuidade de uma
+        intensidade
+        - Causado por um fenômeno ótico
+        - Métodos apresentados até aqui
+        apresentam esse efeito
+
 - **Gouraud Shading:** Calcula a equação da luz para cada **Vértice** (encontrando a normal ponderada de cada vértice) e, ao desenhar o triângulo na tela, interpola a cor suavemente. Reduz o aspecto quadrado consideravelmente, e é rápido. A grande fraqueza do Gouraud é que, como a iluminação só ocorre nos vértices, um "ponto de brilho especular" que deveria ocorrer bem no *meio* de um polígono grande pode não aparecer.
 - **Phong Shading:** (Não confundir com o modelo de reflexão especular de Phong). Este sombreamento **interpola as normais** e calcula a equação da luz matemática **pixel a pixel** do interior do polígono. É o mais custoso, mas produz brilhos especulares e curvas extremamente realistas.
 

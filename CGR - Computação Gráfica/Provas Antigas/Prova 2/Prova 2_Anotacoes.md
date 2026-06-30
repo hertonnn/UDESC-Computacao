@@ -193,7 +193,7 @@ No Blender, a renderização com iluminação global é feita pelo motor Cycles.
 
 ---
 
-**Responda uma das três questões abaixo (2 pontos):**
+**Responda uma das três questões abaixo:**
 
 **8a)** Explique como é calculada a componente difusa no algoritmo Ray Tracing. Mostre uma árvore de intersecções e explique como é composta a componente difusa.
 
