@@ -1,6 +1,6 @@
 # Anotações: Algoritmo Ray Tracing 
 
-Este documento contém um resumo dos principais conceitos aprendidos no tutorial [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
+Este documento contém minhas anotações resumidas dos principais conceitos aprendidos no tutorial [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
 
 ## 1. O Formato de Imagem PPM
 - **Estrutura Básica:** O formato PPM é uma maneira simples de representar imagens em texto puro. 
@@ -50,3 +50,13 @@ Este documento contém um resumo dos principais conceitos aprendidos no tutorial
 - **A Solução (MSAA):** Para cada pixel, em vez de disparar um único raio perfeitamente centralizado, disparamos **múltiplos raios amostrais (samples)** em posições vizinhas ligeiramente deslocadas/aleatórias, mas que ainda pertencem à área daquele pixel.
 - O resultado final gravado naquele pixel será a **média** das cores retornadas por todos esses raios disparados. 
 - O efeito resultante são bordas que misturam sutilmente a cor do objeto com o cenário, acabando com a sensação de baixa resolução e deixando as formas perfeitamente arredondadas.
+- **O Custo de Performance:** Essa técnica possui um custo computacional altíssimo. Se uma imagem possui 90.000 pixels e definirmos 100 amostras (*samples*) por pixel, o sistema precisará calcular 9 milhões de raios em vez de apenas 90 mil. O trabalho da CPU aumenta na mesma proporção da quantidade de *samples*, tornando a renderização da imagem notavelmente mais lenta.
+
+## 8. Materiais Difusos
+- Superfícies difusas (foscas) não emitem luz própria; elas "espalham" a luz refletindo-a em direções aleatórias.
+- **Raios Aleatórios e Recursão:** Quando um raio da câmera atinge uma esfera difusa, ele "quica" (*bounce*) gerando um novo raio em uma direção aleatória. O programa então chama a função de cor recursivamente para esse novo raio (ele bate, reflete e continua viajando).
+- **Absorção e Cores:** A cada rebatida, a superfície do objeto "absorve" um percentual da luz. Em código, multiplicamos a cor do raio pela refletância da superfície. É essa perda de luz a cada impacto que forma sombras de contato macias (ambientes) e dá a cor final ao objeto.
+- **Limite de Profundidade (*Max Depth*):** Para impedir que a recursão ocorra infinitamente (o raio ficar "preso" quicando para sempre entre duas esferas próximas), define-se um limite de rebatidas (ex: `max_depth = 50`). Se o raio esgotar esse limite sem atingir o céu, o percurso é abortado e retorna cor preta (sombra).
+- **O Bug do *Shadow Acne* (Acne de Sombra):** Devido a problemas de arredondamento de casas decimais em programação (imprecisão de *floats/doubles*), um raio que acabou de quicar pode calcular sua posição de origem ligeiramente "dentro" da própria esfera e colidir imediatamente com ela mesma no tempo `t=0.000000001`. Isso gera pontos pretos de ruído na superfície das formas.
+  - **A Solução:** Ignorar colisões imediatas. Subimos o limite de aceitação do `hit()` de `t_min = 0` para `t_min = 0.001`, eliminando essas indesejadas "auto-colisões".
+- **Correção Gamma (*Gamma Correction*):** O ray tracing lida com cálculos lineares de luz, mas monitores assumem dados pré-corrigidos e exibem a imagem muito escura. A solução adotada (uma aproximação do Gamma 2.0) foi aplicar uma raiz quadrada (`sqrt()`) em todas as componentes (R, G, B) de cor do pixel antes de salvá-lo no arquivo PPM, tornando a cena clara e agradável.
