@@ -20,7 +20,7 @@ A proposta é modelar cada observação da base Iris como um vértice de um graf
 ## 🪻 Base de Dados
 
 A base de dados utilizada é o famoso **Iris Dataset** de Fisher, contendo 150 amostras com atributos morfológicos de três espécies da flor íris:
-![img-flores](https://github.com/hertonnn/UDESC-Computacao/blob/master/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/flores.png?raw=true)
+![img-flores](https://github.com/hertonnn/UDESC-Computacao/blob/main/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/flores.png)
 
 Cada amostra possui 4 atributos:
 - Comprimento da sépala
@@ -28,7 +28,7 @@ Cada amostra possui 4 atributos:
 - Comprimento da pétala
 - Largura da pétala
 
-![img-atributos](https://github.com/hertonnn/UDESC-Computacao/blob/master/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/base.png?raw=true)
+![img-atributos](https://github.com/hertonnn/UDESC-Computacao/blob/main/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/base.png?raw=true)
 
 ## 🧮 Etapas do Projeto
 
@@ -39,7 +39,7 @@ Cada amostra possui 4 atributos:
 
 - Grafo obtido com cerca de 5250 arestas:
 
-![grafo](https://github.com/hertonnn/UDESC-Computacao/blob/master/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/grafo.png?raw=true)
+![grafo](https://github.com/hertonnn/UDESC-Computacao/blob/main/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/grafo.png?raw=true)
 
 ### 🔹 2. Análise de Componentes Conexos
 - Uso do algoritmo BFS para identificar agrupamentos (clusters)
@@ -51,7 +51,7 @@ Cada amostra possui 4 atributos:
 - Plotagem dos clusters em 2D e 3D
 
 - Os dois grafos obtidos sendo cluster1 com 3938 arestas e cluster2 com 1206:
-![img-grafos](https://github.com/hertonnn/UDESC-Computacao/blob/master/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/componentes.png?raw=true)
+![img-grafos](https://github.com/hertonnn/UDESC-Computacao/blob/main/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/componentes.png?raw=true)
 
 ### 🔹 4. Avaliação de Performance
 - Geração de matriz de confusão
@@ -59,7 +59,7 @@ Cada amostra possui 4 atributos:
 - Análise crítica dos agrupamentos
 - A matriz de confusão:
 
-![matriz](https://github.com/hertonnn/UDESC-Computacao/blob/master/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/m-confusao.png?raw=true)
+![matriz](https://github.com/hertonnn/UDESC-Computacao/blob/main/TEG%20-%20Teoria%20dos%20Grafos/Trabalhos/Grafo%20%C3%8Dris/src/imgs/m-confusao.png?raw=true)
 
 ## 📊 Resultados
 
