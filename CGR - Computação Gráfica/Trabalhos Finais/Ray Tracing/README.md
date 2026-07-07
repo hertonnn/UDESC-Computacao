@@ -1,10 +1,16 @@
 # Anotações: Algoritmo Ray Tracing 
 
+C:\msys64\msys2_shell.cmd -defterm -here -no-start -ucrt64
+
+g++ main.cc -o main.exe
+
+./main.exe > image.ppm
+
 Este documento contém minhas anotações resumidas dos principais conceitos aprendidos no tutorial [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
 
 ## 1. O Formato de Imagem PPM
 - **Estrutura Básica:** O formato PPM é uma maneira simples de representar imagens em texto puro. 
-- Usei a extensão PBM/PPM/PGM Viewer do Visual Studio Code para visualização das imagens criadas.
+- Usei a extensão [PBM/PPM/PGM Viewer](https://marketplace.visualstudio.com/items?itemName=ngtystr.ppm-pgm-viewer-for-vscode) do Visual Studio Code para visualização das imagens criadas.
 - O formato PPM começa com um cabeçalho (ex: `P3`), seguido pelas dimensões da imagem (largura e altura) e o valor máximo de cor (ex: `255`).
 - Os pixels são escritos da esquerda para a direita, de cima para baixo. Cada pixel tem 3 valores correspondentes a Vermelho, Verde e Azul (RGB).
 
@@ -60,3 +66,32 @@ Este documento contém minhas anotações resumidas dos principais conceitos apr
 - **O Bug do *Shadow Acne* (Acne de Sombra):** Devido a problemas de arredondamento de casas decimais em programação (imprecisão de *floats/doubles*), um raio que acabou de quicar pode calcular sua posição de origem ligeiramente "dentro" da própria esfera e colidir imediatamente com ela mesma no tempo `t=0.000000001`. Isso gera pontos pretos de ruído na superfície das formas.
   - **A Solução:** Ignorar colisões imediatas. Subimos o limite de aceitação do `hit()` de `t_min = 0` para `t_min = 0.001`, eliminando essas indesejadas "auto-colisões".
 - **Correção Gamma (*Gamma Correction*):** O ray tracing lida com cálculos lineares de luz, mas monitores assumem dados pré-corrigidos e exibem a imagem muito escura. A solução adotada (uma aproximação do Gamma 2.0) foi aplicar uma raiz quadrada (`sqrt()`) em todas as componentes (R, G, B) de cor do pixel antes de salvá-lo no arquivo PPM, tornando a cena clara e agradável.
+
+## 9. Materiais Metálicos
+- Diferente das superfícies difusas que espalham a luz em direções aleatórias, os metais **refletem** a luz de forma espelhada.
+- **Reflexão (*Reflection*):** Quando o raio de luz atinge o objeto metálico, o novo raio é rebatido simetricamente em relação à normal de superfície. Calculamos esse vetor matematicamente usando a fórmula da reflexão.
+- **Rugosidade (*Fuzziness*):** Para simular metais foscos ou não perfeitamente polidos, adicionamos um parâmetro de rugosidade (`fuzz`). Isso introduz uma pequena esfera de aleatoriedade no destino do raio refletido, o que "borra" as reflexões.
+
+## 10. Materiais Dielétricos (Vidro, Água, Diamante)
+- São materiais transparentes. Neles, a luz não apenas reflete, mas também atravessa a superfície sofrendo **Refração** (a luz "dobra" ao mudar de meio físico).
+- **Lei de Snell:** O quanto a luz dobra é determinado pelo Índice de Refração (*Refractive Index*) dos dois materiais envolvidos (ex: ar = 1.0, vidro ≈ 1.5).
+- **Reflexão Total Interna (*Total Internal Reflection*):** Quando a luz tenta sair de um meio denso (vidro) para um menos denso (ar) com um ângulo de incidência muito acentuado/raso, a refração matematicamente se torna impossível. Nesse cenário, o raio não sai do material; em vez disso, ele é 100% refletido de volta para dentro do objeto (agindo como um espelho interno).
+- **Efeito Schlick (*Schlick Approximation*):** Na realidade, materiais transparentes não têm reflexão constante. Olhar o vidro perfeitamente de frente o torna muito transparente, mas encará-lo em um ângulo oblíquo o faz espelhar o ambiente. O ray tracer usa a Equação de Schlick como um atalho elegante e rápido para imitar esse comportamento no código, tornando os vidros ultrarrealistas.
+
+## 11. Câmera Posicionável e Campo de Visão
+- Para libertar a câmera de uma posição estática, são implementados parâmetros de **Posicionamento**:
+  - `lookfrom`: Onde a câmera está no espaço 3D (a origem).
+  - `lookat`: Para que ponto a câmera está olhando.
+  - `vup` (Vetor "Up"): Informa para qual direção é o "cima", permitindo inclinar/rolar a câmera.
+- **Campo de Visão (FOV - *Field of View*):** Definimos um campo de visão vertical (*vfov*). Um FOV menor funciona como um zoom, estreitando a tela. Já um FOV maior simula uma lente grande-angular, distorcendo levemente as bordas e capturando mais cenário.
+
+## 12. Desfoque de Lente (*Defocus Blur* / *Depth of Field*)
+- Em câmeras físicas reais, a lente não é um pequeno ponto (câmera *pinhole*), ela tem uma abertura física que faz com que os objetos fora da distância de foco fiquem embaçados (o efeito de "Profundidade de Campo").
+- **Abertura (*Aperture* / *Angle*):** Controla o tamanho do orifício virtual por onde os raios passam. Maior abertura = maior o desfoque de fundo.
+- **Distância de Foco (*Focus Distance*):** A distância exata, a partir da câmera, de um plano onde tudo aparecerá perfeitamente nítido.
+- **Implementação:** Na matemática do ray tracing, ao invés de disparar todos os raios perfeitamente a partir do ponto central da câmera, disparamos a partir de pontos ligeiramente aleatórios dentro de um "disco" imaginário na lente da câmera. As imagens entram e os raios que miram diretamente no objeto em foco continuam se alinhando, mas raios de objetos perto ou longe da distância alvo ficam dispersos, criando o clássico desfoque *(blur)* nas fotos.
+
+## 13. A Cena Final
+- Para concluir, o cenário final do código consiste na criação de um loop gerando centenas de pequenas esferas espalhadas aleatoriamente em materiais e cores variadas (difusas, metálicas polidas/foscas e vidros) sobre um "chão" (que é uma grande esfera achatada).
+- Esta cena cria a clássica capa do livro "Ray Tracing In One Weekend". O alto número de polígonos (esferas), reflexões, rebatimentos de luz (*bounces*) e amostras de antialiasing exige o processamento computacional intensivo típico do Ray Tracing.
+- O resultado é uma imagem final fotorrealista deslumbrante gerada completamente do zero apenas com programação pura e matemática de vetores.
