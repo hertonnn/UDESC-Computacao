@@ -1,0 +1,356 @@
+-- use (nome do Banco de dados)
+
+--------------------- Questão 1 ---------------------
+
+------------------------- a -------------------------
+-- a. Consulta que recupere todos os dados dos empregados que 
+-- trabalham no departamento número 5, ordenados por salário em ordem 
+-- decrescente.
+
+db.empregado.find({dno: 5}, {}).sort({salario: -1})
+
+------------------------- b -------------------------
+-- b. Consulta que recupere apenas o nome (primeiro nome e sobrenome) 
+-- e o salário de todos os empregados do sexo feminino que ganham mais 
+--de 20000.
+
+db.empregado.find(
+    {
+        sexo: "F",
+        salario: {$gt: 20000},
+    },
+
+    {
+        pnome: 1,
+        unome: 1,
+        salario: 1,
+        _id: 0,  
+    }
+)
+
+------------------------- c -------------------------
+-- c. Consulta que retorne o nome do departamento, nome do projeto e 
+-- localização do projeto para todos os projetos da empresa. 
+
+db.projeto.aggregate([
+    {
+        $lookup: {
+            from: "departamento",
+            localField: "dnum",
+            foreignField: "dnumero",
+            as: "departamento_info"
+        }
+    },
+
+    {
+        $unwind: "$departamento_info"
+    },
+
+    {
+        $project: {
+            nome_projeto: "$pjnome",
+            nome_departamento: "$departamento_info.dnome", 
+            localização_projeto: "$plocalizacao",
+            _id: 0
+        }
+    }
+])
+
+------------------------- c (extra) -------------------------
+-- c. Consulta que retorne o nome do departamento, nome do projeto e 
+-- localização do projeto para todos os projetos da empresa. 
+-- (Adicionando a localização do departamento)
+
+db.projeto.aggregate([
+    {
+        $lookup: {
+            from: "departamento",
+            localField: "dnum",
+            foreignField: "dnumero",
+            as: "departamento_info"
+        }
+    },
+
+    {
+        $unwind: "$departamento_info"
+    },
+
+    {
+        $lookup: {
+            from: "depto_localizacoes",
+            localField: "dnum", 
+            foreignField: "dnumero", 
+            as: "localizacao_departamento_info"
+        }
+    },
+
+    {
+        $unwind: "$localizacao_departamento_info"
+    },
+
+    {
+        $project: {
+            nome_projeto: "$pjnome",
+            localização_projeto: "$plocalizacao",
+            nome_departamento: "$departamento_info.dnome", 
+            localização_departamento: "$localizacao_departamento_info.dlocalizacao",
+            _id: 0
+        }
+    }
+])
+
+------------------------- d -------------------------
+-- d. Consulta que retorne o nome dos departamentos e calcule 
+-- a quantidade de empregados e a média do salário dos empregados 
+-- agrupado por departamento. 
+
+db.empregado.aggregate([
+    {
+        $group: {
+            _id: "$dno",
+            quantidade_empregados: { $sum: 1},
+            media_salarial: {$avg: "$salario"}
+        }
+    },
+
+    {
+        $lookup: {
+            from: "departamento",
+            localField: "_id",
+            foreignField: "dnumero", 
+            as: "departamento_info"
+        }
+    },
+
+    {
+        $unwind: "$departamento_info"
+    },
+
+    {
+        $project:{
+            nome_departamento: "$departamento_info.dnome", 
+            quantidade_empregados: 1,
+            media_salarial: {$round: ["$media_salarial", 2]},
+            _id: 0
+        }
+    }
+])
+
+------------------------- e -------------------------
+e. Consulta para recuperar os departamentos e a quantidade de empregados e 
+-- a soma das horas trabalhadas por eles dos projetos do departamento, 
+-- agrupado por departamento.
+
+db.departamento.aggregate([
+    // 1. lookup de empregados
+    {
+        $lookup: {
+            from: "empregado",
+            localField: "dnumero",
+            foreignField: "dno", 
+            as: "lista_empregados"
+        }
+    },
+
+    // 2. Calcula a quantidade total de empregados
+    {
+        $addFields: {
+            quantidade_empregados: { $size: "$lista_empregados" }
+        }
+    },
+
+    // 3. Remover a lista de empregados
+    {
+        $project: { lista_empregados: 0 }
+    },
+
+    // 4. Projetos do departamento 
+    {
+        $lookup: {
+            from: "projeto",
+            localField: "dnumero",
+            foreignField: "dnum",
+            as: "lista_projetos"
+        }
+    },
+
+    {
+        $unwind: { path: "$lista_projetos", preserveNullAndEmptyArrays: true } // "true" minúsculo
+    },
+
+    // 5. Trabalha_em de cada projeto
+    {
+        $lookup: {
+            from: "trabalha_em",
+            localField: "lista_projetos.pnumero",
+            foreignField: "pno",
+            as: "trabalhos"
+        }
+    },
+
+    {
+        $unwind: { path: "$trabalhos", preserveNullAndEmptyArrays: true }
+    },
+
+    // 6 Agrupamento 
+    {
+        $group: {
+            _id: "$dnumero",
+            nome_departamento: { $first: "$dnome" }, 
+            quantidade_empregados: { $first: "$quantidade_empregados" }, 
+            soma_horas: { $sum: "$trabalhos.horas" }
+        }
+    }, 
+
+    // 9. Projeção
+    {
+        $project: {
+            _id: 0,
+            nome_departamento: 1,
+            quantidade_empregados: 1,
+            soma_horas: 1
+        }
+    }
+])
+
+--------------------- Questão 2 ---------------------
+-- Considerando as quatro transações, T1, T2, T3 e T4, e os planos S1 e 
+-- S2 abaixo, construa os grafos de precedência de para S1 e S2 e diga se 
+-- são serializáveis em conflito ou não.
+
+-- Duas operações estão em conflito se:
+    -- Pertencem a transações diferentes (ex: T1 e T2)
+    -- Acessam o mesmo dado (ex: item X)
+    -- Pelo menos uma das operações é de Escrita (w)
+
+--------------------- Resposta A ----------------------
+// S1: r1(X); r2(Z); w1(X); r3(X); r4(Y); r2(Y); w2(Z); w4(Y); r1(Z); 
+// w2(Y); r3(Y); w1(Z); r4(Z); w3(Y); w4(Z);
+
+Grafo de precedência:
+T1 > T3
+T2 > T1
+T1 > T4
+T4 > T2
+T2 > T3
+
+T2 > T1 > T4 > T2 > T1 (ciclo)
+S1 é não serializavel devido a presença de um ciclo 
+
+--------------------- Resposta  b ----------------------
+S2: r1(X); r1(Z); r3(X); r3(Y); w1(X); w1(Z); w3(Y); r4(Y); r2(Z); w4(Y); 
+// r2(Y); w2(Z); r4(Z); w2(Y); w4(Z);
+
+Grafo de precedência:
+T3 > T1
+T3 > T4
+T4 > T2
+T1 > T2
+T2 > T4
+
+T2 -> T4 -> T2 -> T4 (ciclo)
+S2 é não serializável devido a presença de um ciclo. 
+
+--------------------- Questão 3 ---------------------
+-- A figura abaixo mostra o log de execução de dois escalonamentos 
+-- das transações T1, T2, T3, T4 e T5 até o ponto de queda do sistema. 
+-- Descreva o processo para recuperação do banco utilizando os protocolos
+-- definido para cada log. Especifique quais operações serão refeitas ou 
+-- desfeitas, e qual será o resultado final
+-- das variáveis A, B, C e D.
+
+------------------------- a -------------------------
+-- Usar UNDO/REDO
+[start_transaction, T1]
+[write, T1, D, 10, 25]
+[write, T1, C, 15, 60]
+[start_transaction, T2]
+[write, T2, B, 33, 45]
+[checkpoint, T1, T2]
+[start_transaction, T3]
+[write, T3, B, 45, 52]
+[commit, T1]
+[write, T2, A, 11, 27]
+[commit, T2]
+[write, T3, C, 60, 42]
+[commit, T3]
+[start_transaction, T4]
+[write, T4, A, 27, 50]
+[start_transaction, T5]
+[write, T4, D, 25, 75]
+[write, T5, C, 42, 53]
+[write, T5, B, 52, 78]
+[write, T4, C, 53, 82] <- Queda do Sistema
+
+--------------------- Resposta ----------------------
+-- Após uma falha, transações que iniciaram mas não possuem um <commit> 
+-- no log devem sofrer UNDO. Transações que possuem um <commit> no 
+-- log devem sofrer REDO para garantir que suas alterações estejam no disco.
+
+-- Undo: Não tem commit (antigo)
+-- redo: Commit (atualizar)
+-- Começa de baixo para cima a leitura
+
+Lista-UNDO: T4, T5
+Lista-REDO: T1, T2, T3
+
+Resultado:
+A: 27
+B: 52
+C: 42
+D: 25
+
+------------------------- b -------------------------
+-- Usar UNDO/NO-REDO
+[start_transaction, T1]
+[write, T1, A, 5, 25]
+[write, T1, C, 2, 28]
+[start_transaction, T2]
+[write, T1, D, 20, 40]
+[commit, T1]
+[write, T2, B, 12, 38]
+[write, T2, A, 25, 42]
+[start_transaction, T3]
+[checkpoint, T2, T3]
+[write, T3, D, 40, 38]
+[commit, T2]
+[write, T3, C, 28, 64]
+[start_transaction, T4]
+[write, T4, A, 42, 33]
+[write, T3, D, 38, 53]
+[write, T4, B, 38, 90]
+[commit, T3]
+[write, T4, A, 33, 70]
+[commit, T4]
+[start_transaction, T5] <- Queda do Sistema
+
+--------------------- Resposta ----------------------
+
+Lista-UNDO: T5
+
+Resultado:
+A: 70
+B: 90
+C: 64
+D: 53
+
+--------------------- Questão 4 ---------------------
+-- Com base nas consultas abaixo faça a representação da árvore algébrica otimizada utilizando as
+-- regras de equivalência da álgebra relacional.
+-- Consultas:
+
+------------------------- a -------------------------
+-- Select e.pnome, e.unome, s.pnome, s.unome, d.nome_dependente
+-- from empregado e, empregado s, dependente d, departamento depart
+-- where e.superssn = s.ssn and d.essn = e.ssn and e.dno = depart.dnumero and e.salario > 10000
+
+--------------------- Resposta ----------------------
+
+------------------------- b -------------------------
+-- Select d.dnome, p.pjnome, e.pnome, e.unome, SUM(t.horas)
+-- from departamento d join projeto p on (d.dnumero = p.dnum) join trabalha_em t on (p.pnumero =
+-- t.pno) join empregado e on (e.dno = d.dnumero)
+-- where d.dnome = 'Pesquisa' and t.horas > 10
+-- group by d.dnome, p.pjnome, e.pnome, e.unome
+
+--------------------- Resposta ----------------------

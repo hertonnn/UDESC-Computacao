@@ -1,0 +1,296 @@
+-------------------- Exerício 1 --------------------
+-- Recupere o nome e o endereço de cada cliente
+
+db.cliente.find({}, {nome: 1, endereco: 1, _id: 0})
+
+-------------------- Exerício 2 --------------------
+-- Recupere o nome e a função dos mecânicos que trabalham no setor número 2 (cods 2)
+
+db.mecanico.find({cods: 2}, {nome: 1, funcao: 1, _id: 0})
+
+-------------------- Exerício 3 --------------------
+-- 3. Recupere o CPF e o nome de todos os mecânicos que são clientes 
+-- da oficina (utilize operação de conjuntos)
+
+db.mecanico.aggregate([
+  {
+    $lookup: {
+      from: "cliente",
+      localField: "cpf",
+      foreignField: "cpf",
+      as: "cliente_info"
+    }
+  },
+  {
+    $match: {
+      "cliente_info": {$ne: []}
+    }
+  },
+  {
+    $project: {
+      cpf: 1,
+      nome: 1,
+      _id: 0
+    }
+  }
+])
+
+-------------------- Exerício 4 --------------------
+-- Recupere as cidades das quais os mecânicos e clientes são oriundos
+
+db.mecanico.distinct("cidade").concat(db.cliente.distinct("cidade"))
+
+-------------------- Exerício 5 --------------------
+-- Recupere as marcas distintas dos veículos dos clientes que moram em Joinville
+
+db.veiculo.aggregate([
+  {
+    $lookup: {
+      from: "cliente",
+      localField: "codc",
+      foreignField: "codc",
+      as: "cliente_info"
+    }
+  },
+  {
+    $match: {
+      "cliente_info.cidade": "Joinville"
+    }
+  },
+  {
+    $group: {
+      _id: "$marca"
+    }
+  },
+  {
+    $project: {
+      marca: "$_id",
+      _id: 0
+    }
+  }
+])
+
+-------------------- Exerício 6 --------------------
+-- Recupere as funções distintas dos mecânicos da oficina
+
+db.mecanico.distinct("funcao")
+
+-------------------- Exerício 7 --------------------
+-- Recupere todas as informações dos clientes que têm idade maior que 25 anos
+
+db.cliente.find({idade: {$gt: 25}})
+
+-------------------- Exerício 8 --------------------
+-- Recupere o CPF e o nome dos mecânicos que trabalham no setor de mecânica
+
+db.mecanico.aggregate([
+  {
+    $lookup: {
+      from: "setor",
+      localField: "cods",
+      foreignField: "cods",
+      as: "setor_info"
+    }
+  },
+  {
+    $match: {
+      "setor_info.nome": "Mecânica"
+    }
+  },
+  {
+    $project: {
+      cpf: 1,
+      nome: 1,
+      _id: 0
+    }
+  }
+])
+
+-------------------- Exerício 9 --------------------
+-- Recupere o CPF e nome dos mecânicos que trabalharam no dia 13/06/2014
+
+db.conserto.aggregate([
+  {
+    $match: {
+      data: "2014-06-13"
+    }
+  },
+  {
+    $lookup: {
+      from: "mecanico",
+      localField: "codm",
+      foreignField: "codm",
+      as: "mecanico_info"
+    }
+  },
+  {
+    $unwind: "$mecanico_info"
+  },
+  {
+    $group: {
+      _id: "$mecanico_info.codm",
+      cpf: {$first: "$mecanico_info.cpf"},
+      nome: {$first: "$mecanico_info.nome"}
+    }
+  },
+  {
+    $project: {
+      cpf: 1,
+      nome: 1,
+      _id: 0
+    }
+  }
+])
+
+-------------------- Exerício 10 --------------------
+-- Recupere o nome do cliente, o modelo do seu veículo, o nome do mecânico  e 
+-- sua função para todos os consertos realizados (com JOIN)
+
+db.conserto.aggregate([
+  {
+    $lookup: {
+      from: "mecanico",
+      localField: "codm",
+      foreignField: "codm",
+      as: "mecanico_info"
+    }
+  },
+  {
+    $lookup: {
+      from: "veiculo",
+      localField: "codv",
+      foreignField: "codv",
+      as: "veiculo_info"
+    }
+  },
+  {
+    $unwind: "$mecanico_info"
+  },
+  {
+    $unwind: "$veiculo_info"
+  },
+  {
+    $lookup: {
+      from: "cliente",
+      localField: "veiculo_info.codc",
+      foreignField: "codc",
+      as: "cliente_info"
+    }
+  },
+  {
+    $unwind: "$cliente_info"
+  },
+  {
+    $project: {
+      nome_cliente: "$cliente_info.nome",
+      modelo_veiculo: "$veiculo_info.modelo",
+      nome_mecanico: "$mecanico_info.nome",
+      funcao_mecanico: "$mecanico_info.funcao",
+      _id: 0
+    }
+  }
+])
+
+-------------------- Exerício 11 --------------------
+-- Recupere o nome do mecânico, o nome do cliente e a hora do conserto para os 
+-- serviços realizados no dia 19/06/2014 (com JOIN)
+
+db.conserto.aggregate([
+  {
+    $match: {
+      data: "2014-06-19"
+    }
+  },
+  {
+    $lookup: {
+      from: "mecanico",
+      localField: "codm",
+      foreignField: "codm",
+      as: "mecanico_info"
+    }
+  },
+  {
+    $lookup: {
+      from: "veiculo",
+      localField: "codv",
+      foreignField: "codv",
+      as: "veiculo_info"
+    }
+  },
+  {
+    $unwind: "$mecanico_info"
+  },
+  {
+    $unwind: "$veiculo_info"
+  },
+  {
+    $lookup: {
+      from: "cliente",
+      localField: "veiculo_info.codc",
+      foreignField: "codc",
+      as: "cliente_info"
+    }
+  },
+  {
+    $unwind: "$cliente_info"
+  },
+  {
+    $project: {
+      nome_mecanico: "$mecanico_info.nome",
+      nome_cliente: "$cliente_info.nome",
+      hora_conserto: "$hora",
+      _id: 0
+    }
+  }
+])
+
+-------------------- Exerício 12 --------------------
+-- Recupere o código e o nome dos setores que foram utilizados entre os 
+-- dias 12/06/2014 e 14/06/2014 (com JOIN)
+
+db.conserto.aggregate([
+  {
+    $match: {
+      data: {
+        $gte: "2014-06-12",
+        $lte: "2014-06-14"
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "mecanico",
+      localField: "codm",
+      foreignField: "codm",
+      as: "mecanico_info"
+    }
+  },
+  {
+    $unwind: "$mecanico_info"
+  },
+  {
+    $lookup: {
+      from: "setor",
+      localField: "mecanico_info.cods",
+      foreignField: "cods",
+      as: "setor_info"
+    }
+  },
+  {
+    $unwind: "$setor_info"
+  },
+  {
+    $group: {
+      _id: "$setor_info.cods",
+      codigo_setor: {$first: "$setor_info.cods"},
+      nome_setor: {$first: "$setor_info.nome"}
+    }
+  },
+  {
+    $project: {
+      codigo_setor: 1,
+      nome_setor: 1,
+      _id: 0
+    }
+  }
+])
