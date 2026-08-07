@@ -9,9 +9,27 @@ $A = (-1, 1)$, $B = (1, 3)$, $C = (2, 2)$, $D = (3, 4)$, $E = (5, 2)$.
 
 **Resposta:** Sejam $A=(x_1,y_1), B=(x_2,y_2), C=(x_3,y_3), D=(x_4,y_4)$ e $E=(x_5,y_5)$ e denote $g_0(x) = 1, g_1(x) = x$. Para encontrar uma função da forma $f(x) = a_0 g_0(x) + a_1 g_1(x)$ que melhor se ajusta aos pontos $(x_i, y_i)$, basta resolver o sistema $A^T A X = A^T B$, em que:
 
-$$A^T A = \begin{bmatrix} 5 & \sum_{i=1}^5 x_i \\ \sum_{i=1}^5 x_i & \sum_{i=1}^5 x_i^2 \end{bmatrix} = \begin{bmatrix} 1 & 1 & 1 & 1 & 1 \\ -1 & 1 & 2 & 3 & 5 \end{bmatrix} \cdot \begin{bmatrix} 1 & -1 \\ 1 & 1 \\ 1 & 2 \\ 1 & 3 \\ 1 & 5 \end{bmatrix} = \begin{bmatrix} 5 & 10 \\ 10 & 40 \end{bmatrix}$$
+$$
+A^T A = \begin{bmatrix} 5 & \sum_{i=1}^5 x_i\\
+\sum_{i=1}^5 x_i & \sum_{i=1}^5 x_i^2 \end{bmatrix} = \begin{bmatrix} 1 & 1 & 1 & 1 & 1\\
+-1 & 1 & 2 & 3 & 5 \end{bmatrix} \cdot \begin{bmatrix} 1 & -1\\
+1 & 1\\
+1 & 2\\
+1 & 3\\
+1 & 5 \end{bmatrix} = \begin{bmatrix} 5 & 10\\
+10 & 40 \end{bmatrix}
+$$
 
-$$A^T B = \begin{bmatrix} \sum_{i=1}^5 y_i \\ \sum_{i=1}^5 x_i y_i \end{bmatrix} = \begin{bmatrix} 1 & 1 & 1 & 1 & 1 \\ -1 & 1 & 2 & 3 & 5 \end{bmatrix} \cdot \begin{bmatrix} 1 \\ 3 \\ 2 \\ 4 \\ 2 \end{bmatrix} = \begin{bmatrix} 12 \\ 28 \end{bmatrix}$$
+$$
+A^T B = \begin{bmatrix} \sum_{i=1}^5 y_i\\
+\sum_{i=1}^5 x_i y_i \end{bmatrix} = \begin{bmatrix} 1 & 1 & 1 & 1 & 1\\
+-1 & 1 & 2 & 3 & 5 \end{bmatrix} \cdot \begin{bmatrix} 1\\
+3\\
+2\\
+4\\
+2 \end{bmatrix} = \begin{bmatrix} 12\\
+28 \end{bmatrix}
+$$
 
 Então, $A^T A X = A^T B \iff \begin{bmatrix} 5 & 10 \\ 10 & 40 \end{bmatrix} \cdot \begin{bmatrix} a_0 \\ a_1 \end{bmatrix} = \begin{bmatrix} 12 \\ 28 \end{bmatrix} \iff \begin{bmatrix} a_0 \\ a_1 \end{bmatrix} = \begin{bmatrix} 2 \\ 1/5 \end{bmatrix}$.
 
@@ -25,17 +43,36 @@ Portanto, a solução é $f(x) = 2 + \frac{x}{5} = 2 + 0.2x$.
 
 **Resposta:**
 **(a) Trapézios repetido (3 subintervalos):**
-$$I \approx \frac{2}{2} (\cos(-3) + 2\cos(-1) + 2\cos(1) + \cos(3)) \approx \mathbf{0.18122}$$
-$$\varepsilon_{rel} = \frac{|0.18122 - 0.28224|}{|0.28224|} \approx \mathbf{0.3579}$$
+
+$$
+I \approx \frac{2}{2} (\cos(-3) + 2\cos(-1) + 2\cos(1) + \cos(3)) \approx \mathbf{0.18122}
+$$
+
+$$
+\varepsilon_{rel} = \frac{|0.18122 - 0.28224|}{|0.28224|} \approx \mathbf{0.3579}
+$$
 
 **(b) 3/8 de Simpson (1 único intervalo):**
-$$I \approx \frac{3}{8} \cdot 2 \cdot (\cos(-3) + 3\cos(-1) + 3\cos(1) + \cos(3)) \approx \mathbf{0.94637}$$
-$$\varepsilon_{rel} = \frac{|0.94637 - 0.28224|}{|0.28224|} \approx \mathbf{2.3531}$$
+
+$$
+I \approx \frac{3}{8} \cdot 2 \cdot (\cos(-3) + 3\cos(-1) + 3\cos(1) + \cos(3)) \approx \mathbf{0.94637}
+$$
+
+$$
+\varepsilon_{rel} = \frac{|0.94637 - 0.28224|}{|0.28224|} \approx \mathbf{2.3531}
+$$
 
 **(c) Gauss-Legendre (4 pontos):**
 Fazendo a mudança de variáveis $x = 3t$ obtém-se: $\int_{-3}^3 \cos(x) dx = 3 \int_{-1}^1 \cos(3t) dt$. Então:
-$$I \approx 3 \cdot [0.347855 \cdot \cos(3 \cdot (-0.861136)) + 0.652145 \cdot \cos(3 \cdot (-0.339981)) \\ + 0.652145 \cdot \cos(3 \cdot 0.339981) + 0.347855 \cdot \cos(3 \cdot 0.861136)] \approx \mathbf{0.27771}$$
-$$\varepsilon_{rel} = \frac{|0.27771 - 0.28224|}{|0.28224|} \approx \mathbf{0.0161}$$
+
+$$
+I \approx 3 \cdot [0.347855 \cdot \cos(3 \cdot (-0.861136)) + 0.652145 \cdot \cos(3 \cdot (-0.339981))\\
++ 0.652145 \cdot \cos(3 \cdot 0.339981) + 0.347855 \cdot \cos(3 \cdot 0.861136)] \approx \mathbf{0.27771}
+$$
+
+$$
+\varepsilon_{rel} = \frac{|0.27771 - 0.28224|}{|0.28224|} \approx \mathbf{0.0161}
+$$
 
 Portanto, a pior estimativa é a do método 3/8 de Simpson e a melhor é a do método de Gauss-Legendre.
 
@@ -43,6 +80,7 @@ Portanto, a pior estimativa é a do método 3/8 de Simpson e a melhor é a do m�
 
 **Resposta:**
 Calculando os termos $R_{k,j}$, obtêm-se:
+
 - $R_{1,1} = \frac{8}{2} (\ln(1) + \ln(9)) = 8.788898$
 - $R_{2,1} = \frac{4}{2} (\ln(1) + 2\ln(5) + \ln(9)) = 10.832201$
 - $R_{2,2} = 10.832201 + \frac{10.832201 - 8.788898}{3} = 11.513302$
@@ -57,7 +95,7 @@ Calculando os termos $R_{k,j}$, obtêm-se:
 Os resultados anteriores são resumidos na tabela a seguir:
 
 | $k$ | $R_{k,1}$ | $R_{k,2}$ | $R_{k,3}$ | $R_{k,4}$ |
-|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- |
 | 1 | **8.788898** | | | |
 | 2 | 10.832201 | **11.513302** | | |
 | 3 | 11.505145 | 11.729460 | **11.743871** | |
@@ -71,7 +109,7 @@ Portanto, a aproximação $R_{4,4} = 11.772335$ tem um erro relativo percentual 
 Pelo método de Runge-Kutta de ordem 2, obtêm-se:
 
 | $i$ | $t_i$ | $k_1$ | $k_2$ | $y_i$ | $y_{exato}(t_i)$ | $\varepsilon_i = \|y_i - y_{exato}(t_i)\|$ |
-|---|---|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 0 | 0.00 | - | - | 0.100000 | 0.100000 | 0.000000 |
 | 1 | 0.5 | 0.000000 | 5.000000 | 1.350000 | 0.509902 | 0.840098 |
 | 2 | 1.0 | 0.370370 | 0.651387 | 1.605439 | 1.004988 | 0.600451 |
@@ -80,7 +118,7 @@ Pelo método de Runge-Kutta de ordem 2, obtêm-se:
 Já pelo método de Runge-Kutta de ordem 4, obtêm-se:
 
 | $i$ | $t_i$ | $k_1$ | $k_2$ | $k_3$ | $k_4$ | $y_i$ | $y_{exato}(t_i)$ | $\varepsilon_i = \|y_i - y_{exato}(t_i)\|$ |
-|---|---|---|---|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 0 | 0.0 | - | - | - | - | 0.100000 | 0.100000 | 0.000000 |
 | 1 | 0.5 | 0.000000 | 2.500000 | 0.344828 | 1.835442 | 0.727092 | 0.509902 | 0.217190 |
 | 2 | 1.0 | 0.687671 | 0.834251 | 0.801578 | 0.886618 | 1.130921 | 1.004988 | 0.125933 |

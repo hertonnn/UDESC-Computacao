@@ -10,13 +10,17 @@ A parte inteira: $12 = 8 + 4 = 1\cdot 2^3 + 1\cdot 2^2 + 0\cdot 2^1 + 0\cdot 2^0
 Para a parte fracionária:
 
 | $x$ | 0,36 | 0,72 | 0,44 | 0,88 | 0,76 | 0,52 | 0,04 | 0,08 |
-|---|---|---|---|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | $2 \cdot x$ | 0,72 | 1,44 | 0,88 | 1,76 | 1,52 | 1,04 | 0,08 | 0,16 |
 
 Logo, $\overline{x} = (12,36)_{10} \approx (1100,01011100)_2$.
 
 (b) Ao truncar $\overline{x} = 12,36$ (na resolução original do professor considera $12,65$ como contra-exemplo, mas a raiz da conta para a tolerância é a mesma) para o inteiro $x = 12$, o erro relativo percentual é:
-$$\varepsilon_{per} = \frac{|12 - 12,36|}{|12,36|} \times 100\% = \frac{|-0,36|}{|12,36|} \times 100\% \approx 2,91\%$$
+
+$$
+\varepsilon_{per} = \frac{|12 - 12,36|}{|12,36|} \times 100\% = \frac{|-0,36|}{|12,36|} \times 100\% \approx 2,91\%
+$$
+
 Como o erro de $2,91\%$ já é menor que $5\%$, conclui-se que não são necessários dígitos após a vírgula ($0$ dígitos).
 
 **Questão 2:** Seja a função $f(x) = \ln(x) - \frac{1}{x}$ e o ponto inicial $x_0 = 2$.
@@ -35,7 +39,7 @@ Assim, $|\varphi'_2(x)| < 1 \iff |- \ln(x)| < 1 \iff -1 < \ln(x) < 1 \iff 0,3679
 Considerando a continuidade, a sequência converge para $x \in I = (e^{-1}, e)$. As iterações resultam em:
 
 | $k$ | 0 | 1 | 2 | 3 | 4 | 5 |
-|---|---|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | $x_k = \varphi_2(x_{k-1})$ | 2,0000 | 1,6137 | 1,8415 | 1,7171 | 1,7888 | 1,7486 |
 
 O erro relativo percentual em $x_5$ é $\varepsilon_{per} \approx \frac{|1,7486 - 1,7888|}{|1,7486|} \times 100 \approx 2,2990\%$.
@@ -43,24 +47,27 @@ O erro relativo percentual em $x_5$ é $\varepsilon_{per} \approx \frac{|1,7486 
 **Questão 3:** Encontre a raiz real única do polinômio $p(x) = x^5 - x^3 + x + 2$ garantindo um erro absoluto estimado inferior a $10^{-3}$. Utilize o método de Newton (em sua versão para polinômios) e arredonde os resultados para 4 casas decimais.
 
 **Resposta:** As sucessivas aplicações do algoritmo de Briot-Ruffini para o polinômio e sua derivada produzem as seguintes aproximações:
+
 - $x_0 = -1$ gera $p(x_0) = 1$ e $p'(x_0) = 3$. Então $x_1 = -1 - \frac{1}{3} \approx -1,3333$.
 - $x_1 = -1,3333$ gera $p(x_1) = -1,1766$ e $p'(x_1) = 11,4679$. Então $x_2 = -1,3333 + \frac{1,1766}{11,4679} \approx -1,2307$.
 - $x_2 = -1,2307$ gera $p(x_2) = -0,1899$ e $p'(x_2) = 7,9264$. Então $x_3 \approx -1,2067$.
 - A iteração $x_3$ gera $p(x_3) = -0,0082$ e $p'(x_3) = 7,2330$. Então $x_4 \approx -1,2067$.
+
 Como o erro estimado é $|x_4 - x_3| = 0 < 10^{-3}$, $x_4 = -1,2067$ é a aproximação procurada.
 
 **Questão 4:** Determine um intervalo que contenha um zero $\overline{x} > 1/2$ para a função $f(x) = \cos(\ln(x))$. Em seguida, empregue o método da posição falsa para encontrar uma aproximação $x_k \approx \overline{x}$ de tal forma que $|f(x_k)| < 0,0001$.
 
 **Resposta:**
 Valores de teste para o Bolzano:
+
 | $x$ | 2 | 3 | 4 | 5 |
-|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- |
 | $f(x)$ | 0,76924 | 0,45483 | 0,18346 | -0,03863 |
 
 Portanto, uma raiz está no intervalo $[4, 5]$. Pelo método da posição falsa iterando:
 
 | $k$ | $a_k$ | $x_k$ | $b_k$ | $f(a_k)$ | $f(x_k)$ | $f(b_k)$ |
-|---|---|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 0 | 4 | 4,82606 | 5 | 0,18346 | -0,00323 | -0,03863 |
 | 1 | 4 | 4,81177 | 4,82606 | 0,18346 | -0,00027 | -0,00323 |
 | 2 | 4 | 4,81058 | 4,81177 | 0,18346 | -0,00002 | -0,00027 |
@@ -73,7 +80,7 @@ Nesta etapa, $|f(x_2)| \approx 0,00002 < 0,0001$. Logo, a aproximação é $x_2 
 Iterações pelo método da bisseção:
 
 | $k$ | $a_k$ | $x_k$ | $b_k$ | $f(x_k)$ | $\varepsilon_{per}$ |
-|---|---|---|---|---|---|
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | 0 | 0 | 1,5 | 3 | 0,07074 | - |
 | 1 | 1,5 | 2,25 | 3 | -0,62817 | 33,33333% |
 | 2 | 1,5 | 1,875 | 2,25 | -0,29953 | 20,00000% |
