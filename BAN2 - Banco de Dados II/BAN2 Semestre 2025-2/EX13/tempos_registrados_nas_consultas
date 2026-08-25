@@ -1,0 +1,642 @@
+---------------------------------------------------------------------------------------------
+-- QUESTÃO 1:
+
+-- # CONSULTA SEM INDEX:
+
+"Seq Scan on mecanico m  (cost=0.00..267.00 rows=98 width=28) (actual time=0.026..1.113 rows=92 loops=1)"
+"  Filter: ((cods >= 100) AND (cods <= 200))"
+"  Rows Removed by Filter: 9908"
+"Planning Time: 0.077 ms"
+"Execution Time: 1.132 ms"
+
+
+-- # CONSULTA EM MECANICO COM HASH NO CODS:
+"Seq Scan on mecanico m  (cost=0.00..267.00 rows=98 width=28) (actual time=0.010..0.849 rows=92 loops=1)"
+"  Filter: ((cods >= 100) AND (cods <= 200))"
+"  Rows Removed by Filter: 9908"
+"Planning Time: 0.117 ms"
+"Execution Time: 0.863 ms"
+
+
+
+
+---------------------------------------------------------------------------------------------
+-- QUESTÃO 2:
+-- # CONSULTA EM CONSERTO USING HASH EM DATA
+"Nested Loop  (cost=4.49..233.70 rows=26 width=28) (actual time=0.031..0.133 rows=31 loops=1)"
+"  ->  Bitmap Heap Scan on conserto c  (cost=4.20..53.83 rows=26 width=8) (actual time=0.023..0.051 rows=31 loops=1)"
+"        Recheck Cond: (data = '2018-06-13'::date)"
+"        Heap Blocks: exact=27"
+"        ->  Bitmap Index Scan on idx_con_data  (cost=0.00..4.20 rows=26 width=0) (actual time=0.012..0.012 rows=31 loops=1)"
+"              Index Cond: (data = '2018-06-13'::date)"
+"  ->  Index Scan using mecanico_pkey on mecanico m  (cost=0.29..6.92 rows=1 width=28) (actual time=0.002..0.002 rows=1 loops=31)"
+"        Index Cond: (codm = c.codm)"
+"Planning Time: 0.280 ms"
+"Execution Time: 0.155 ms"
+
+---------------------------------------------------------------------------------------------
+-- QUESTÃO 3
+
+-- # CONSULTA EM CONSERTO USANDO BTREE NA DATA:
+"Hash Join  (cost=869.84..1152.04 rows=3184 width=35) (actual time=5.069..6.969 rows=3170 loops=1)"
+"  Hash Cond: (con.codm = m.codm)"
+"  ->  Hash Join  (cost=527.84..801.68 rows=3184 width=27) (actual time=2.799..4.145 rows=3170 loops=1)"
+"        Hash Cond: (c.codc = v.codc)"
+"        ->  Seq Scan on cliente c  (cost=0.00..192.00 rows=10000 width=15) (actual time=0.004..0.414 rows=10000 loops=1)"
+"        ->  Hash  (cost=488.04..488.04 rows=3184 width=20) (actual time=2.788..2.790 rows=3170 loops=1)"
+"              Buckets: 4096  Batches: 1  Memory Usage: 206kB"
+"              ->  Hash Join  (cost=367.92..488.04 rows=3184 width=20) (actual time=1.675..2.429 rows=3170 loops=1)"
+"                    Hash Cond: (con.codv = v.codv)"
+"                    ->  Bitmap Heap Scan on conserto con  (cost=48.92..160.68 rows=3184 width=20) (actual time=0.100..0.376 rows=3170 loops=1)"
+"                          Recheck Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-09-25'::date))"
+"                          Heap Blocks: exact=64"
+"                          ->  Bitmap Index Scan on idx_con_data  (cost=0.00..48.12 rows=3184 width=0) (actual time=0.089..0.089 rows=3170 loops=1)"
+"                                Index Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-09-25'::date))"
+"                    ->  Hash  (cost=194.00..194.00 rows=10000 width=8) (actual time=1.565..1.565 rows=10000 loops=1)"
+"                          Buckets: 16384  Batches: 1  Memory Usage: 519kB"
+"                          ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.004..0.785 rows=10000 loops=1)"
+"  ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.250..2.251 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"        ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.018..0.966 rows=10000 loops=1)"
+"Planning Time: 0.746 ms"
+"Execution Time: 7.090 ms"
+
+
+
+
+-- # CONSULTA USANDO HASH EM CONSERTOS NO CODC:
+"Hash Join  (cost=869.84..1152.04 rows=3184 width=35) (actual time=5.202..7.097 rows=3170 loops=1)"
+"  Hash Cond: (con.codm = m.codm)"
+"  ->  Hash Join  (cost=527.84..801.68 rows=3184 width=27) (actual time=2.637..4.030 rows=3170 loops=1)"
+"        Hash Cond: (c.codc = v.codc)"
+"        ->  Seq Scan on cliente c  (cost=0.00..192.00 rows=10000 width=15) (actual time=0.005..0.424 rows=10000 loops=1)"
+"        ->  Hash  (cost=488.04..488.04 rows=3184 width=20) (actual time=2.626..2.628 rows=3170 loops=1)"
+"              Buckets: 4096  Batches: 1  Memory Usage: 206kB"
+"              ->  Hash Join  (cost=367.92..488.04 rows=3184 width=20) (actual time=1.599..2.328 rows=3170 loops=1)"
+"                    Hash Cond: (con.codv = v.codv)"
+"                    ->  Bitmap Heap Scan on conserto con  (cost=48.92..160.68 rows=3184 width=20) (actual time=0.072..0.343 rows=3170 loops=1)"
+"                          Recheck Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-09-25'::date))"
+"                          Heap Blocks: exact=64"
+"                          ->  Bitmap Index Scan on idx_con_data  (cost=0.00..48.12 rows=3184 width=0) (actual time=0.060..0.060 rows=3170 loops=1)"
+"                                Index Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-09-25'::date))"
+"                    ->  Hash  (cost=194.00..194.00 rows=10000 width=8) (actual time=1.519..1.520 rows=10000 loops=1)"
+"                          Buckets: 16384  Batches: 1  Memory Usage: 519kB"
+"                          ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.004..0.790 rows=10000 loops=1)"
+"  ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.555..2.555 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"        ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.010..1.093 rows=10000 loops=1)"
+"Planning Time: 0.418 ms"
+"Execution Time: 7.199 ms"
+
+
+
+-- # CONSULTA SEM INDEX:
+"Hash Join  (cost=869.84..1152.04 rows=3184 width=35) (actual time=4.324..6.187 rows=3170 loops=1)"
+"  Hash Cond: (con.codm = m.codm)"
+"  ->  Hash Join  (cost=527.84..801.68 rows=3184 width=27) (actual time=2.634..3.982 rows=3170 loops=1)"
+"        Hash Cond: (c.codc = v.codc)"
+"        ->  Seq Scan on cliente c  (cost=0.00..192.00 rows=10000 width=15) (actual time=0.004..0.408 rows=10000 loops=1)"
+"        ->  Hash  (cost=488.04..488.04 rows=3184 width=20) (actual time=2.625..2.627 rows=3170 loops=1)"
+"              Buckets: 4096  Batches: 1  Memory Usage: 206kB"
+"              ->  Hash Join  (cost=367.92..488.04 rows=3184 width=20) (actual time=1.600..2.327 rows=3170 loops=1)"
+"                    Hash Cond: (con.codv = v.codv)"
+"                    ->  Bitmap Heap Scan on conserto con  (cost=48.92..160.68 rows=3184 width=20) (actual time=0.082..0.355 rows=3170 loops=1)"
+"                          Recheck Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-09-25'::date))"
+"                          Heap Blocks: exact=64"
+"                          ->  Bitmap Index Scan on idx_con_data  (cost=0.00..48.12 rows=3184 width=0) (actual time=0.071..0.071 rows=3170 loops=1)"
+"                                Index Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-09-25'::date))"
+"                    ->  Hash  (cost=194.00..194.00 rows=10000 width=8) (actual time=1.509..1.509 rows=10000 loops=1)"
+"                          Buckets: 16384  Batches: 1  Memory Usage: 519kB"
+"                          ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.003..0.787 rows=10000 loops=1)"
+"  ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=1.681..1.681 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"        ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.014..0.757 rows=10000 loops=1)"
+"Planning Time: 0.290 ms"
+"Execution Time: 6.278 ms"
+
+
+-- CONCLUSÃO DA QUESTÃO 3: SEM INDEX É MELHOR!
+
+---------------------------------------------------------------------------------------------
+
+-- QUESTÃO 4:
+
+-- # CONSULTA SEM INDEX:
+
+"Hash Left Join  (cost=280.00..523.26 rows=10000 width=35) (actual time=3.953..9.141 rows=10000 loops=1)"
+"  Hash Cond: (m.cods = s.cods)"
+"  ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=26) (actual time=0.013..1.111 rows=10000 loops=1)"
+"  ->  Hash  (cost=155.00..155.00 rows=10000 width=13) (actual time=3.915..3.916 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 577kB"
+"        ->  Seq Scan on setor s  (cost=0.00..155.00 rows=10000 width=13) (actual time=0.015..1.509 rows=10000 loops=1)"
+"Planning Time: 0.328 ms"
+"Execution Time: 9.762 ms"
+
+-- # CONSULTA COM INDEX DO cods DO MEC
+
+"Hash Left Join  (cost=280.00..523.26 rows=10000 width=35) (actual time=2.555..7.648 rows=10000 loops=1)"
+"  Hash Cond: (m.cods = s.cods)"
+"  ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=26) (actual time=0.011..1.042 rows=10000 loops=1)"
+"  ->  Hash  (cost=155.00..155.00 rows=10000 width=13) (actual time=2.522..2.523 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 577kB"
+"        ->  Seq Scan on setor s  (cost=0.00..155.00 rows=10000 width=13) (actual time=0.003..0.988 rows=10000 loops=1)"
+"Planning Time: 0.206 ms"
+"Execution Time: 8.183 ms"
+
+
+-- # consulta com index no cods do setor
+
+"Hash Left Join  (cost=280.00..523.26 rows=10000 width=35) (actual time=3.026..7.531 rows=10000 loops=1)"
+"  Hash Cond: (m.cods = s.cods)"
+"  ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=26) (actual time=0.011..0.843 rows=10000 loops=1)"
+"  ->  Hash  (cost=155.00..155.00 rows=10000 width=13) (actual time=2.997..2.998 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 577kB"
+"        ->  Seq Scan on setor s  (cost=0.00..155.00 rows=10000 width=13) (actual time=0.004..1.160 rows=10000 loops=1)"
+"Planning Time: 0.266 ms"
+"Execution Time: 7.918 ms"
+
+
+---------------------------------------------------------------------------------------------
+
+-- QUESTÃO 5:
+
+-- # consulta sem index:
+
+"Sort  (cost=1371.65..1396.65 rows=10000 width=24) (actual time=8.282..8.572 rows=9979 loops=1)"
+"  Sort Key: (count(*)) DESC"
+"  Sort Method: quicksort  Memory: 845kB"
+"  ->  HashAggregate  (cost=607.26..707.26 rows=10000 width=24) (actual time=6.103..7.056 rows=9979 loops=1)"
+"        Group Key: m.nome, con.data"
+"        Batches: 1  Memory Usage: 1425kB"
+"        ->  Hash Join  (cost=342.00..532.26 rows=10000 width=16) (actual time=2.229..4.060 rows=10000 loops=1)"
+"              Hash Cond: (con.codm = m.codm)"
+"              ->  Seq Scan on conserto con  (cost=0.00..164.00 rows=10000 width=8) (actual time=0.012..0.428 rows=10000 loops=1)"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.204..2.205 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.005..0.926 rows=10000 loops=1)"
+"Planning Time: 0.210 ms"
+"Execution Time: 8.890 ms"
+
+
+
+-- # consulta com index no nome do mecanico:
+
+"Sort  (cost=1371.65..1396.65 rows=10000 width=24) (actual time=8.731..9.022 rows=9979 loops=1)"
+"  Sort Key: (count(*)) DESC"
+"  Sort Method: quicksort  Memory: 845kB"
+"  ->  HashAggregate  (cost=607.26..707.26 rows=10000 width=24) (actual time=6.545..7.486 rows=9979 loops=1)"
+"        Group Key: m.nome, con.data"
+"        Batches: 1  Memory Usage: 1425kB"
+"        ->  Hash Join  (cost=342.00..532.26 rows=10000 width=16) (actual time=2.402..4.343 rows=10000 loops=1)"
+"              Hash Cond: (con.codm = m.codm)"
+"              ->  Seq Scan on conserto con  (cost=0.00..164.00 rows=10000 width=8) (actual time=0.005..0.445 rows=10000 loops=1)"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.385..2.386 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.005..0.989 rows=10000 loops=1)"
+"Planning Time: 0.244 ms"
+"Execution Time: 9.320 ms"
+
+
+-- # Segunda consulta mais rapida:
+
+"Hash Semi Join  (cost=289.00..634.64 rows=6350 width=12) (actual time=1.550..3.034 rows=6350 loops=1)"
+"  Hash Cond: (m.codm = con.codm)"
+"  ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.008..0.419 rows=10000 loops=1)"
+"  ->  Hash  (cost=164.00..164.00 rows=10000 width=4) (actual time=1.528..1.529 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 480kB"
+"        ->  Seq Scan on conserto con  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.006..0.702 rows=10000 loops=1)"
+"Planning Time: 0.236 ms"
+"Execution Time: 3.179 ms"
+
+
+-- QUESTÃO 6:
+
+-- # COnsulta sem index:
+"Sort  (cost=1376.65..1401.65 rows=10000 width=19) (actual time=9.575..9.962 rows=6293 loops=1)"
+"  Sort Key: (avg(v.quilometragem)) DESC"
+"  Sort Method: quicksort  Memory: 438kB"
+"  ->  HashAggregate  (cost=587.26..712.26 rows=10000 width=19) (actual time=7.692..8.301 rows=6293 loops=1)"
+"        Group Key: c.nome"
+"        Batches: 1  Memory Usage: 1425kB"
+"        ->  Hash Join  (cost=317.00..537.26 rows=10000 width=19) (actual time=3.241..5.526 rows=10000 loops=1)"
+"              Hash Cond: (v.codc = c.codc)"
+"              ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=12) (actual time=0.009..0.524 rows=10000 loops=1)"
+"              ->  Hash  (cost=192.00..192.00 rows=10000 width=15) (actual time=3.215..3.216 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 597kB"
+"                    ->  Seq Scan on cliente c  (cost=0.00..192.00 rows=10000 width=15) (actual time=0.006..1.353 rows=10000 loops=1)"
+"Planning Time: 0.251 ms"
+"Execution Time: 10.252 ms"
+
+-- # consulta com index btree em veiculo usando codc como argumento:
+"Sort  (cost=1376.65..1401.65 rows=10000 width=19) (actual time=9.683..9.902 rows=6293 loops=1)"
+"  Sort Key: (avg(v.quilometragem)) DESC"
+"  Sort Method: quicksort  Memory: 438kB"
+"  ->  HashAggregate  (cost=587.26..712.26 rows=10000 width=19) (actual time=7.847..8.455 rows=6293 loops=1)"
+"        Group Key: c.nome"
+"        Batches: 1  Memory Usage: 1425kB"
+"        ->  Hash Join  (cost=317.00..537.26 rows=10000 width=19) (actual time=3.080..5.517 rows=10000 loops=1)"
+"              Hash Cond: (v.codc = c.codc)"
+"              ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=12) (actual time=0.006..0.552 rows=10000 loops=1)"
+"              ->  Hash  (cost=192.00..192.00 rows=10000 width=15) (actual time=3.064..3.065 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 597kB"
+"                    ->  Seq Scan on cliente c  (cost=0.00..192.00 rows=10000 width=15) (actual time=0.004..1.308 rows=10000 loops=1)"
+"Planning Time: 0.163 ms"
+"Execution Time: 10.099 ms"
+
+
+
+-- Usando hash inves de btree:
+"Sort  (cost=1376.65..1401.65 rows=10000 width=19) (actual time=10.170..10.381 rows=6293 loops=1)"
+"  Sort Key: (avg(v.quilometragem)) DESC"
+"  Sort Method: quicksort  Memory: 438kB"
+"  ->  HashAggregate  (cost=587.26..712.26 rows=10000 width=19) (actual time=8.255..8.898 rows=6293 loops=1)"
+"        Group Key: c.nome"
+"        Batches: 1  Memory Usage: 1425kB"
+"        ->  Hash Join  (cost=317.00..537.26 rows=10000 width=19) (actual time=3.299..5.845 rows=10000 loops=1)"
+"              Hash Cond: (v.codc = c.codc)"
+"              ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=12) (actual time=0.010..0.577 rows=10000 loops=1)"
+"              ->  Hash  (cost=192.00..192.00 rows=10000 width=15) (actual time=3.271..3.272 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 597kB"
+"                    ->  Seq Scan on cliente c  (cost=0.00..192.00 rows=10000 width=15) (actual time=0.007..1.394 rows=10000 loops=1)"
+"Planning Time: 0.354 ms"
+"Execution Time: 10.601 ms"
+
+
+---------------------------------------------------------------------------------------------
+
+
+-- QUESTÃO 7:
+
+-- # PRIMEIRA CONSULTA:
+"HashAggregate  (cost=587.26..587.32 rows=6 width=20) (actual time=6.078..6.081 rows=6 loops=1)"
+"  Group Key: c.cidade"
+"  Batches: 1  Memory Usage: 24kB"
+"  ->  Hash Join  (cost=317.00..537.26 rows=10000 width=20) (actual time=2.763..4.780 rows=10000 loops=1)"
+"        Hash Cond: (v.codc = c.codc)"
+"        ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=12) (actual time=0.007..0.479 rows=10000 loops=1)"
+"        ->  Hash  (cost=192.00..192.00 rows=10000 width=16) (actual time=2.743..2.744 rows=10000 loops=1)"
+"              Buckets: 16384  Batches: 1  Memory Usage: 609kB"
+"              ->  Seq Scan on cliente c  (cost=0.00..192.00 rows=10000 width=16) (actual time=0.005..1.233 rows=10000 loops=1)"
+"Planning Time: 0.191 ms"
+"Execution Time: 6.113 ms"
+
+
+
+---------------------------------------------------------------------------------------------
+-- QUESTÃO 8:
+
+
+-- # TEMPO SEM INDEX:
+
+"Sort  (cost=857.02..866.76 rows=3896 width=20) (actual time=5.958..6.056 rows=3206 loops=1)"
+"  Sort Key: (count(co.codv)) DESC"
+"  Sort Method: quicksort  Memory: 222kB"
+"  ->  HashAggregate  (cost=585.71..624.67 rows=3896 width=20) (actual time=5.367..5.646 rows=3206 loops=1)"
+"        Group Key: m.nome"
+"        Batches: 1  Memory Usage: 465kB"
+"        ->  Hash Join  (cost=342.00..566.23 rows=3896 width=16) (actual time=3.112..4.506 rows=3897 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Seq Scan on conserto co  (cost=0.00..214.00 rows=3896 width=8) (actual time=0.012..0.794 rows=3897 loops=1)"
+"                    Filter: ((data >= '2018-06-12'::date) AND (data <= '2018-10-19'::date))"
+"                    Rows Removed by Filter: 6103"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=3.086..3.087 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.004..1.320 rows=10000 loops=1)"
+"Planning Time: 0.384 ms"
+"Execution Time: 6.170 ms"
+
+
+-- # TEMPO COM BTREE NA DATA DE CONSERTO:
+"Sort  (cost=825.68..835.42 rows=3896 width=20) (actual time=5.446..5.547 rows=3206 loops=1)"
+"  Sort Key: (count(co.codv)) DESC"
+"  Sort Method: quicksort  Memory: 222kB"
+"  ->  HashAggregate  (cost=554.37..593.33 rows=3896 width=20) (actual time=4.850..5.128 rows=3206 loops=1)"
+"        Group Key: m.nome"
+"        Batches: 1  Memory Usage: 465kB"
+"        ->  Hash Join  (cost=402.22..534.89 rows=3896 width=16) (actual time=2.901..4.004 rows=3897 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Bitmap Heap Scan on conserto co  (cost=60.22..182.66 rows=3896 width=8) (actual time=0.158..0.552 rows=3897 loops=1)"
+"                    Recheck Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-10-19'::date))"
+"                    Heap Blocks: exact=64"
+"                    ->  Bitmap Index Scan on idx_conserto_data  (cost=0.00..59.24 rows=3896 width=0) (actual time=0.136..0.137 rows=3897 loops=1)"
+"                          Index Cond: ((data >= '2018-06-12'::date) AND (data <= '2018-10-19'::date))"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.728..2.729 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.008..1.167 rows=10000 loops=1)"
+"Planning Time: 0.290 ms"
+"Execution Time: 5.660 ms"
+
+
+
+-- # tempo de consulta usando hash na data de consertos:
+"Sort  (cost=857.02..866.76 rows=3896 width=20) (actual time=4.011..4.105 rows=3206 loops=1)"
+"  Sort Key: (count(co.codv)) DESC"
+"  Sort Method: quicksort  Memory: 222kB"
+"  ->  HashAggregate  (cost=585.71..624.67 rows=3896 width=20) (actual time=3.443..3.708 rows=3206 loops=1)"
+"        Group Key: m.nome"
+"        Batches: 1  Memory Usage: 465kB"
+"        ->  Hash Join  (cost=342.00..566.23 rows=3896 width=16) (actual time=1.698..2.772 rows=3897 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Seq Scan on conserto co  (cost=0.00..214.00 rows=3896 width=8) (actual time=0.008..0.607 rows=3897 loops=1)"
+"                    Filter: ((data >= '2018-06-12'::date) AND (data <= '2018-10-19'::date))"
+"                    Rows Removed by Filter: 6103"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=1.682..1.682 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.003..0.722 rows=10000 loops=1)"
+"Planning Time: 0.210 ms"
+"Execution Time: 4.196 ms"
+
+
+
+-- # tempo de consulta de hash no nome do mecanico:
+"Sort  (cost=857.02..866.76 rows=3896 width=20) (actual time=5.227..5.311 rows=3206 loops=1)"
+"  Sort Key: (count(co.codv)) DESC"
+"  Sort Method: quicksort  Memory: 222kB"
+"  ->  HashAggregate  (cost=585.71..624.67 rows=3896 width=20) (actual time=4.685..4.936 rows=3206 loops=1)"
+"        Group Key: m.nome"
+"        Batches: 1  Memory Usage: 465kB"
+"        ->  Hash Join  (cost=342.00..566.23 rows=3896 width=16) (actual time=2.660..3.863 rows=3897 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Seq Scan on conserto co  (cost=0.00..214.00 rows=3896 width=8) (actual time=0.041..0.697 rows=3897 loops=1)"
+"                    Filter: ((data >= '2018-06-12'::date) AND (data <= '2018-10-19'::date))"
+"                    Rows Removed by Filter: 6103"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.579..2.579 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.008..1.143 rows=10000 loops=1)"
+"Planning Time: 0.576 ms"
+"Execution Time: 5.446 ms"
+
+
+---------------------------------------------------------------------------------------------
+
+-- QUESTÃO 9:
+
+-- # CONSULTA SEM INDEX:
+"Sort  (cost=559.34..559.35 rows=4 width=12) (actual time=10.326..10.328 rows=4 loops=1)"
+"  Sort Key: (count(*)) DESC"
+"  Sort Method: quicksort  Memory: 25kB"
+"  ->  HashAggregate  (cost=559.26..559.30 rows=4 width=12) (actual time=10.315..10.318 rows=4 loops=1)"
+"        Group Key: v.marca"
+"        Batches: 1  Memory Usage: 24kB"
+"        ->  Hash Join  (cost=319.00..509.26 rows=10000 width=4) (actual time=4.134..7.926 rows=10000 loops=1)"
+"              Hash Cond: (co.codv = v.codv)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.012..0.969 rows=10000 loops=1)"
+"              ->  Hash  (cost=194.00..194.00 rows=10000 width=8) (actual time=4.105..4.106 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 539kB"
+"                    ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.008..1.877 rows=10000 loops=1)"
+"Planning Time: 0.332 ms"
+"Execution Time: 10.381 ms"
+
+
+
+-- # USANDO BTREE EM CODV EM CONSERTOS:
+"Sort  (cost=559.34..559.35 rows=4 width=12) (actual time=5.053..5.056 rows=4 loops=1)"
+"  Sort Key: (count(*)) DESC"
+"  Sort Method: quicksort  Memory: 25kB"
+"  ->  HashAggregate  (cost=559.26..559.30 rows=4 width=12) (actual time=5.047..5.050 rows=4 loops=1)"
+"        Group Key: v.marca"
+"        Batches: 1  Memory Usage: 24kB"
+"        ->  Hash Join  (cost=319.00..509.26 rows=10000 width=4) (actual time=1.888..3.844 rows=10000 loops=1)"
+"              Hash Cond: (co.codv = v.codv)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.005..0.461 rows=10000 loops=1)"
+"              ->  Hash  (cost=194.00..194.00 rows=10000 width=8) (actual time=1.873..1.874 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 539kB"
+"                    ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.004..0.878 rows=10000 loops=1)"
+"Planning Time: 0.194 ms"
+"Execution Time: 5.083 ms"
+
+
+
+-- # USANDO HASH EM CONCERTOS NO CODV:
+"Sort  (cost=559.34..559.35 rows=4 width=12) (actual time=6.558..6.560 rows=4 loops=1)"
+"  Sort Key: (count(*)) DESC"
+"  Sort Method: quicksort  Memory: 25kB"
+"  ->  HashAggregate  (cost=559.26..559.30 rows=4 width=12) (actual time=6.549..6.552 rows=4 loops=1)"
+"        Group Key: v.marca"
+"        Batches: 1  Memory Usage: 24kB"
+"        ->  Hash Join  (cost=319.00..509.26 rows=10000 width=4) (actual time=3.393..5.331 rows=10000 loops=1)"
+"              Hash Cond: (co.codv = v.codv)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.012..0.485 rows=10000 loops=1)"
+"              ->  Hash  (cost=194.00..194.00 rows=10000 width=8) (actual time=3.361..3.361 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 539kB"
+"                    ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.007..1.555 rows=10000 loops=1)"
+"Planning Time: 0.343 ms"
+"Execution Time: 6.611 ms"
+
+
+-- # USANDO HASH NA MARCA DE VEICULOS:
+"Sort  (cost=559.34..559.35 rows=4 width=12) (actual time=6.580..6.582 rows=4 loops=1)"
+"  Sort Key: (count(*)) DESC"
+"  Sort Method: quicksort  Memory: 25kB"
+"  ->  HashAggregate  (cost=559.26..559.30 rows=4 width=12) (actual time=6.572..6.575 rows=4 loops=1)"
+"        Group Key: v.marca"
+"        Batches: 1  Memory Usage: 24kB"
+"        ->  Hash Join  (cost=319.00..509.26 rows=10000 width=4) (actual time=3.064..5.184 rows=10000 loops=1)"
+"              Hash Cond: (co.codv = v.codv)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.007..0.537 rows=10000 loops=1)"
+"              ->  Hash  (cost=194.00..194.00 rows=10000 width=8) (actual time=3.042..3.042 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 539kB"
+"                    ->  Seq Scan on veiculo v  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.005..1.415 rows=10000 loops=1)"
+"Planning Time: 0.234 ms"
+"Execution Time: 6.618 ms"
+
+---------------------------------------------------------------------------------------------
+
+-- QUESTÃO 10:
+
+-- # CONSULTA SEM INDEX:
+"Seq Scan on veiculo  (cost=219.01..438.01 rows=3333 width=13) (actual time=2.184..3.527 rows=4990 loops=1)"
+"  Filter: (quilometragem > (InitPlan 1).col1)"
+"  Rows Removed by Filter: 5010"
+"  InitPlan 1"
+"    ->  Aggregate  (cost=219.00..219.01 rows=1 width=8) (actual time=2.166..2.167 rows=1 loops=1)"
+"          ->  Seq Scan on veiculo veiculo_1  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.002..0.830 rows=10000 loops=1)"
+"Planning Time: 0.111 ms"
+"Execution Time: 3.741 ms"
+
+-- # CONSULTA USANDO HASH EM QUILOMETRAGEM EM VEICULOS:
+"Seq Scan on veiculo  (cost=219.01..438.01 rows=3333 width=13) (actual time=1.820..2.675 rows=4990 loops=1)"
+"  Filter: (quilometragem > (InitPlan 1).col1)"
+"  Rows Removed by Filter: 5010"
+"  InitPlan 1"
+"    ->  Aggregate  (cost=219.00..219.01 rows=1 width=8) (actual time=1.805..1.806 rows=1 loops=1)"
+"          ->  Seq Scan on veiculo veiculo_1  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.001..0.694 rows=10000 loops=1)"
+"Planning Time: 0.075 ms"
+"Execution Time: 2.809 ms"
+
+
+-- # CONSULTA COM HASH NA QUILOMETRAGEM:
+"Seq Scan on veiculo  (cost=219.01..438.01 rows=3333 width=13) (actual time=1.495..2.193 rows=4990 loops=1)"
+"  Filter: (quilometragem > (InitPlan 1).col1)"
+"  Rows Removed by Filter: 5010"
+"  InitPlan 1"
+"    ->  Aggregate  (cost=219.00..219.01 rows=1 width=8) (actual time=1.484..1.484 rows=1 loops=1)"
+"          ->  Seq Scan on veiculo veiculo_1  (cost=0.00..194.00 rows=10000 width=8) (actual time=0.001..0.571 rows=10000 loops=1)"
+"Planning Time: 0.078 ms"
+"Execution Time: 2.308 ms"
+
+
+---------------------------------------------------------------------------------------------
+-- QUESTÃO 11:
+
+-- SEM INDEX:
+"HashAggregate  (cost=740.59..773.92 rows=3333 width=16) (actual time=8.079..8.090 rows=21 loops=1)"
+"  Group Key: m.nome"
+"  Batches: 1  Memory Usage: 121kB"
+"  ->  HashAggregate  (cost=607.26..732.26 rows=3333 width=16) (actual time=7.459..8.072 rows=21 loops=1)"
+"        Group Key: m.nome, co.data"
+"        Filter: (count(*) > 1)"
+"        Batches: 1  Memory Usage: 1425kB"
+"        Rows Removed by Filter: 9958"
+"        ->  Hash Join  (cost=342.00..532.26 rows=10000 width=16) (actual time=2.589..4.843 rows=10000 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=8) (actual time=0.007..0.535 rows=10000 loops=1)"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.572..2.573 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.005..1.099 rows=10000 loops=1)"
+"Planning Time: 0.188 ms"
+"Execution Time: 8.293 ms"
+
+
+-- # consulta usando btree na data e codm de conserto:
+
+"HashAggregate  (cost=740.59..773.92 rows=3333 width=16) (actual time=8.076..8.087 rows=21 loops=1)"
+"  Group Key: m.nome"
+"  Batches: 1  Memory Usage: 121kB"
+"  ->  HashAggregate  (cost=607.26..732.26 rows=3333 width=16) (actual time=7.475..8.070 rows=21 loops=1)"
+"        Group Key: m.nome, co.data"
+"        Filter: (count(*) > 1)"
+"        Batches: 1  Memory Usage: 1425kB"
+"        Rows Removed by Filter: 9958"
+"        ->  Hash Join  (cost=342.00..532.26 rows=10000 width=16) (actual time=2.871..5.013 rows=10000 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=8) (actual time=0.010..0.504 rows=10000 loops=1)"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=2.838..2.838 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.008..1.201 rows=10000 loops=1)"
+"Planning Time: 0.459 ms"
+"Execution Time: 8.330 ms"
+
+
+
+-- # Consulta usando hash no codm (so piorou):
+"HashAggregate  (cost=740.59..773.92 rows=3333 width=16) (actual time=9.468..9.480 rows=21 loops=1)"
+"  Group Key: m.nome"
+"  Batches: 1  Memory Usage: 121kB"
+"  ->  HashAggregate  (cost=607.26..732.26 rows=3333 width=16) (actual time=8.839..9.462 rows=21 loops=1)"
+"        Group Key: m.nome, co.data"
+"        Filter: (count(*) > 1)"
+"        Batches: 1  Memory Usage: 1425kB"
+"        Rows Removed by Filter: 9958"
+"        ->  Hash Join  (cost=342.00..532.26 rows=10000 width=16) (actual time=4.044..6.267 rows=10000 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=8) (actual time=0.010..0.554 rows=10000 loops=1)"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=4.016..4.017 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.006..1.687 rows=10000 loops=1)"
+"Planning Time: 0.316 ms"
+"Execution Time: 9.841 ms"
+
+
+
+
+-- # CONSULTA USANDO HASH NA DATA DE conserto:
+"HashAggregate  (cost=740.59..773.92 rows=3333 width=16) (actual time=8.792..8.803 rows=21 loops=1)"
+"  Group Key: m.nome"
+"  Batches: 1  Memory Usage: 121kB"
+"  ->  HashAggregate  (cost=607.26..732.26 rows=3333 width=16) (actual time=8.111..8.785 rows=21 loops=1)"
+"        Group Key: m.nome, co.data"
+"        Filter: (count(*) > 1)"
+"        Batches: 1  Memory Usage: 1425kB"
+"        Rows Removed by Filter: 9958"
+"        ->  Hash Join  (cost=342.00..532.26 rows=10000 width=16) (actual time=3.397..5.552 rows=10000 loops=1)"
+"              Hash Cond: (co.codm = m.codm)"
+"              ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=8) (actual time=0.008..0.507 rows=10000 loops=1)"
+"              ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=3.371..3.371 rows=10000 loops=1)"
+"                    Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"                    ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.006..1.410 rows=10000 loops=1)"
+"Planning Time: 0.366 ms"
+"Execution Time: 9.128 ms"
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+-- QUESTÃO 12:
+
+-- # USANDO A ESTRATEGIA DE JUNCAO COM APLICACAO DO DINSTINCT:
+"HashAggregate  (cost=557.26..657.26 rows=10000 width=12) (actual time=11.666..13.099 rows=6350 loops=1)"
+"  Group Key: m.nome"
+"  Batches: 1  Memory Usage: 657kB"
+"  ->  Hash Join  (cost=342.00..532.26 rows=10000 width=12) (actual time=3.253..8.056 rows=10000 loops=1)"
+"        Hash Cond: (con.codm = m.codm)"
+"        ->  Seq Scan on conserto con  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.020..0.827 rows=10000 loops=1)"
+"        ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=3.207..3.211 rows=10000 loops=1)"
+"              Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"              ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.015..1.346 rows=10000 loops=1)"
+"Planning Time: 0.267 ms"
+"Execution Time: 13.388 ms"
+
+
+
+-- # usando btree em codm de conserto:
+"Hash Join  (cost=342.00..532.26 rows=10000 width=12) (actual time=3.578..5.628 rows=10000 loops=1)"
+"  Hash Cond: (co.codm = m.codm)"
+"  ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.009..0.542 rows=10000 loops=1)"
+"  ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=3.552..3.552 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"        ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.006..1.536 rows=10000 loops=1)"
+"Planning Time: 0.288 ms"
+"Execution Time: 5.904 ms"
+
+
+-- # USANDO HASH EM CODM DE CONSERTOS:
+"Hash Join  (cost=342.00..532.26 rows=10000 width=12) (actual time=6.079..10.510 rows=10000 loops=1)"
+"  Hash Cond: (co.codm = m.codm)"
+"  ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.014..1.184 rows=10000 loops=1)"
+"  ->  Hash  (cost=217.00..217.00 rows=10000 width=16) (actual time=6.038..6.039 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 632kB"
+"        ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.011..2.528 rows=10000 loops=1)"
+"Planning Time: 0.485 ms"
+"Execution Time: 11.095 ms"
+
+
+
+-- # USANDO EXISTS:
+"HashAggregate  (cost=650.52..714.02 rows=6350 width=12) (actual time=7.153..7.755 rows=6350 loops=1)"
+"  Group Key: m.nome"
+"  Batches: 1  Memory Usage: 465kB"
+"  ->  Hash Semi Join  (cost=289.00..634.64 rows=6350 width=12) (actual time=1.809..5.517 rows=6350 loops=1)"
+"        Hash Cond: (m.codm = con.codm)"
+"        ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.010..0.687 rows=10000 loops=1)"
+"        ->  Hash  (cost=164.00..164.00 rows=10000 width=4) (actual time=1.786..1.786 rows=10000 loops=1)"
+"              Buckets: 16384  Batches: 1  Memory Usage: 480kB"
+"              ->  Seq Scan on conserto con  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.005..0.799 rows=10000 loops=1)"
+"Planning Time: 0.182 ms"
+"Execution Time: 7.918 ms"
+
+
+-- # usando btree em codm de conserto com exists:
+"Hash Semi Join  (cost=289.00..634.64 rows=6350 width=12) (actual time=2.405..4.278 rows=6350 loops=1)"
+"  Hash Cond: (m.codm = co.codm)"
+"  ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.010..0.544 rows=10000 loops=1)"
+"  ->  Hash  (cost=164.00..164.00 rows=10000 width=4) (actual time=2.382..2.383 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 480kB"
+"        ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.004..1.048 rows=10000 loops=1)"
+"Planning Time: 0.191 ms"
+"Execution Time: 4.458 ms"
+
+
+
+-- # USANDO HASH EM CODM DE CONSERTOS:
+"Hash Semi Join  (cost=289.00..634.64 rows=6350 width=12) (actual time=4.910..9.690 rows=6350 loops=1)"
+"  Hash Cond: (m.codm = co.codm)"
+"  ->  Seq Scan on mecanico m  (cost=0.00..217.00 rows=10000 width=16) (actual time=0.009..1.281 rows=10000 loops=1)"
+"  ->  Hash  (cost=164.00..164.00 rows=10000 width=4) (actual time=4.876..4.877 rows=10000 loops=1)"
+"        Buckets: 16384  Batches: 1  Memory Usage: 480kB"
+"        ->  Seq Scan on conserto co  (cost=0.00..164.00 rows=10000 width=4) (actual time=0.005..2.133 rows=10000 loops=1)"
+"Planning Time: 0.358 ms"
+"Execution Time: 10.097 ms"
+

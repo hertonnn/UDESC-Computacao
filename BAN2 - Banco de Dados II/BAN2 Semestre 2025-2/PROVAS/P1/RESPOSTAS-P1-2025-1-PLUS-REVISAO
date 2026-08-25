@@ -1,0 +1,911 @@
+-------------------------------------------------------------------------------------------------------------------------
+
+-- PROVA 1 2025_1 ---
+-------------------------------------------------------------------------------------------------------------------------
+-- QUESTÃO 1: FUNÇÕES ---
+-- 1a) Função que informado o SSN de um empregado como parâmetro retorne o salário dele incrementado em 5% para cada departamento que ele gerencie ou retorne 0 se ele não gerenciar nenhum departamento
+
+create or replace function questao1A(p_ssn char(9)) returns numeric as
+$$
+declare
+	salario_atual numeric default 0;
+	qnt_dep_gerenciados int default 0;
+begin
+	select salario from empregado where ssn = p_ssn into salario_atual;
+	select count(*) from departamento where gerssn = p_ssn into qnt_dep_gerenciados; 
+	if qnt_dep_gerenciados = 0 then
+		raise notice 'Empregado não gerencia nenhum departamento!';
+		return 0;
+	else
+		return (salario_atual + ((salario_atual * 0.05) * qnt_dep_gerenciados) );
+	end if;
+end;
+$$
+language plpgsql;
+
+
+select questao1A('333445555');
+
+-- 1b) Função que incremente em 2% o salário dos empregados que são supervisores de 2 ou mais funcionários
+
+create or replace function questao1B() returns int as 
+$$
+declare
+	qnt_linhas int default 0;
+begin
+	update empregado set salario = (salario + salario * 0.02) where ssn in (select emp.superssn from empregado emp group by (emp.superssn) having count(*) >= 2);
+	get diagnostics qnt_linhas = row_count;
+	return qnt_linhas;
+end;
+$$
+language plpgsql;
+
+select questao1B();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+-- QUESTÃO 2: GATILHOS -- 
+-- Obs Inicial:  Note que os gatilhos precisam funcionar corretamente tanto para o insert quanto para o update:
+
+-- 2a) Gatilho para impedir que um empregado seja alocado a projetos que não são do departamento que ele está vinculado.
+
+create or replace function impedirAlocacaoEmpregado() returns trigger as
+$$
+declare
+	dno_do_empregado int default 0;
+	dno_do_projeto int default 0;
+	
+begin
+	select dno from empregado where ssn = new.essn into dno_do_empregado;
+	select dnum from projeto where pnumero = new.pno into dno_do_projeto;
+	
+	if(dno_do_projeto != dno_do_empregado ) then
+		raise exception 'Tentando alocar um funcionado a um projeto de departamento diferente!';
+	else
+		return new; -- tera mais coisa
+	end if;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2A before insert or update on trabalha_em for each row execute procedure impedirAlocacaoEmpregado();
+
+insert into trabalha_em values('123456789', 3, 70.1)
+
+-- 2b) Gatilho para impedir que um empregado seja alocado como gerente de um departamento caso a quantidade de departamentos 
+-- gerenciados por empregados do mesmo departamento que ele seja maior que 5.
+
+create or replace function impedirAlocacaoEmpregado() returns trigger as
+$$
+declare
+	qnt_gerentes int default 0;
+	dpt_do_novo_gerente int default 0;
+begin
+	-- primeiro descobrir o dpt do novo gerente
+	select em.dno into dpt_do_novo_gerente from empregado em where em.ssn = new.gerssn;
+	-- linkar tudo
+	select count(*) into qnt_gerentes from departamento d join empregado e on d.gerssn = e.ssn where e.dno = dpt_do_novo_gerente;
+	raise notice 'Qnt de gerentes no departamento do novo gerente: %', qnt_gerentes;
+	if qnt_gerentes > 5 then
+		raise exception 'Processo não permitido, passou do limite de gerentes por departamento!';
+	else
+		return new;
+	end if;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2B before insert or update on departamento for each row execute procedure impedirAlocacaoEmpregado();
+
+insert into departamento values (9, 'TESTE5', '888665555', '2025-01-01')
+
+
+-- 2c) Gatilho para impedir que um dependente seja vinculado a um empregado que seja mais novo do que ele.
+
+create or replace function impedirDependente() returns trigger as
+$$
+declare
+	idade_emp date;
+begin
+	select datanasc into idade_emp from empregado where ssn = new.essn;
+	if(idade_emp > new.datanasc) then 
+		raise exception 'Idade do dependente é maior!';
+	else
+		raise notice 'Idade de acordo!';
+		return new;
+	end if;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2C before insert or update on dependente for each row execute procedure impedirDependente(); 
+
+
+
+insert into dependente values ('333445555', 'Gustavo', 'M', '1990-01-01', 'Filho')
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+-- QUESTÃO 3: VISÕES ---
+-- 3a) Visão que mostre o nome de todos os empresados, de seus respectivos departamentos, e para aqueles que são gerentes, mostre também o nome do departamento gerenciado.
+
+create or replace view questao3A as select em.pnome as emp_nome, de.dnome as dpt_nome, de2.dnome as dpt_lider from empregado em join departamento de on em.dno = de.dnumero left join departamento de2 on em.ssn = de2.gerssn
+
+-- 3b) Visão que mostra o nome de todos os departamentos e para aqueles que tem projeto mostre também os nomes dos projetos e de seus empregados alocados. 
+
+create or replace view questao3B as select dep.dnome, p.pjnome, emp.pnome from departamento dep left join projeto p on p.dnum = dep.dnumero left join trabalha_em tra on tra.pno = p.pnumero left join empregado emp on emp.ssn = tra.essn
+-------------------------------------------------------------------------------------------------------------------------
+
+-
+-
+-
+-
+-
+------------------------------------------------------------------------------------------------------------------------- 
+-- EXERCICIO 1: BÁSICO CONSULTAS SQL ---
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 1)      Recupere o nome e o endereço de cada cliente.
+SELECT nome, endereco from cliente
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 2)      Recupere o nome e a função dos mecânicos que trabalham no setor número 2 (cods 2).
+
+SELECT nome, funcao from mecanico where cods = 2
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 3)      Recupere o CPF e o nome de todos os mecânicos que são clientes da oficina (utilize operação de conjuntos).
+
+
+SELECT m.nome, m.cpf from mecanico m join cliente c on m.cpf = c.cpf 
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 4)      Recupere as cidades das quais os mecânicos e clientes são oriundos.
+
+
+select cidade from cliente union select cidade from mecanico 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 5)      Recupere as marcas distintas dos veículos dos clientes que moram em Joinville.
+
+
+select distinct v.marca from veiculo v join cliente c on c.codc = v.codc where c.cidade = 'Joinville'
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 6)      Recupere as funções distintas dos mecânicos da oficina.
+
+select distinct funcao from mecanico
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 7)      Recupere todas as informações dos clientes que têm idade maior que 25 anos.
+
+select * from cliente where idade > 25
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 8)      Recupere o CPF e o nome dos mecânicos que trabalham no setor de mecânica.
+
+select m.cpf, m.nome from mecanico m join setor s on m.cods = s.cods where s.nome = 'Mecânica' 
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 9)      Recupere o CPF e nome dos mecânicos que trabalharam no dia 13/06/2014.
+
+select m.cpf, m.nome from mecanico m join conserto s on s.codm = m.codm where data = '2014-06-13'
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 10)  Recupere o nome do cliente, o modelo do seu veículo, o nome do mecânico e sua função para todos os consertos realizados (utilize join para realizar a junção).
+
+select cli.nome, v.modelo, m.nome, m.funcao from conserto co join veiculo v on v.codv = co.codv JOIN cliente cli on v.codc = cli.codc JOIN mecanico m on co.codm = m.codm
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 11)  Recupere o nome do mecânico, o nome do cliente e a hora do conserto para as serviços realizados no dia 19/06/2014 (utilize join para realizar a junção).
+
+select m.nome, cli.nome, co.hora from mecanico m join conserto co on m.codm = co.codm JOIN veiculo v on v.codv = co.codv JOIN cliente cli on cli.codc = v.codc where co.data = '2014-06-19'
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+-- 12)   Recupere o código e o nome dos setores que foram utilizados entre os dias 12/06/2014 e 14/06/2014 (utilize join para realizar a junção).
+
+select distinct s.cods, s.nome from setor s join mecanico m on m.cods = s.cods JOIN conserto co on co.codm = m.codm where co.data between '2014-06-12' and '2014-06-14'
+
+-
+-
+-
+-
+-
+
+-- EXERCICIO 2: CONSULTAS SQL AVANCADAS ---
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1)      Recupere o CPF e o nome dos mecânicos que trabalham nos setores número 1 e 2 (faça a consulta utilizado a cláusula IN).
+
+select cpf, nome from mecanico where cods in (1,2)
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2)      Recupere o CPF e o nome dos mecânicos que trabalham nos setores 'Funilaria' e 'Pintura' (faça a consulta utilizando sub-consultas aninhadas).
+
+
+SELECT cpf, nome FROM mecanico WHERE cods IN (SELECT cods FROM setor WHERE nome IN ('Funilaria', 'Pintura'));
+  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3)      Recupere o CPF e nome dos mecânicos que atenderam no dia 13/06/2014 (faça a consulta usando INNER JOIN).
+
+SELECT m.cpf, m.nome from mecanico m inner join conserto c on c.codm = m.codm where c.data = '2014-06-13'
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4)      Recupere o nome do mecânico, o nome do cliente e a hora do conserto para os consertos realizados no dia 12/06/2014 (faça a consulta usando INNER JOIN).
+
+select m.nome, cli.nome, co.hora from mecanico m inner join conserto co using (codm) inner join veiculo v using (codv ) inner join cliente cli using (codc) where co.data = '2014-06-12'
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 5)      Recupere o nome e a função de todos os mecânicos, e o número e o nome dos setores para os mecânicos que tenham essa informação.
+
+
+select * from mecanico m left join setor s using (cods)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6)      Recupere o nome de todos os mecânicos, e as datas dos consertos para os mecânicos que têm consertos feitos (deve aparecer apenas um registro de nome de mecânico para cada data de conserto).
+
+
+select m.nome, c.data from mecanico m left join conserto c using (codm) group by (m.nome, c.data)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 7)      Recupere a média da quilometragem de todos os veículos dos clientes.
+
+select avg(quilometragem) from veiculo
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 8)      Recupere a soma da quilometragem dos veículos de cada cidade onde residem seus proprietários.
+
+select cidade, sum(quilometragem) from veiculo v inner join cliente c using (codc) group by cidade
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 9)      Recupere a quantidade de consertos feitos por cada mecânico durante o período de 12/06/2014 até 19/06/2014
+
+select m.nome, count(*) as qnt from mecanico m inner join conserto c using (codm) where c.data between '2014-06-12' and '2014-06-19' group by m.nome
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 10)   Recupere a quantidade de consertos feitos agrupada pela marca do veículo.
+
+select v.marca, count(*) from conserto c inner join veiculo v using (codv) group by v.marca 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 11)   Recupere o modelo, a marca e o ano dos veículos que têm quilometragem maior que a média de quilometragem de todos os veículos.
+
+select modelo, marca, ano from veiculo where quilometragem > (select avg(quilometragem) from veiculo)
+
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 12)   Recupere o nome dos mecânicos que têm mais de um conserto marcado para o mesmo dia.
+
+select m.nome, c.data, count(c.data) as qnt from mecanico m join conserto c using (codm) group by (m.nome, c.data) having count(c.data) > 1
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-
+-
+-
+-
+-
+
+-- EXERCICIO 3: VISÕES ---
+
+---------------------------------------------------------------------------------------------------------------------------------------------------- 
+-- 1)      Mostre o nome e a função dos mecânicos.
+
+create OR REPLACE view questao1 as select nome, funcao from mecanico
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2)      Mostre o modelo e a marca dos veículos dos clientes.
+
+create or replace view questao2 as select modelo, marca from veiculo
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3)      Mostre o nome dos mecânicos, o nome dos clientes, o modelo dos veículos e a data e hora dos consertos realizados.
+
+create or replace view questao3 (m_nome, c_nome, v_modelo, co_data, co_hora) as select m.nome, c.nome, v.modelo, co.data from mecanico m join conserto co using (codm) join veiculo v using (codv) join cliente c using (codc)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4)      Mostre o ano dos veículos e a média de quilometragem para cada ano.
+
+create or replace view questao4 as select ano, avg(quilometragem) from veiculo group by (ano) order by ano
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 5)      Mostre o nome dos mecânicos e o total de consertos feitos por um mecânico em cada dia.
+
+create or replace view questap5 as select m.nome, c.data, count(c.data) as qtd from mecanico m join conserto c using (codm) group by (m.nome, c.data) order by c.data
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6)      Mostre o nome dos setores e o total de consertos feitos em um setor em cada dia.
+
+create or replace view questao6 as select s.nome, c.data ,count(c.data) from conserto c join mecanico m using (codm) join setor s using (cods) group by (s.nome, c.data) order by c.data
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 7)      Mostre o nome das funções e o número de mecânicos que têm uma destas funções.
+
+create or replace view questao7 as select m.funcao, count(m.nome) as qtd from mecanico m group by (m.funcao)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 8)      Mostre o nome dos mecânicos e suas funções e, para os mecânicos que estejam alocados a um setor, informe também o número e nome do setor.
+
+
+create or replace view questao8 as select m.nome, m.funcao, s.cods, s.nome as setor_nome from mecanico m left join setor s using (cods)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+-- 9)      Mostre o nome das funções dos mecânicos e a quantidade de consertos feitos agrupado por cada função.
+
+create or replace view questao9 as select m.funcao, count(*) as qnt from mecanico m join conserto c using (codm) group by (m.funcao)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+-
+-
+-
+-
+-
+
+--- EXERCICIO 4: FUNÇÕES ---
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1)      Função para inserção de um mecânico.
+
+create or replace function addMecanico(p_codm int, p_cpf varchar(11), p_nome varchar(50), p_idade int, p_endereco varchar(500), p_cidade varchar, p_funcao varchar(500), p_cods int) returns int as
+$$
+declare
+	qnt int default 0;
+begin
+	insert into mecanico values (p_codm, p_cpf, p_nome, p_idade, p_endereco, p_cidade, p_funcao, p_cods);
+	get diagnostics qnt = row_count;
+	return qnt;
+end;
+$$
+language plpgsql;
+
+
+-- teste:
+select addMecanico(99, null, null, null, null, null, null, null);
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2)      Função para exclusão de um mecânico. 
+
+create or replace function removMecanico(p_codm int) returns int as
+$$
+declare
+	qnt int default 0;
+begin
+	delete from mecanico m where m.codm = p_codm;
+	get diagnostics qnt = row_count;
+	return qnt;
+end;
+$$
+language plpgsql;
+
+select removMecanico(99);
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3)      Função única para inserção, atualizar e exclusão de um cliente.
+
+create or replace function godFuncCliente(p_tipo varchar(10), p_codc int, p_cpf varchar(11), p_nome varchar(50), p_idade int, p_endereco varchar(500), p_cidade varchar(500) ) returns int as
+$$
+declare
+	qnt int default 0;
+begin
+	IF p_tipo = 'inserir' then
+		raise notice 'Inserção soliticada!';
+		insert into cliente values(p_codc); -- o resto dos valores
+		get diagnostics qnt = row_count;
+		return qnt;
+	ELSIF  p_tipo = 'atualizar' then
+		raise notice 'Update soliticada!';
+		update cliente set cpf = p_cpf, nome = p_nome, idade = p_idade, endereco = p_endereco, cidade = p_cidade WHERE codc = p_codc;
+		get diagnostics qnt = row_count;
+		return qnt;
+		
+	elsif p_tipo = 'delete' then
+		raise notice 'Exclusão soliticada!';
+		delete from cliente c where c.codc = p_codc;
+		get diagnostics qnt = row_count;
+		return qnt;
+	
+	else
+		raise exception 'Operação desconhecida!';
+		return 0;
+	end if;
+	
+end;
+$$
+language plpgsql;
+
+select godFuncCliente('atualizar', 99, 'Ana_julia', null, null, null, null);
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4)      Função que limite o cadastro de no máximo 10 setores na oficina mecânica.
+
+
+create or replace function cadastroLimite10Setores(p_cods int, p_nome varchar(50)) returns int as
+$$
+declare
+	qnt int default 0;
+	qnt_setor int default 0;
+begin
+	select count(*) from setor into qnt_setor;
+	if qnt_setor < 10 then
+		insert into setor values(p_cods, p_nome);
+		get diagnostics qnt = row_count;
+		return qnt;
+	else		
+		raise exception 'Limite atintigo!';
+		return 0;
+	end if;
+end;
+$$
+language plpgsql;
+
+
+
+
+select * from setor
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 5)      Função que limita o cadastro de um conserto apenas se o mecânico não tiver mais de 3 consertos agendados para o mesmo dia.
+
+
+create or replace function limitConserto(p_codm int, p_codv int, p_date date, p_hora time) returns int as
+$$
+declare
+	qnt_concertos int default 0;
+begin
+	select count(*) from conserto c where c.codm = p_codm and c.data = p_date into qnt_concertos;
+	if qnt_concertos < 3 then
+		raise notice 'Processo normal!';
+		insert into conserto values(p_codm, p_codv, p_date, p_hora);
+		return 1;
+	else	
+		raise notice 'Atingiu o limite!';
+		return 0;
+	end if;
+end;
+$$
+language plpgsql;
+
+
+select * from conserto
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6)      Função para calcular a média geral de idade dos Mecânicos e Clientes.
+
+
+create or replace function mediaMecCli() returns float as
+$$
+declare
+	media_mec float default 0.0;
+	media_cli float default 0.0;
+	
+begin
+	select avg(idade) from mecanico into media_mec;
+	select avg(idade) from cliente into media_cli;
+	return (media_mec + media_cli/2);
+end;
+$$
+language plpgsql;
+
+select mediaMecCli()
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 7)      Função única que permita fazer a exclusão de um Setor, Mecânico, Cliente ou Veículo.
+
+
+CREATE OR REPLACE FUNCTION exclusaoGeral(pnome varchar(20), pcod int) returns int as
+$$
+declare
+	qnt int default 0;
+begin
+	IF pnome = 'setor' THEN
+		RAISE NOTICE 'Exclusão do setor.';
+		delete from setor s where s.cods = pcod; 
+		return 1;
+	ELSIF pnome = 'mecanico' THEN
+		RAISE NOTICE 'Exclusão do mecanico.';
+		delete from mecanico m where m.codm = pcod;
+		return 2;
+	ELSEIF pnome = 'cliente' THEN
+		RAISE NOTICE 'Exclusão do cliente.';
+		delete from cliente c where c.codc = pcod;
+		return 3;
+	ELSEIF pnome = 'veiculo' THEN
+		RAISE NOTICE 'Exclusão do veiculo.';
+		delete from veiculo v where v.codv = pcod;
+		return 4;
+	ELSE
+		RAISE NOTICE 'INSIRA UM NOME DE TABELA VALIDO!.';
+		return 0;
+	END IF;
+end;
+$$
+language plpgsql
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 8)      Considerando que na tabela Cliente apenas codc é a chave primária, faça uma função que remova clientes com CPF repetido, deixando apenas um cadastro para cada CPF. Escolha o critério que preferir para definir qual cadastro será mantido: aquele com a menor idade, que possuir mais consertos agendados, etc. Para testar a função, não se esqueça de inserir na tabela alguns clientes com este problema.
+
+CREATE OR REPLACE FUNCTION exclusaoDuplicadasCPF() returns int as
+$$
+declare
+	qnt int default 0;
+	cliente1 RECORD;
+	cliente2 RECORD;
+begin
+	FOR cliente1 in SELECT * from cliente LOOP
+		FOR cliente2 in SELECT * FROM cliente loop
+			IF cliente1.cpf = cliente2.cpf and cliente1.codc != cliente2.codc THEN
+				RAISE NOTICE 'cpf duplicado encontrado!.';
+				-- exlusao do que tem menor idade
+				IF cliente1.idade <= cliente2.idade THEN
+					delete from cliente c where c.codc = cliente1.codc;
+				ELSE
+					delete from cliente c where c.codc = cliente2.codc;
+				END IF;
+				return 1;
+			END IF;
+		END LOOP;
+	END LOOP;
+	
+	RAISE NOTICE 'NENHUM cpf duplicado encontrado!.';	
+	return 0;
+end;
+$$
+language plpgsql
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 9)   Função para calcular se o CPF é válido*.
+
+CREATE OR REPLACE FUNCTION validacaoCPF(pcpf varchar(11)) returns int as
+$$
+declare
+	qnt int default 0;
+	soma int default 0;
+	i int default 0;
+	peso int default 0;
+	penultimo_digito int default 0;
+	ultimo_digito int default 0;
+	digito_atual int default 0;
+begin
+	-- navegar pelos caracteres do cpf (primeiro digito):
+	FOR i IN 1..9 LOOP
+		digito_atual := cast(SUBSTRING(pcpf, i, 1) as integer);
+		peso := 11 - i;
+		soma := soma + (digito_atual * peso);
+	END LOOP;
+
+	RAISE NOTICE 'A soma final para o cálculo do primeiro dígito é: %', soma;
+
+	penultimo_digito := (soma % 11);
+	IF penultimo_digito < 2 THEN
+		penultimo_digito := 0;
+	ELSE
+		penultimo_digito := 11 - penultimo_digito;
+	END IF;
+
+	-- compara para ver se o digito no cpf esta correto
+	IF penultimo_digito != cast(SUBSTRING(pcpf, 10, 1) as integer) THEN 
+		raise notice 'Decimo digito invalido!';
+		return 0;
+	end if;
+
+	soma := 0;
+	peso := 0;
+	-- navegar pelos caracteres do cpf (segundo digito):
+	FOR i IN 1..10 LOOP
+		digito_atual := cast(SUBSTRING(pcpf, i, 1) as integer);
+		peso := 12 - i;
+		soma := soma + (digito_atual * peso);
+	END LOOP;
+
+	ultimo_digito := (soma % 11);
+	IF ultimo_digito < 2 THEN
+		ultimo_digito := 0;
+	ELSE
+		ultimo_digito := 11 - ultimo_digito;
+	END IF;
+
+	raise notice 'ultimo capturado: %', ultimo_digito;
+	raise notice 'ultimo esperado: %', cast(SUBSTRING(pcpf, 11, 1) as integer);
+	
+	-- compara para ver se o digito no cpf esta correto
+	IF ultimo_digito != cast(SUBSTRING(pcpf, 11, 1) as integer) THEN 
+		raise notice 'Decimo primeiro digito invalido!';
+		return 0;
+	end if;
+
+	raise notice 'CPF verificado e validado corretamente!';
+	return 1;
+
+end;
+$$
+language plpgsql
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 10)   Função que calcula a quantidade de horas extras de um mecânico em um mês de trabalho. O número de horas extras é calculado a partir das horas que excedam 
+--  as 160 horas de trabalho mensais. O número de horas mensais trabalhadas é calculada a partir dos consertos realizados. Cada conserto tem a duração de 1 hora.
+
+
+CREATE OR REPLACE FUNCTION horasExtrasMecanico(pcodm int, pmes int , pano int ) returns int as
+$$
+declare
+	qnt int default 0;
+	qnt_consertos int default 0;
+	horas_extras int default 0;
+begin
+	select count(*) into qnt_consertos from conserto c where c.codm = pcodm and EXTRACT(MONTH FROM c.data) = pmes and EXTRACT(YEAR FROM c.data) = pano;
+	raise notice 'Horas de conserto: %', qnt_consertos;
+
+	if qnt_consertos < 160 then
+		raise notice 'Horas insuficentes para gerar extra!';
+		return 0;
+	else
+		horas_extras := qnt_consertos - 160;
+		raise notice 'Horas extras: %', horas_extras;
+		return horas_extras;
+	end if;
+	
+	raise notice 'ERRO!';
+	return 0;
+end;
+$$
+language plpgsql
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+-
+-
+-
+-
+-
+
+--- EXERCICIO 5: GATILHOS ---
+
+-------------------------------------------------------------------------------------------------------------------------------
+--1)      Gatilho para impedir a inserção ou atualização de Clientes com o mesmo CPF.
+create or replace function verifica_cpf_unico() returns trigger as
+$$
+begin
+	IF (TG_OP = 'INSERT' ) THEN
+		if (select count(1) from cliente where cpf = new.cpf) > 0 then
+			raise exception 'CPF ja cadastrado!';
+		end if;
+	ELSIF ( TG_OP = 'UPDATE' ) THEN
+		if ((select count(1) from cliente where cpf = new.cpf) > 0) AND (new.cpf <> old.cpf) then
+			raise exception 'CPF ja cadastrado!';
+		end if;
+	END IF;
+	return new;
+
+end;
+$$
+language plpgsql;
+
+create trigger verifica_cpf_unico before insert or update 
+	on cliente for each row execute procedure verifica_cpf_unico()
+	
+insert into cliente values(111, '22000200000', 'ana', 12, 'bla', 'joinville')
+
+-------------------------------------------------------------------------------------------------------------------------------
+--2)      Gatilho para impedir a inserção ou atualização de Mecânicos com idade menor que 20 anos.
+
+create or replace function impedir_mec_20_anos() returns trigger as
+$$
+begin
+	if (new.idade < 20) then
+	 raise exception 'Idade menor que vinte!';
+	end if;
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger questao2 before update or insert on mecanico for each row execute procedure impedir_mec_20_anos();
+
+-------------------------------------------------------------------------------------------------------------------------------
+--3)      Gatilho para atribuir um cods (sequencial) para um novo setor inserido.
+
+
+create or replace function cods_sequencial() returns trigger as
+$$
+declare
+	antigo_maior_cods int default 0;
+begin
+	select max(cods) from setor into antigo_maior_cods;
+	new.cods := antigo_maior_cods + 1;
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger questao3 before insert on setor for each row execute procedure cods_sequencial();
+
+-------------------------------------------------------------------------------------------------------------------------------
+--4)      Gatilho para impedir a inserção de um mecânico ou cliente com CPF inválido.
+
+create or replace function validadaCPF_paraInsercao() returns trigger as
+$$
+begin
+
+	if( validacaoCPF(new.cpf) = 1) then
+		raise notice 'CPF validado!';
+		return new;
+	else
+		raise exception 'CPF invalido! Inserção não efetuada.';
+	end if;
+end;
+$$
+language plpgsql;
+
+create trigger cpf_validacao_mecanico before insert or update
+	on mecanico for each row execute procedure validadaCPF_paraInsercao()
+
+create trigger cpf_validacao_cliente before insert or update
+	on cliente for each row execute procedure validadaCPF_paraInsercao()
+
+-- select * from cliente
+
+-- insert into mecanico values(15, '13256409997');
+
+-------------------------------------------------------------------------------------------------------------------------------
+--5)      Gatilho para impedir que um mecânico seja removido caso não exista outro mecânico com a mesma função.
+
+create or replace function verificarMecanico() returns trigger as
+$$
+declare 
+	qnt_mecanicos_mesma_funcao int default 0;
+begin
+	select count(*) from mecanico m where m.funcao = old.funcao into qnt_mecanicos_mesma_funcao;  
+	if qnt_mecanicos_mesma_funcao > 1 then
+		return old;
+	else
+		raise exception 'Não há outro mecanico com a mesma funcao!';
+		return 0;
+	end if;
+end;
+$$
+language plpgsql;
+
+create trigger questao5 before delete on mecanico for each row execute procedure verificarMecanico();
+
+delete from mecanico where codm = 3
+
+-------------------------------------------------------------------------------------------------------------------------------
+--6)      Gatilho que ao inserir, atualizar ou remover um mecânico, reflita as mesmas modificações na tabela de Cliente. Em caso de atualização, se o mecânico ainda não existir na tabela de Cliente, deve ser inserido.
+
+-- A FUNÇÃO DO GATILHO
+CREATE OR REPLACE FUNCTION mecanico_cliente_sync()
+RETURNS trigger AS $$
+DECLARE
+    v_codc INT;
+BEGIN
+    -- Se um mecânico for INSERIDO
+    IF (TG_OP = 'INSERT') THEN
+        -- Gera um novo codc para não colidir com clientes existentes
+        SELECT COALESCE(MAX(codc), 0) + 1 INTO v_codc FROM cliente;
+        INSERT INTO cliente (codc, cpf, nome, idade, endereco, cidade)
+        VALUES (v_codc, NEW.cpf, NEW.nome, NEW.idade, NEW.endereco, NEW.cidade);
+
+    -- Se um mecânico for ATUALIZADO
+    ELSIF (TG_OP = 'UPDATE') THEN
+        -- Tenta atualizar o cliente correspondente pelo CPF
+        UPDATE cliente
+        SET nome = NEW.nome,
+            idade = NEW.idade,
+            endereco = NEW.endereco,
+            cidade = NEW.cidade
+        WHERE cpf = NEW.cpf;
+
+        -- Se o UPDATE não afetou nenhuma linha (porque o cliente não existia), INSERE.
+        IF NOT FOUND THEN
+            SELECT COALESCE(MAX(codc), 0) + 1 INTO v_codc FROM cliente;
+            INSERT INTO cliente (codc, cpf, nome, idade, endereco, cidade)
+            VALUES (v_codc, NEW.cpf, NEW.nome, NEW.idade, NEW.endereco, NEW.cidade);
+        END IF;
+
+    -- Se um mecânico for DELETADO
+    ELSIF (TG_OP = 'DELETE') THEN
+        DELETE FROM cliente WHERE cpf = OLD.cpf;
+        RETURN OLD; -- Para DELETE, o retorno é o registro antigo
+    END IF;
+
+    RETURN NEW; -- Para INSERT/UPDATE, o retorno é o registro novo
+END;
+$$ LANGUAGE plpgsql;
+
+-- A DEFINIÇÃO DO GATILHO
+-- Nota: O nome da função no "EXECUTE PROCEDURE" deve ser o mesmo da função criada.
+CREATE TRIGGER trg_mecanico_cliente_sync
+    AFTER INSERT OR UPDATE OR DELETE ON mecanico
+    FOR EACH ROW EXECUTE PROCEDURE mecanico_cliente_sync();
+
+-------------------------------------------------------------------------------------------------------------------------------
+--7)      Gatilho para impedir que um conserto seja inserido na tabela Conserto se o mecânico já realizou mais de 20 horas extras no mês.
+
+CREATE OR REPLACE FUNCTION verifica_carga_horaria()
+RETURNS trigger AS $$
+DECLARE
+    v_total_consertos_mes INT;
+    v_mes INT;
+    v_ano INT;
+BEGIN
+    -- A verificação só é necessária em INSERT ou se o mecânico mudou em um UPDATE
+    IF (TG_OP = 'INSERT') OR (TG_OP = 'UPDATE' AND NEW.codm <> OLD.codm) THEN
+    
+        -- Pega o mês e o ano da nova data do conserto
+        v_mes := EXTRACT(MONTH FROM NEW.data);
+        v_ano := EXTRACT(YEAR FROM NEW.data);
+
+        -- Conta quantos consertos o mecânico já tem nesse mês/ano
+        SELECT COUNT(*) INTO v_total_consertos_mes
+        FROM conserto
+        WHERE codm = NEW.codm
+          AND EXTRACT(MONTH FROM data) = v_mes
+          AND EXTRACT(YEAR FROM data) = v_ano;
+        
+        -- Se o total for maior que 20, bloqueia a operação
+        IF v_total_consertos_mes > 20 THEN
+            RAISE EXCEPTION 'Operação bloqueada: Mecânico já excedeu 20 consertos no mês.';
+        END IF;
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- A DEFINIÇÃO DO GATILHO
+-- Correção: O gatilho deve ser na tabela "conserto"
+CREATE TRIGGER trg_verifica_carga_horaria
+    BEFORE INSERT OR UPDATE ON conserto
+    FOR EACH ROW EXECUTE PROCEDURE verifica_carga_horaria();
+
+-------------------------------------------------------------------------------------------------------------------------------
+--8)      Gatilho para impedir que mais de 1 conserto seja agendado no mesmo setor na mesma hora. 
+
+CREATE OR REPLACE FUNCTION impedir_conflito_setor_hora()
+RETURNS TRIGGER AS $$
+DECLARE
+    setor_do_novo_conserto int;
+BEGIN
+    SELECT cods INTO setor_do_novo_conserto FROM mecanico WHERE codm = NEW.codm;
+    
+    IF setor_do_novo_conserto IS NULL THEN
+        RETURN NEW;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1  -- O valor '1' é apenas um placeholder, não importa.
+        FROM conserto co
+        JOIN mecanico m ON co.codm = m.codm
+        WHERE
+            m.cods = setor_do_novo_conserto AND -- Condição 1: Mesmo setor
+            co.data = NEW.data AND             -- Condição 2: Mesma data
+            co.hora = NEW.hora                 -- Condição 3: Mesma hora
+    ) THEN
+        RAISE EXCEPTION 'Conflito de agendamento: Já existe um conserto no setor % para a data % às %.',
+                        setor_do_novo_conserto, NEW.data, NEW.hora;
+    END IF;
+
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER tg_impede_conflito_setor_hora BEFORE INSERT OR UPDATE ON conserto FOR EACH ROW EXECUTE FUNCTION impedir_conflito_setor_hora();
+
+-------------------------------------------------------------------------------------------------------------------------------
+

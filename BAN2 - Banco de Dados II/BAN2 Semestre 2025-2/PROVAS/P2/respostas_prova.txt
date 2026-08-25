@@ -1,0 +1,10 @@
+-- QUESTÃO 1 --
+
+-- A: Consulta que recupere todos os dados dos empregados que trabalham no departamento número 5, ordenados por salário em ordem decrescente
+
+db.empregados.find( {dno:5 }).sort({salario: 1})
+
+
+-- B: Consulta que recupere apenas o nome (primeiro nome e sobrenome) e o salário de todos os empregados do sexo feminino que ganham mais de 20000.
+
+

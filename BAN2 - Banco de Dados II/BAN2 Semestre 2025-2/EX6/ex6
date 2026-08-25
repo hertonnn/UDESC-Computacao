@@ -1,0 +1,36 @@
+-- EXERCICIO 6 - VISÕES
+
+--1) Mostre o nome e a função dos mecânicos.
+-- create or replace view questao1 as select nome, funcao from mecanico 
+
+
+--2) Mostre o modelo e a marca dos veículos dos clientes.
+-- create or replace view questao2 as select modelo, marca from veiculo
+
+
+--3) Mostre o nome dos mecânicos, o nome dos clientes, o modelo dos veículos e a data e hora dos consertos realizados.
+-- create or replace view questao3 (m_nome, c_nome, v_modelo, co_data, co_hora) as select m.nome, c.nome, v.modelo, co.data, co.hora from conserto co JOIN veiculo v using (codv) JOIN mecanico m using(codm) JOIN cliente c using (codc)
+
+
+--4) Mostre o ano dos veículos e a média de quilometragem para cada ano.
+-- create or replace view questao4 (ano, media_km) as select v.ano, avg(v.quilometragem) from veiculo v group by (ano) order by ano
+
+
+--5) Mostre o nome dos mecânicos e o total de consertos feitos por um mecânico em cada dia.
+-- create view questao5 as select m.nome, co.data, count(m.nome) from mecanico m JOIN conserto co using(codm) group by (m.nome, co.data) order by co.data
+
+
+--6) Mostre o nome dos setores e o total de consertos feitos em um setor em cada dia.
+-- create view questao6 as select s.nome, co.data, count(cods) from mecanico c JOIN conserto co using (codm) JOIN setor s using(cods) group by (co.data, s.nome) order by co.data
+
+
+--7) Mostre o nome das funções e o número de mecânicos que têm uma destas funções.
+-- create view questao7 as select funcao, count(funcao) from mecanico group by (funcao)
+
+
+--8) Mostre o nome dos mecânicos e suas funções e, para os mecânicos que estejam alocados a um setor, informe também o número e nome do setor.
+-- create or replace view questao8 (m_nome, m_funcao, s_cods, s_nome) as select m.nome, m.funcao, s.cods, s.nome from mecanico m JOIN setor s using(cods)
+
+
+--9) Mostre o nome das funções dos mecânicos e a quantidade de consertos feitos agrupado por cada função.
+-- create or replace view questao9 as select m.funcao, count(nome) from mecanico m join conserto co using(codm) group by (m.funcao)

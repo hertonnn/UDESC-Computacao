@@ -1,0 +1,59 @@
+-- 1) Recupere o CPF e o nome dos mecânicos que trabalham nos setores número 1 e 2 (faça a consulta utilizado a cláusula IN).
+-- select m.cpf, m.nome from mecanico m JOIN setor s on m.cods = s.cods where s.cods IN (1,2)
+
+
+
+-- 2) Recupere o CPF e o nome dos mecânicos que trabalham nos setores 'Funilaria' e 'Pintura' (faça a consulta utilizando sub-consultas aninhadas).
+-- select m.cpf, m.nome from mecanico m where codm in 
+-- (select codm from mecanico where cods = (select cods from setor where nome = 'Funilaria')) 
+-- AND codm IN (select codm from mecanico where cods = (select cods from setor where nome = 'Funilaria'))
+
+
+
+-- 3) Recupere o CPF e nome dos mecânicos que atenderam no dia 13/06/2014 (faça a consulta usando INNER JOIN).
+-- select m.cpf, m.nome from mecanico m INNER JOIN conserto c using (codm) where c.data = '2014-06-13'
+
+
+
+-- 4) Recupere o nome do mecânico, o nome do cliente e a hora do conserto para os consertos realizados no dia 12/06/2014 (faça a consulta usando INNER JOIN).
+-- select m.nome, c.nome, co.hora from mecanico m INNER JOIN conserto co using (codm) INNER JOIN veiculo v using(codv) INNER JOIN cliente c using (codc) WHERE co.data = '2014-06-12'
+
+
+
+
+-- 5) Recupere o nome e a função de todos os mecânicos, e o número e o nome dos setores para os mecânicos que tenham essa informação.
+-- select m.nome, m.funcao, s.nome, s.cods  from mecanico m left JOIN setor s using (cods)
+
+
+
+-- 6) Recupere o nome de todos os mecânicos, e as datas dos consertos para os mecânicos que têm consertos feitos (deve aparecer apenas um registro de nome de mecânico para cada data de conserto).
+-- select distinct m.nome, c.data from mecanico m INNER JOIN conserto c using (codm)
+
+
+-- 7) Recupere a média da quilometragem de todos os veículos dos clientes.
+-- SELECT avg(quilometragem) as media_km from veiculo
+
+
+
+-- 8) Recupere a soma da quilometragem dos veículos de cada cidade onde residem seus proprietários.
+-- select avg(quilometragem) as media_km from veiculo v INNER JOIN cliente c using(codc) GROUP by c.cidade
+
+
+
+-- 9) Recupere a quantidade de consertos feitos por cada mecânico durante o período de 12/06/2014 até 19/06/2014
+-- select m.nome, count(nome) as qtd_conserto from mecanico m INNER JOIN conserto co using(codm) WHERE co.data BETWEEN '2014-06-12' AND '2014-06-19' GROUP BY m.nome
+
+
+-- 10) Recupere a quantidade de consertos feitos agrupada pela marca do veículo.
+-- select v.marca, count(v.marca) from veiculo v INNER JOIN conserto co using(codv) GROUP BY v.marca
+
+
+
+-- 11) Recupere o modelo, a marca e o ano dos veículos que têm quilometragem maior que a média de quilometragem de todos os veículos.
+-- select v.modelo, v.marca, v.ano from veiculo v WHERE v.quilometragem > (select avg(quilometragem) from veiculo)
+
+
+
+-- 12) Recupere o nome dos mecânicos que têm mais de um conserto marcado para o mesmo dia.
+-- select m.nome, co.data, count(co.data) as qtd from mecanico m INNER JOIN conserto co using(codm) group by (m.nome, co.data) having count(co.data) > 1
+ 

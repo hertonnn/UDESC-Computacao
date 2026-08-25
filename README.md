@@ -34,15 +34,12 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - REC: Redes de Computadores
 - BAN II: Banco de Dados 2 📌
 - ACT: Automação e Controle  🎓
-- OGMR: Gerência e Mobilidade em Redes
-- OTES06: Programação de Dispositivos Móveis
 - SDI: Sistemas Distríbuidos
 # 2026/1
 - CGR: Computação Gráfica  🎓
 - PES: Pesquisa Operacional 🎓
-- OTAG: Tópicos Especiais em Aplicações Gráficas 📌 🎓
 - ODAW: Desenvolvimento de Aplicações na Web 📌 🎓
-- IHC: Interação Humano Computador ⏳ 🎓
+- IHC: Interação Humano Computador 📌 🎓
 # 2025/2
 - COM: Compiladores 🎓
 - CAL: Complexidade de Algoritmos📌 🎓
@@ -72,7 +69,7 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - SID: Sistemas Digitais 🎓
 # 2022/2
 - ECC: Eletrõnica para Ciência da Computação ⏳
-- LPG: Linguagem de Programação ⏳
+- LPG: Linguagem de Programação 
 - MDI: Matemática Discreta 📌🎓
 - ALI: Álgebra Linear 🎓
 - CDI I: Cálculo Diferencial e Integral
@@ -89,6 +86,8 @@ obs: Essa relevância não é a relevância da disciplina no curso, e sim a quan
 - ODAW - Desenvolvimento de Aplicações na Web 📌 🎓
 - OINE: Informática na Educação
 - OEAD: Educação a Distância
+- OGMR: Gerência e Mobilidade em Redes
+- OTES06: Programação de Dispositivos Móveis
 
 # OUTROS
 - ENG - English ⏳

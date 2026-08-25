@@ -1,0 +1,245 @@
+// Conecta-se ou cria um novo banco de dados chamado 'empresa_udesc'
+use('p2_estudos');
+
+// Limpa as coleções existentes para garantir um começo limpo
+db.empregados.drop();
+db.departamentos.drop();
+db.projetos.drop();
+
+// -------------------------------------------------------------------
+// -- Coleção: departamentos
+// -------------------------------------------------------------------
+db.departamentos.insertMany([
+  {
+    _id: 5,
+    dnome: 'Pesquisa',
+    gerssn: '333445555',
+    gerdatainicio: ISODate('1988-05-22T00:00:00Z'),
+    localizacoes: ['Bellaire', 'Sugarland']
+  },
+  {
+    _id: 4,
+    dnome: 'Administração',
+    gerssn: '987654321',
+    gerdatainicio: ISODate('1995-01-01T00:00:00Z'),
+    localizacoes: ['Stafford']
+  },
+  {
+    _id: 2,
+    dnome: 'Recursos Humanos',
+    gerssn: '987987987',
+    gerdatainicio: ISODate('2000-01-01T00:00:00Z'),
+    localizacoes: [] // Este departamento não possui localização na tabela depto_localizacoes
+  },
+  {
+    _id: 1,
+    dnome: 'Sede Administrativa',
+    gerssn: '888665555',
+    gerdatainicio: ISODate('1981-06-19T00:00:00Z'),
+    localizacoes: ['Houston']
+  }
+]);
+
+// -------------------------------------------------------------------
+// -- Coleção: projetos
+// -------------------------------------------------------------------
+db.projetos.insertMany([
+  {
+    _id: 1,
+    pjnome: 'ProdutoX',
+    plocalizacao: 'Bellaire',
+    dnum: 5
+  },
+  {
+    _id: 2,
+    pjnome: 'ProdutoY',
+    plocalizacao: 'Suaarland',
+    dnum: 5
+  },
+  {
+    _id: 3,
+    pjnome: 'ProdutoZ',
+    plocalizacao: 'Houston',
+    dnum: 5
+  },
+  {
+    _id: 4,
+    pjnome: 'ProdutoW',
+    plocalizacao: 'Albuquerque',
+    dnum: 5
+  },
+  {
+    _id: 10,
+    pjnome: 'Automatização',
+    plocalizacao: 'Stafford',
+    dnum: 4
+  },
+  {
+    _id: 20,
+    pjnome: 'Reorganização',
+    plocalizacao: 'Houston',
+    dnum: 1
+  },
+  {
+    _id: 30,
+    pjnome: 'Novos Benefícios',
+    plocalizacao: 'Stafford',
+    dnum: 4
+  }
+]);
+
+// -------------------------------------------------------------------
+// -- Coleção: empregados
+// -------------------------------------------------------------------
+db.empregados.insertMany([
+  {
+    _id: '888665555',
+    pnome: 'James',
+    minicial: 'E',
+    unome: 'Borg',
+    datanasc: ISODate('1937-11-10T00:00:00Z'),
+    endereco: '450 Stone, Houston, TX',
+    sexo: 'M',
+    salario: 55000,
+    superssn: null,
+    dno: 1,
+    projetos_trabalhados: [
+      { pno: 20, horas: null }
+    ],
+    dependentes: []
+  },
+  {
+    _id: '333445555',
+    pnome: 'Franklin',
+    minicial: 'T',
+    unome: 'Wong',
+    datanasc: ISODate('1955-12-08T00:00:00Z'),
+    endereco: '638 Voss, Houston, TX',
+    sexo: 'M',
+    salario: 40000,
+    superssn: '888665555',
+    dno: 5,
+    projetos_trabalhados: [
+      { pno: 2, horas: 10.0 },
+      { pno: 3, horas: 10.0 },
+      { pno: 10, horas: 10.0 },
+      { pno: 20, horas: 10.0 }
+    ],
+    dependentes: [
+      { nome_dependente: 'Alice', sexo: 'F', datanasc: ISODate('1986-04-05T00:00:00Z'), parentesco: 'FILHA' },
+      { nome_dependente: 'Theodore', sexo: 'M', datanasc: ISODate('1983-10-25T00:00:00Z'), parentesco: 'FILHO' },
+      { nome_dependente: 'Joy', sexo: 'F', datanasc: ISODate('1958-05-03T00:00:00Z'), parentesco: 'CÔNJUGE' }
+    ]
+  },
+  {
+    _id: '987654321',
+    pnome: 'Jennifer',
+    minicial: 'S',
+    unome: 'Wallace',
+    datanasc: ISODate('1941-06-20T00:00:00Z'),
+    endereco: '291 Berry, Bellaire,TX',
+    sexo: 'F',
+    salario: 43000,
+    superssn: '888665555',
+    dno: 4,
+    projetos_trabalhados: [
+      { pno: 30, horas: 20.0 },
+      { pno: 20, horas: 15.0 }
+    ],
+    dependentes: [
+      { nome_dependente: 'Abner', sexo: 'M', datanasc: ISODate('1942-02-28T00:00:00Z'), parentesco: 'CÔNJUGE' }
+    ]
+  },
+  {
+    _id: '123456789',
+    pnome: 'John',
+    minicial: 'B',
+    unome: 'Smith',
+    datanasc: ISODate('1965-01-09T00:00:00Z'),
+    endereco: '731 Fondren, Houston, TX',
+    sexo: 'M',
+    salario: 30000,
+    superssn: '333445555',
+    dno: 5,
+    projetos_trabalhados: [
+      { pno: 1, horas: 32.5 },
+      { pno: 2, horas: 7.5 }
+    ],
+    dependentes: [
+      { nome_dependente: 'Michael', sexo: 'M', datanasc: ISODate('1988-01-04T00:00:00Z'), parentesco: 'FILHO' },
+      { nome_dependente: 'Alice', sexo: 'F', datanasc: ISODate('1988-12-30T00:00:00Z'), parentesco: 'FILHA' },
+      { nome_dependente: 'Elizabeth', sexo: 'F', datanasc: ISODate('1967-05-05T00:00:00Z'), parentesco: 'CÔNJUGE' }
+    ]
+  },
+  {
+    _id: '999887777',
+    pnome: 'Alicia',
+    minicial: 'J',
+    unome: 'Zelaya',
+    datanasc: ISODate('1968-01-19T00:00:00Z'),
+    endereco: '3321 Castle, Spring, TX',
+    sexo: 'F',
+    salario: 25000,
+    superssn: '987654321',
+    dno: 4,
+    projetos_trabalhados: [
+      { pno: 30, horas: 30.0 },
+      { pno: 10, horas: 10.0 }
+    ],
+    dependentes: []
+  },
+  {
+    _id: '666884444',
+    pnome: 'Ramesh',
+    minicial: 'K',
+    unome: 'Narayan',
+    datanasc: ISODate('1962-09-15T00:00:00Z'),
+    endereco: '975 Fire Oak, Humble, TX',
+    sexo: 'M',
+    salario: 38000,
+    superssn: '333445555',
+    dno: null,
+    projetos_trabalhados: [],
+    dependentes: []
+  },
+  {
+    _id: '453453453',
+    pnome: 'Joyce',
+    minicial: 'A',
+    unome: 'English',
+    datanasc: ISODate('1972-07-31T00:00:00Z'),
+    endereco: '5631 Rice, Houston, TX',
+    sexo: 'F',
+    salario: 25000,
+    superssn: null,
+    dno: 5,
+    projetos_trabalhados: [
+      { pno: 1, horas: 20.0 },
+      { pno: 2, horas: 20.0 }
+    ],
+    dependentes: []
+  },
+  {
+    _id: '987987987',
+    pnome: 'Ahmad',
+    minicial: 'V',
+    unome: 'Jabbar',
+    datanasc: ISODate('1969-03-29T00:00:00Z'),
+    endereco: '980 Dallas, Houston, TX',
+    sexo: 'M',
+    salario: 25000,
+    superssn: '987654321',
+    dno: 4,
+    projetos_trabalhados: [
+      { pno: 10, horas: 35.0 },
+      { pno: 30, horas: 5.0 }
+    ],
+    dependentes: []
+  }
+]);
+
+// Confirmação de que os dados foram inseridos
+print("Coleções criadas e populadas com sucesso no banco de dados 'empresa_udesc'.");
+print("Documentos em 'departamentos': " + db.departamentos.countDocuments());
+print("Documentos em 'projetos': " + db.projetos.countDocuments());
+print("Documentos em 'empregados': " + db.empregados.countDocuments());

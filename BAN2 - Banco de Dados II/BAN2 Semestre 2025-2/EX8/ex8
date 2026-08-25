@@ -1,0 +1,222 @@
+-- 1) Gatilho para impedir a inserção ou atualização de Clientes com o mesmo CPF.
+-- Tabela: Cliente
+-- Operação: UPDATE e INSERT
+-- Quando: antes (before)
+-- Nivel: row level
+
+create or replace function verifica_cpf_unico() returns trigger as
+$$
+begin
+	IF (TG_OP = 'INSERT' ) THEN
+		if (select count(1) from cliente where cpf = new.cpf) then
+			raise exception 'CPF ja cadastrado!';
+		end if;
+	ELSIF ( TG_OP = 'UPDATE' ) THEN
+		if ((select count(1) from cliente where cpf = new.cpf) > 0) AND (new.cpf <> old.cpf) then
+			raise exception 'CPF ja cadastrado!';
+		end if;
+	END IF;
+	return new;
+
+end;
+$$
+language plpgsql;
+
+create trigger verifica_cpf_unico before insert or update 
+	on cliente for each row execute procedure verifica_cpf_unico()
+
+-- ------------------------------------------------------------------------------------------
+
+-- 2) Gatilho para impedir a inserção ou atualização de Mecânicos com idade menor que 20 anos.
+create or replace function verifica_idade_mecanicos() returns trigger as
+$$
+begin
+	if (new.idade < 20) then
+	 raise exception 'Idade menor que vinte!';
+	end if;
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger verifica_idade_mecanicos before insert or update 
+	on mecanico for each row execute procedure verifica_idade_mecanicos()
+
+-- ------------------------------------------------------------------------------------------
+
+-- 3) Gatilho para atribuir um cods (sequencial) para um novo setor inserido.
+
+
+-- MINHA VERSÃO (NÃO OTIMIZADA PARA MULTIPLICOS USUARIOS):
+create or replace function cods_sequencial() returns trigger as
+$$
+declare
+	ultimo_cods int;
+begin
+	select max(cods)  into ultimo_cods from setor;
+	if(new.cods = ultimo_cods + 1) then
+		raise exception 'Novo cods ja atingiu o maximo!';
+	else
+		new.cods := ultimo_cods + 1;
+	end if;
+	
+	return new;
+end;
+$$
+language plpgsql;
+
+-- VERSAO PROFESSOR (OTIMIZADA PARA MULTIPLOS USUARIOS):
+create sequence seq_cods start 5;
+
+create or replace function cods_sequencial() returns trigger as
+$$
+begin
+	new.cods := nextval('seq_cods');
+	return new;
+end;
+$$
+language plpgsql;
+
+
+
+create trigger cods_sequencial before insert or update
+	on setor for each row execute procedure cods_sequencial()
+
+-- select * from setor
+
+-- insert into setor values( 14, 'quarto!');
+
+
+-- ------------------------------------------------------------------------------------------
+
+-- 4) Gatilho para impedir a inserção de um mecânico ou cliente com CPF inválido.
+
+
+create or replace function validadaCPF_paraInsercao() returns trigger as
+$$
+begin
+
+	if( validacaoCPF(new.cpf) = 1) then
+		raise notice 'CPF validado!';
+		return new;
+	else
+		raise exception 'CPF invalido! Inserção não efetuada.';
+	end if;
+end;
+$$
+language plpgsql;
+
+create trigger cpf_validacao_mecanico before insert or update
+	on mecanico for each row execute procedure validadaCPF_paraInsercao()
+
+create trigger cpf_validacao_cliente before insert or update
+	on cliente for each row execute procedure validadaCPF_paraInsercao()
+
+-- select * from cliente
+
+-- insert into mecanico values(15, '13256409997');
+
+
+
+-- ------------------------------------------------------------------------------------------
+
+-- 5) Gatilho para impedir que um mecânico seja removido caso não exista outro mecânico com a mesma função.
+
+create or replace function removerMecanicoMesmaFuncao() returns trigger as
+$$
+begin
+	if( (SELECT COUNT(*) from mecanico where funcao = old.funcao) > 1 ) then
+		raise notice 'Há mais de um mecanico nessa função, remoção permitida!';
+		return old;
+	else
+		raise exception 'Unico mecanico dessa função no banco, remoção bloqueada!';
+	end if;
+end;
+$$
+language plpgsql;
+
+create trigger validaRemocaoMecanico before delete
+	on mecanico for each row execute procedure removerMecanicoMesmaFuncao();
+
+-- ------------------------------------------------------------------------------------------
+
+-- 6) Gatilho que ao inserir, atualizar ou remover um mecânico, reflita as mesmas modificações 
+-- na tabela de Cliente. Em caso de atualização, se o mecânico ainda não existir na tabela de Cliente, deve ser inserido.
+
+-- Ideia: todo mecanico tem que ser cliente da propria oficina
+-- Tabelas: mecanico
+-- Operacoes: todas (insert, update, delete)
+-- Quando: after
+-- Nivel: row level
+create or replace function mecconsertoHorasExtrasreturns trigger as
+$$
+begin
+	
+end;
+$$
+language plpgsql;
+create trigger validaMecanicoClienteNova after update or insert or delete
+	on mecanico for each row execute procedure mecanicoCliente();
+
+-- ------------------------------------------------------------------------------------------
+
+-- 7) Gatilho para impedir que um conserto seja inserido na tabela Conserto se o mecânico já realizou mais de 20 horas extras no mês.
+
+-- Revisar pois não esta garantido para todas as possibilidades!
+
+create or replace function consertoHorasExtras() returns trigger as
+$$
+begin
+	if( TP_OP = 'INSERT' AND 
+	horasExtrasMecanico(new.codm, EXTRACT(MONTH FROM new.data), EXTRACT(YEAR FROM new.data)) > 20 ) then
+		raise exception 'Mecanico excedeu horas extras!';
+	
+	elsif(TG_OP = 'UPDATE' and new.codm <> old.codm) then 
+		if(horasExtrasMecanico(new.codm, EXTRACT(MONTH FROM new.data), EXTRACT(YEAR FROM new.data)) > 20 ) then
+			raise exception 'Mecanico excedeu horas extras!';
+		end if;
+	end if;
+	return new;
+end;
+$$
+language plpgsql;
+
+create or replace trigger consertoHorasExtras before update or insert 
+	on mecanico for each row execute procedure consertoHorasExtras();
+
+-- ------------------------------------------------------------------------------------------
+
+-- 8) Gatilho para impedir que mais de 1 conserto seja agendado no mesmo setor na mesma hora. 
+
+CREATE OR REPLACE FUNCTION impedir_conflito_setor_hora()
+RETURNS TRIGGER AS $$
+DECLARE
+    setor_do_novo_conserto int;
+BEGIN
+    SELECT cods INTO setor_do_novo_conserto FROM mecanico WHERE codm = NEW.codm;
+    
+    IF setor_do_novo_conserto IS NULL THEN
+        RETURN NEW;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1  -- O valor '1' é apenas um placeholder, não importa.
+        FROM conserto co
+        JOIN mecanico m ON co.codm = m.codm
+        WHERE
+            m.cods = setor_do_novo_conserto AND -- Condição 1: Mesmo setor
+            co.data = NEW.data AND             -- Condição 2: Mesma data
+            co.hora = NEW.hora                 -- Condição 3: Mesma hora
+    ) THEN
+        RAISE EXCEPTION 'Conflito de agendamento: Já existe um conserto no setor % para a data % às %.',
+                        setor_do_novo_conserto, NEW.data, NEW.hora;
+    END IF;
+
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER tg_impede_conflito_setor_hora BEFORE INSERT OR UPDATE ON conserto FOR EACH ROW EXECUTE FUNCTION impedir_conflito_setor_hora();
+
+

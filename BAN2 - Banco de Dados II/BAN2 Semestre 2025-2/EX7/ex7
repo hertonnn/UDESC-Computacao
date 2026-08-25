@@ -1,0 +1,372 @@
+-- EXERCICIO 7
+
+-- 1)      Função para inserção de um mecânico.
+/*
+CREATE OR REPLACE FUNCTION addMecanico(pcodm int, pcpf char(11), 
+	pnome varchar(50), pidade int, pendereco varchar(500), pcidade varchar(500), 
+	pfuncao varchar(500), pcods int) RETURNS int as 
+$$
+DECLARE
+	qnt int default 0;
+BEGIN
+	insert into mecanico values(pcodm, pcpf, pnome, pidade, pendereco, pcidade, pfuncao, pcods);
+	get diagnostics qnt = row_count;
+	return qnt;
+	raise notice 'Quantidade de registros alterados: %', qnt;
+END;
+$$
+language plpgsql
+*/
+
+-- ------------------------------------------------------------------------------
+
+-- 2)      Função para exclusão de um mecânico.
+/*
+CREATE OR REPLACE FUNCTION deleteMecanico(pcodm int) RETURNS int as 
+$$
+DECLARE
+	qnt int default 0;
+BEGIN
+	delete from mecanico where codm = pcodm;
+	get diagnostics qnt = row_count;
+	return qnt;
+	raise notice 'Quantidade de registros alterados: %', qnt;
+END;
+$$
+language plpgsql
+*/
+
+
+-- -----------------------------------------------------------------------------
+
+-- 3) Função única para inserção, atualizar e exclusão de um cliente.
+/*
+CREATE OR REPLACE FUNCTION modCliente(popcao int, pcodc int, 
+	pcpf char(11), pnome varchar(50), pidade int, pendereco varchar(500), 
+	pcidade varchar(500)) RETURNS int as 
+$$
+DECLARE
+	qnt int default 0;
+BEGIN
+	-- INSERIR
+	IF popcao = 1 THEN
+		insert into cliente values(pcodc, pcpf, pnome, pidade, pendereco, pcidade);
+		get diagnostics qnt = row_count;
+		raise notice 'Quantidade de registros inseridos: %', qnt;
+		return qnt;
+		
+	-- DELETAR
+	ELSIF popcao = 2 THEN
+		delete from cliente where codc = pcodc;
+		get diagnostics qnt = row_count;
+		raise notice 'Quantidade de registros alterados: %', qnt;
+		return qnt;
+	
+	-- ALTERAR
+	ELSIF popcao = 3 THEN
+
+		UPDATE cliente
+        SET
+          cpf = pcpf,
+          nome = pnome,
+          idade = pidade,
+          endereco = pendereco,
+          cidade = pcidade
+        WHERE codc = pcodc;
+        
+        GET DIAGNOSTICS qnt = ROW_COUNT;
+        RAISE NOTICE 'Quantidade de registros atualizados: %', qnt;
+        RETURN qnt;
+		
+	ELSE
+		raise notice 'Opção não selecionada corretamente';
+		return 0;
+	
+	END IF;
+	
+END;
+$$
+language plpgsql
+*/
+
+
+-- -----------------------------------------------------------------------------
+
+-- 4)      Função que limite o cadastro de no máximo 10 setores na oficina mecânica.
+/*
+CREATE OR REPLACE FUNCTION  addSetor(pcods int, pnome varchar(50)) RETURNS int as 
+$$
+DECLARE
+	qnt int default 0;
+	qnt_setores int default 0;
+BEGIN
+	-- atribuicao para uma variavel
+	select count(*) into qnt_setores from setor;
+	IF qnt_setores < 10 THEN
+		insert into setor values(pcods, pnome);
+		get diagnostics qnt = row_count;
+		raise notice 'Quantidade de registros inseridos: %', qnt;
+		return qnt;
+	ELSE
+		RAISE NOTICE 'Não foi possível inserir. A oficina já atingiu o limite de 10 setores.';
+		return 0;
+	END IF;
+	
+END;
+$$
+language plpgsql
+*/
+
+-- -----------------------------------------------------------------------------
+/*
+-- 5) Função que limita o cadastro de um conserto apenas se o mecânico não tiver mais de 3 consertos agendados para o mesmo dia.
+CREATE OR REPLACE FUNCTION addConserto(pcodm int, pcodv int , pdata date, phora time) returns int as
+$$
+declare
+	qnt int default 0;
+	qnt_consertos_msm_dia int default 0;
+begin
+	select count(*) into qnt_consertos_msm_dia from conserto c where c.codm = pcodm and c.data = pdata;
+	if qnt_consertos_msm_dia < 3 then
+		RAISE NOTICE 'Inserção pode ser feita normalmente!';
+		insert into conserto values(pcodm, pcodv, pdata, phora);
+		return 1;
+	else
+		RAISE NOTICE 'Não foi possível inserir.';
+		return 0;
+	end if;
+end;
+$$
+language plpgsql
+*/
+
+
+-- -----------------------------------------------------------------------------
+/*
+-- 6) Função para calcular a média geral de idade dos Mecânicos e Clientes.
+-- VERSÃO USANDO FOR:
+CREATE OR REPLACE FUNCTION mediaIdadesManual() returns float as
+$$
+declare
+	cont int default 0;
+	soma_idade FLOAT DEFAULT 0;
+	v_idade mecanico.idade%type default 0;
+begin
+	for v_idade in select idade from mecanico loop
+		soma_idade := soma_idade + v_idade;
+		cont := cont+1;
+		raise notice 'Idade func %: %', cont, v_idade;
+	end loop;
+	for v_idade in select idade from cliente loop
+		soma_idade := soma_idade + v_idade;
+		cont := cont+1;
+		raise notice 'Idade cli %: %', cont, v_idade;
+
+	end loop;
+	return soma_idade / cont;
+end;
+$$
+language plpgsql
+
+-- VERSÃO DIRETA:
+CREATE OR REPLACE FUNCTION mediaIdades() returns float as
+$$
+declare
+	qnt int default 0;
+	mediaMeca float default 0.0;
+	mediaClie float default 0.0;
+begin
+	select avg(idade) into mediaMeca from mecanico;  
+	select avg(idade) into mediaClie from cliente;
+	return ( (mediaMeca + mediaClie) / 2.0);
+end;
+$$
+language plpgsql
+*/
+
+-- -----------------------------------------------------------------------------
+/*
+-- 7)      Função única que permita fazer a exclusão de um Setor, Mecânico, Cliente ou Veículo.
+CREATE OR REPLACE FUNCTION exclusaoGeral(pnome varchar(20), pcod int) returns int as
+$$
+declare
+	qnt int default 0;
+begin
+	IF pnome = 'setor' THEN
+		RAISE NOTICE 'Exclusão do setor.';
+		delete from setor s where s.cods = pcod; 
+		return 1;
+	ELSIF pnome = 'mecanico' THEN
+		RAISE NOTICE 'Exclusão do mecanico.';
+		delete from mecanico m where m.codm = pcod;
+		return 2;
+	ELSEIF pnome = 'cliente' THEN
+		RAISE NOTICE 'Exclusão do cliente.';
+		delete from cliente c where c.codc = pcod;
+		return 3;
+	ELSEIF pnome = 'veiculo' THEN
+		RAISE NOTICE 'Exclusão do veiculo.';
+		delete from veiculo v where v.codv = pcod;
+		return 4;
+	ELSE
+		RAISE NOTICE 'INSIRA UM NOME DE TABELA VALIDO!.';
+		return 0;
+	END IF;
+end;
+$$
+language plpgsql
+*/
+
+
+-- funcao auxiliar que o professor fez para auxiliar na exclusao de uma linha para estudar a concatenacao de strings
+/*
+create or replace function excluiSetor(chave varchar[], valor varchar[] ) returns void as
+$$
+begin
+	execute 'delete from setor where ' || chave[1]||' = ' || valor[1];
+end;
+$$
+language plpgsql
+*/
+
+
+-- -----------------------------------------------------------------------------
+
+/*
+-- 8) Considerando que na tabela Cliente apenas codc é a chave primária, faça uma função que remova clientes com CPF repetido,
+-- deixando apenas um cadastro para cada CPF. Escolha o critério que preferir para definir qual cadastro será mantido: aquele 
+-- com a menor idade, que possuir mais consertos agendados, etc. Para testar a função, não se esqueça de inserir na tabela alguns clientes com este problema.
+CREATE OR REPLACE FUNCTION exclusaoDuplicadasCPF() returns int as
+$$
+declare
+	qnt int default 0;
+	cliente1 RECORD;
+	cliente2 RECORD;
+begin
+	FOR cliente1 in SELECT * from cliente LOOP
+		FOR cliente2 in SELECT * FROM cliente loop
+			IF cliente1.cpf = cliente2.cpf and cliente1.codc != cliente2.codc THEN
+				RAISE NOTICE 'cpf duplicado encontrado!.';
+				-- exlusao do que tem menor idade
+				IF cliente1.idade <= cliente2.idade THEN
+					delete from cliente c where c.codc = cliente1.codc;
+				ELSE
+					delete from cliente c where c.codc = cliente2.codc;
+				END IF;
+				return 1;
+			END IF;
+		END LOOP;
+	END LOOP;
+	
+	RAISE NOTICE 'NENHUM cpf duplicado encontrado!.';	
+	return 0;
+end;
+$$
+language plpgsql
+*/
+
+-- -----------------------------------------------------------------------------
+
+-- 9)   Função para calcular se o CPF é válido*.
+/*
+CREATE OR REPLACE FUNCTION validacaoCPF(pcpf varchar(11)) returns int as
+$$
+declare
+	qnt int default 0;
+	soma int default 0;
+	i int default 0;
+	peso int default 0;
+	penultimo_digito int default 0;
+	ultimo_digito int default 0;
+	digito_atual int default 0;
+begin
+	-- navegar pelos caracteres do cpf (primeiro digito):
+	FOR i IN 1..9 LOOP
+		digito_atual := cast(SUBSTRING(pcpf, i, 1) as integer);
+		peso := 11 - i;
+		soma := soma + (digito_atual * peso);
+	END LOOP;
+
+	RAISE NOTICE 'A soma final para o cálculo do primeiro dígito é: %', soma;
+
+	penultimo_digito := (soma % 11);
+	IF penultimo_digito < 2 THEN
+		penultimo_digito := 0;
+	ELSE
+		penultimo_digito := 11 - penultimo_digito;
+	END IF;
+
+	-- compara para ver se o digito no cpf esta correto
+	IF penultimo_digito != cast(SUBSTRING(pcpf, 10, 1) as integer) THEN 
+		raise notice 'Decimo digito invalido!';
+		return 0;
+	end if;
+
+	soma := 0;
+	peso := 0;
+	-- navegar pelos caracteres do cpf (segundo digito):
+	FOR i IN 1..10 LOOP
+		digito_atual := cast(SUBSTRING(pcpf, i, 1) as integer);
+		peso := 12 - i;
+		soma := soma + (digito_atual * peso);
+	END LOOP;
+
+	ultimo_digito := (soma % 11);
+	IF ultimo_digito < 2 THEN
+		ultimo_digito := 0;
+	ELSE
+		ultimo_digito := 11 - ultimo_digito;
+	END IF;
+
+	raise notice 'ultimo capturado: %', ultimo_digito;
+	raise notice 'ultimo esperado: %', cast(SUBSTRING(pcpf, 11, 1) as integer);
+	
+	-- compara para ver se o digito no cpf esta correto
+	IF ultimo_digito != cast(SUBSTRING(pcpf, 11, 1) as integer) THEN 
+		raise notice 'Decimo primeiro digito invalido!';
+		return 0;
+	end if;
+
+	raise notice 'CPF verificado e validado corretamente!';
+	return 1;
+
+end;
+$$
+language plpgsql
+*/
+
+
+-- -----------------------------------------------------------------------------
+
+-- 10)   Função que calcula a quantidade de horas extras de um mecânico em um mês de trabalho. 
+-- O número de horas extras é calculado a partir das horas que excedam as 160 horas de 
+-- trabalho mensais. O número de horas mensais trabalhadas é calculada a partir dos consertos realizados.
+-- Cada conserto tem a duração de 1 hora.
+
+/*
+CREATE OR REPLACE FUNCTION horasExtrasMecanico(pcodm int, pmes int , pano int ) returns int as
+$$
+declare
+	qnt int default 0;
+	qnt_consertos int default 0;
+	horas_extras int default 0;
+begin
+	select count(*) into qnt_consertos from conserto c where c.codm = pcodm and EXTRACT(MONTH FROM c.data) = pmes and EXTRACT(YEAR FROM c.data) = pano;
+	raise notice 'Horas de conserto: %', qnt_consertos;
+
+	if qnt_consertos < 160 then
+		raise notice 'Horas insuficentes para gerar extra!';
+		return 0;
+	else
+		horas_extras := qnt_consertos - 160;
+		raise notice 'Horas extras: %', horas_extras;
+		return horas_extras;
+	end if;
+	
+	raise notice 'ERRO!';
+	return 0;
+end;
+$$
+language plpgsql
+*/
+

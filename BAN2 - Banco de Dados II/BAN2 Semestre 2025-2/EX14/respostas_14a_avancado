@@ -1,0 +1,74 @@
+-------------------------------------------------------------------------------------------------
+1)      Recupere o CPF e o nome dos mecânicos que trabalham nos setores número 1 e 2 (faça a consulta utilizado a cláusula IN).
+
+
+
+db.mecanico.find({cods: {$in: [1, 2]}}, {cpf: 1, nome: 1})
+
+
+-------------------------------------------------------------------------------------------------
+2)      Recupere o CPF e o nome dos mecânicos que trabalham nos setores 'Funilaria' e 'Pintura' (faça a consulta utilizando sub-consultas aninhadas).
+
+
+db.mecanico.find( {cods: {$in: [{ db.setor.find({nome: {$in: ['Funilaria', 'Pintura']}}, {cods:1} }]}} )
+
+-------------------------------------------------------------------------------------------------
+3)      Recupere o CPF e nome dos mecânicos que atenderam no dia 13/06/2014 (faça a consulta usando INNER JOIN).
+
+
+
+
+-------------------------------------------------------------------------------------------------
+4)      Recupere o nome do mecânico, o nome do cliente e a hora do conserto para os consertos realizados no dia 12/06/2014 (faça a consulta usando INNER JOIN).
+
+
+
+
+-------------------------------------------------------------------------------------------------
+5)      Recupere o nome e a função de todos os mecânicos, e o número e o nome dos setores para os mecânicos que tenham essa informação.
+
+
+
+
+-------------------------------------------------------------------------------------------------
+6)      Recupere o nome de todos os mecânicos, e as datas dos consertos para os mecânicos que têm consertos feitos (deve aparecer apenas um registro de nome de mecânico para cada data de conserto).
+
+
+
+
+-------------------------------------------------------------------------------------------------
+7)      Recupere a média da quilometragem de todos os veículos dos clientes.
+
+
+
+
+-------------------------------------------------------------------------------------------------
+8)      Recupere a soma da quilometragem dos veículos de cada cidade onde residem seus proprietários.
+
+
+
+
+-------------------------------------------------------------------------------------------------
+9)      Recupere a quantidade de consertos feitos por cada mecânico durante o período de 12/06/2014 até 19/06/2014
+
+
+
+
+-------------------------------------------------------------------------------------------------
+10)   Recupere a quantidade de consertos feitos agrupada pela marca do veículo.
+
+
+
+
+-------------------------------------------------------------------------------------------------
+11)   Recupere o modelo, a marca e o ano dos veículos que têm quilometragem maior que a média de quilometragem de todos os veículos.
+
+
+
+-------------------------------------------------------------------------------------------------
+12)   Recupere o nome dos mecânicos que têm mais de um conserto marcado para o mesmo dia.
+
+
+
+
+-------------------------------------------------------------------------------------------------

@@ -1,0 +1,48 @@
+--1)      Crie um índice para cada uma das chaves estrangeiras presentes do esquema de dados.
+
+--conserto
+ --codm
+ --codv
+ 
+create index idx_concerto_codm on  conserto using hash(codm)
+
+create index idx_concerto_codv on conserto using hash(codv)
+
+-- mecanico
+--  -cods
+
+create index idx_mecanico_cods on mecanico using hash(cods)
+
+-- veiculo
+--  -codc
+
+create index idx_veiculo_codc on veiculo using hash(codv)
+
+-- 2)      Crie um índice para acelerar a busca dos mecânicos pela função.
+
+create index idx_mec_funcao on mecanico using hash(substr(funcao,1,10))
+
+select * from mecanico
+
+-- 3)      Crie um índice para acelerar a ordenação dos consertos pela data e hora.
+
+create index idx_consertos_data on conserto using btree(data,hora)
+
+-- 4)      Crie um índice para acelerar a busca de clientes pelo cpf.
+
+create index idx_cliente_cpf on cliente using btree(cpf)
+
+
+-- 5)      Crie um índice para acelerar a busca pelas primeiras 5 letras do nome dos clientes.
+
+create index idx_cliente_nome on cliente using btree(substr(nome,1,5))
+
+-- 6)      Crie um índice para acelerar a busca dos clientes com CPF com final XXXXXXXXX55.
+
+create index idx_cli_cpf_2 on cliente using btree(cpf) where cpf LIKE '%55'
+
+
+--Consultar todos os indeces criados no banco de dados
+-- SELECT indexname, indexdef
+-- from pg_indexes
+-- where schemaname = 'public'

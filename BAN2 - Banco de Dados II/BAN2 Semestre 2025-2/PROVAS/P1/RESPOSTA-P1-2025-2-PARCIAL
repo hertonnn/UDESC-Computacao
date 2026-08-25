@@ -1,0 +1,201 @@
+
+-- QUESTÃO 1. (2.0 pontos) Considerando o esquema abaixo, especifique as seguintes funções em PostgreSQL:
+-- 1a. Função que informado o número do departamento como parâmetro retorne o somatório dos salários dos seus empregados, sendo que o 
+-- salário de cada empregado deve ser acrescido de 1% para cada dependente.
+create or replace function questao1A(p_dnumero int) returns int as
+$$
+declare
+	qnt int default 0;
+	sum_salarios int default 0;
+	empregado RECORD;
+	dependente RECORD;
+begin	
+	FOR empregado in (SELECT * from empregado em where em.dno = p_dnumero) LOOP
+		FOR dependente in (SELECT * from dependente de where de.essn = empregado.ssn) LOOP
+			UPDATE empregado set salario = salario + (salario* 0.01);
+		END LOOP;
+	END LOOP;
+	
+	select sum(salario) from empregado em where em.dno = p_dnumero into sum_salarios;
+	return sum_salarios;
+end;
+$$
+language plpgsql;
+
+select * from empregado
+select * from questao1A(5)
+
+-- 1b. Função que incremente em 2% o salário dos empregados para cada projeto que eles estiverem alocados.
+
+-- percebi que fiz errado e ja era tarde de mais
+create or replace function questao1B() returns int as
+$$
+declare
+	qnt_linhas int default 0;
+begin	
+	update empregado set salario = (salario + salario * 0.02) where ssn in (select emp.superssn from empregado emp group by (emp.superssn) having count(*) >= 2);
+	get diagnostics qnt_linhas = row_count;
+	return qnt_linhas;
+end;
+$$
+language plpgsql;
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-- 2. (6.0 pontos) Considerando o esquema abaixo, especifique os seguintes gatilhos em PostgreSQL. Note que os
+-- gatilhos precisam funcionar corretamente tanto para o insert quanto para o update:
+
+-- 2a. Gatilho para impedir que um empregado já cadastrado seja cadastrado como dependente. A comparação deve ser feita pelo nome de ambos.
+
+create or replace function questao2A() returns trigger as
+$$
+declare
+	qnt_pessoas_mesmo_nome int default 0;
+begin
+
+	select count(*) from empregado em where em.pnome = new.nome_dependente into qnt_pessoas_mesmo_nome;
+
+	if qnt_pessoas_mesmo_nome > 0 then
+		raise exception 'Pessoa com mesmo nome ja alocada, não pode cadastrar!';
+	end if;
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2A before insert or update on dependente for each row execute procedure questao2A()
+
+-- Testes:
+UPDATE dependente set nome_dependente = 'Ana Julia' where nome_dependente = 'Ana' 
+insert into dependente values ('123456789', 'James', 'F', '1986-04-05', 'FILHA' )
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-- 2b. Gatilho para impedir que um empregado seja gerente de mais de um departamento.
+
+create or replace function questao2B() returns trigger as
+$$
+declare
+	qnt_gerencias_do_atual_gerente int default 0;
+begin
+	select count(*) from empregado em join departamento de on de.gerssn = em.ssn where em.ssn = new.gerssn into qnt_gerencias_do_atual_gerente;
+	if(qnt_gerencias_do_atual_gerente > 0) then
+		raise exception 'Esse atual gerente já possui gerencias de outros departamentos!';
+	end if;
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2B before insert or update on departamento for each row execute procedure questao2B()
+
+-- teste:
+insert into departamento values('Pesquisa', 6, '123456789', '1988-01-01')
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-- 2c. Gatilho para impedir que a soma de horas trabalhadas pelos empregados em um projeto seja maior que 30.
+
+create or replace function questao2C() returns trigger as
+$$
+declare
+	soma_horas int default 0;
+begin
+	select sum(horas) from empregado em join trabalha_em tra on em.ssn = tra.essn where tra.pno = new.pno into soma_horas;
+	if(soma_horas) > 30 then
+		raise exception 'Atingiu o limite de 30 horas!';
+	end if;
+
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2C before insert or update on trabalha_em for each row execute procedure questao2C()
+
+-- teste:
+update trabalha_em set horas = 35 where (trabalha_em.essn = '123456789' and trabalha_em.pno = 1) 
+insert into trabalha_em values ('123456789', 1, 5)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-- 2d. Gatilho para impedir que um gerente seja supervisor de um empregado.
+
+create or replace function questao2D() returns trigger as
+$$
+declare
+	qnt_pessoas_supervisionadas int default 0;
+begin
+	-- 1º: encontrar a quantidade de pessoas supervisionadas pleo supervisor
+	select count(*) from  empregado em where em.superssn = new.gerssn into qnt_pessoas_supervisionadas;
+
+	-- 2º: verificar se essa quantidade é > 0
+	if(qnt_pessoas_supervisionadas > 0) then
+		raise exception 'Gerente atual já é supervisor de um empregado, cancelando a operação!';
+	end if;
+
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2D before insert or update on departamento for each row execute procedure questao2D()
+
+-- teste:
+insert into departamento values ('Pesquisa', 6, '999887777', '2000-01-01')
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-- 2e. Gatilho para impedir que um empregado supervisione um empregado de outro departamento.
+
+create or replace function questao2E() returns trigger as
+$$
+declare
+	qtd_supervisao_de_outros_dept int default 0;
+begin
+	select count(*) from empregado em where em.superssn = new.ssn and em.dno != new.dno into qtd_supervisao_de_outros_dept;
+
+	if (qtd_supervisao_de_outros_dept > 0) then
+		raise exception 'Não é possivel alocar esse funcionario como supervisor pois são de dept diferentes!';
+	end if;
+
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2E before insert or update on empregado for each row execute procedure questao2E()
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-- 2f. Gatilho para incrementar o salário do empregado a cada novo dependente dele cadastrado.
+
+create or replace function questao2F() returns trigger as
+$$
+declare
+begin
+	-- incrementando em 1%
+	update empregado set salario = (salario + salario*0.01) where ssn = new.essn;
+	return new;
+end;
+$$
+language plpgsql;
+
+create trigger quetao2F before insert or update on dependente for each row execute procedure questao2F()
+
+-- teste:
+insert into dependente values ('123456789', 'Gustavo', 'M', '2000-02-02', 'FIlho')
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-- 3. (2.0 pontos) Considerando o esquema abaixo, especifique as seguintes visões em PostgreSQL:
+-- 3a. Visão que mostre o nome de todos os empresados, de seus respectivos departamentos, e para aqueles que são
+-- supervisores, mostre também o nome dos empregados supervisionados.
+
+create or replace view questao3A as select em.pnome as emp_nome, de.dnome as dpt_nome, em2.pnome as emp_supervionado_nome from empregado em join departamento de on em.dno = de.dnumero left join empregado em2 on em2.superssn = em.ssn
+
+-- 3b. Visão que mostra o nome de todos os departamentos e para aqueles que tem empregados mostre também os
+-- nomes e quantidade de horas alocadas em projetos.
+
+create or replace view questao3B as select de.dnome as dept_nome, em.pnome as nome_emp, tra.horas as horas_proj from departamento de left join empregado em on de.dnumero = em.dno left join trabalha_em tra on tra.essn = em.ssn

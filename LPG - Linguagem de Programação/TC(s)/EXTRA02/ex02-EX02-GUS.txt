@@ -1,0 +1,3 @@
+//Vantagens de usar a alocação dinamica de memeoria: Oferece ao programador a vantagem de controlar a memoria que ira ser utilizada no programa o que facilita a manipulacao de recursos e barateia muitas inumeras vezes projetos grandes justamente por necessitar somente da quantidade de memoria desejada.
+
+//Desvantagens: É de uma complexidade razoavel a manipulação de memoria, portanto é facil ocorrer algo como vazamento de memoria devido o programador nao liberar a memoria alocada e ainda uma possivel fragmentacao de memoria por excesso de alocacao.

@@ -1,0 +1,118 @@
+-- TRABALHO 1 - PARTE 2: SCRIPT DE INSERÇÃO DE DADOS (POPULATE)
+-- Este script insere dados de exemplo no banco de dados de agendamento de quadras.
+-- A ordem de inserção é importante para respeitar as chaves estrangeiras (FOREIGN KEYs).
+
+-- Limpa as tabelas antes de inserir novos dados para evitar duplicatas ao re-executar o script
+-- O RESTART IDENTITY zera os contadores de SERIAL, e o CASCADE remove dependências.
+TRUNCATE TABLE 
+    ginasio, esporte, usuario, servidor, aluno, funcionario, admin, 
+    quadra, material_esportivo, evento, extraordinario, recorrente, 
+    agendamento, chamado_manutencao, quadra_esporte, evento_quadra, agendamento_material
+RESTART IDENTITY CASCADE;
+
+-- ========= 1. DADOS PARA TABELAS BASE (SEM DEPENDÊNCIAS) =========
+
+INSERT INTO ginasio (nome, endereco, capacidade) VALUES
+('Ginásio Principal', 'Rua das Universidades, 123', 1000),
+('Ginásio Anexo', 'Rua dos Esportes, 456', 300);
+
+INSERT INTO esporte (nome, max_jogadores) VALUES
+('Futsal', 20),
+('Voleibol', 18),
+('Basquetebol', 15),
+('Tênis', 4);
+
+INSERT INTO usuario (cpf, nome, email, senha, data_nasc, status) VALUES
+('11122233301', 'Ana Clara Admin', 'ana.admin@udesc.br', 'senha_hash_123', '1990-05-15', 'ativo'),
+('22233344402', 'Francisco Funcionario', 'francisco.func@udesc.br', 'senha_hash_123', '1985-02-20', 'ativo'),
+('33344455503', 'Sofia Supervisora', 'sofia.super@udesc.br', 'senha_hash_123', '1992-11-30', 'ativo'),
+('44455566604', 'Beatriz Bolsista', 'beatriz.bolsista@udesc.br', 'senha_hash_123', '2002-08-10', 'ativo'),
+('55566677705', 'Bruno Aluno', 'bruno.aluno@udesc.br', 'senha_hash_123', '2003-01-25', 'ativo'),
+('66677788806', 'Carlos Colega', 'carlos.colega@udesc.br', 'senha_hash_123', '2004-03-12', 'ativo'),
+('77788899907', 'Debora Desativada', 'debora.exaluna@udesc.br', 'senha_hash_123', '2001-07-07', 'inativo');
+
+-- ========= 2. DADOS PARA ESPECIALIZAÇÕES E TABELAS DEPENDENTES =========
+
+-- Servidores
+INSERT INTO servidor (cpf, id_servidor, data_admissao) VALUES
+('11122233301', 'servidor_ana01', '2015-03-01'),
+('22233344402', 'servidor_fran02', '2018-07-22'),
+('33344455503', 'servidor_sofia03', '2020-01-15');
+
+-- Alunos (Note a diferença entre bolsista e não-bolsista)
+INSERT INTO aluno (cpf, matricula, curso, ano_inicio, categoria, valor_remuneracao, carga_horaria, horario_inicio, horario_fim, id_supervisor_servidor) VALUES
+('44455566604', '2021001', 'Engenharia de Software', 2021, 'bolsista', 750.00, 20, '13:00', '17:00', 'servidor_sofia03'),
+('55566677705', '2022002', 'Ciência da Computação', 2022, 'nao_bolsista', NULL, NULL, NULL, NULL, NULL),
+('66677788806', '2022003', 'Sistemas de Informação', 2022, 'nao_bolsista', NULL, NULL, NULL, NULL, NULL);
+
+-- Especializações de Servidor
+INSERT INTO admin (cpf, nivel_acesso, area_responsabilidade) VALUES
+('11122233301', 1, 'Gestão Geral do Sistema');
+
+INSERT INTO funcionario (cpf, departamento, cargo) VALUES
+('22233344402', 'Manutenção', 'Zelador'),
+('33344455503', 'Atendimento', 'Supervisora de Bolsistas');
+
+-- Quadras
+INSERT INTO quadra (id_ginasio, num_quadra, capacidade, tipo_piso, cobertura, status) VALUES
+(1, 1, 150, 'Taco de Madeira', TRUE, 'disponivel'),
+(1, 2, 100, 'Cimento Polido', TRUE, 'manutencao'),
+(2, 1, 50, 'Saibro', FALSE, 'disponivel');
+
+-- Materiais Esportivos
+INSERT INTO material_esportivo (id_ginasio, nome, descricao, marca, status, qnt_total, qnt_disponivel) VALUES
+(1, 'Bola de Futsal', 'Bola oficial de futsal, tamanho 62-64cm', 'Penalty', 'bom', 10, 10),
+(1, 'Rede de Voleibol', 'Rede oficial com 9,5m de comprimento', 'Master Rede', 'bom', 2, 2),
+(1, 'Colete Esportivo (Laranja)', 'Colete para diferenciação de times', 'Sem Marca', 'bom', 20, 20);
+
+-- ========= 3. DADOS PARA EVENTOS E AGENDAMENTOS =========
+
+-- Eventos (Criados pelo Admin 'Ana')
+INSERT INTO evento (cpf_admin_organizador, nome, descricao) VALUES
+('11122233301', 'Campeonato Interno de Futsal', 'Jogos eliminatórios entre os cursos da UDESC.'),
+('11122233301', 'Treino do Time Oficial de Vôlei', 'Treinamento semanal da equipe de vôlei da universidade.');
+
+-- Especializações de Evento
+INSERT INTO extraordinario (id_evento, data_hora_inicio, data_hora_fim) VALUES
+(1, '2025-11-15 08:00:00', '2025-11-16 18:00:00');
+
+INSERT INTO recorrente (id_evento, regra_recorrencia, data_fim_recorrencia) VALUES
+(2, 'FREQ=WEEKLY;BYDAY=TU,TH;BYHOUR=19;BYMINUTE=0', '2025-12-20');
+
+-- Agendamentos
+INSERT INTO agendamento (cpf_usuario, id_ginasio, num_quadra, hora_ini, hora_fim, motivo, status_agendamento, id_bolsista_operador, data_operacao_bolsista) VALUES
+-- Agendamento futuro confirmado pelo próprio aluno
+('55566677705', 1, 1, '2025-10-10 18:00:00', '2025-10-10 19:00:00', 'Jogo de Futsal - TCC', 'confirmado', NULL, NULL),
+-- Agendamento feito pela bolsista para outro aluno
+('66677788806', 1, 1, '2025-10-11 20:00:00', '2025-10-11 21:00:00', 'Recreação', 'confirmado', '44455566604', CURRENT_TIMESTAMP),
+-- Agendamento passado que foi realizado
+('55566677705', 1, 1, '2025-09-20 18:00:00', '2025-09-20 19:00:00', 'Jogo de Futsal', 'realizado', NULL, NULL),
+-- Agendamento que foi cancelado
+('66677788806', 2, 1, '2025-09-25 10:00:00', '2025-09-25 11:00:00', 'Aula de Tênis', 'cancelado', NULL, NULL);
+
+-- Chamados de Manutenção
+INSERT INTO chamado_manutencao (cpf_usuario_abriu, id_ginasio, num_quadra, descricao) VALUES
+('55566677705', 1, 2, 'Piso da quadra com rachaduras perto da área do gol.');
+
+-- ========= 4. DADOS PARA TABELAS DE JUNÇÃO (RELACIONAMENTOS N:M) =========
+
+-- Quais esportes podem ser praticados em quais quadras
+INSERT INTO quadra_esporte (id_ginasio, num_quadra, id_esporte) VALUES
+(1, 1, 1), -- Ginásio 1, Quadra 1 -> Futsal
+(1, 1, 2), -- Ginásio 1, Quadra 1 -> Voleibol
+(1, 1, 3), -- Ginásio 1, Quadra 1 -> Basquetebol
+(2, 1, 4); -- Ginásio 2, Quadra 1 -> Tênis
+
+-- Quais quadras são bloqueadas por quais eventos
+INSERT INTO evento_quadra (id_evento, id_ginasio, num_quadra) VALUES
+(1, 1, 1); -- Campeonato de Futsal bloqueia a Quadra 1 do Ginásio Principal
+
+-- Quais materiais foram solicitados em quais agendamentos (PARA TESTAR O GATILHO)
+INSERT INTO agendamento_material (id_agendamento, id_material, quantidade_solicitada) VALUES
+(1, 1, 1),  -- Agendamento 1 (Futsal do Bruno) solicitou 1 Bola de Futsal
+(1, 3, 10); -- Agendamento 1 (Futsal do Bruno) solicitou 10 Coletes Laranja
+
+-- ================== FIM DO SCRIPT ==================
+
+-- Consulta de verificação (opcional) para ver o resultado do gatilho de estoque
+-- SELECT * FROM material_esportivo;
