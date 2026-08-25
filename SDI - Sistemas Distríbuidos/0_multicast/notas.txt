@@ -1,0 +1,13 @@
+O mapa deve ser:
+
+"datetime, delta, ip_dest, suspeito\n"
+
+o monitor (que devemos desenvolver) deve:
+{
+    enviar: "datetime, IP\n"
+    responder: "datetime, IP\n"
+}
+
+A porta padrão será 8888 e a faixa de ips será de 224.0.0.1 -> 224.0.0.254
+
+O suspeito é uma variavel que sera calculada apartir do numero de falhas divido pela quantidade de vezes que foi enviado.

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Acesso Negado - Segurança</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .denied-box {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            border-top: 6px solid #dc3545; /* Vermelho escuro de perigo */
+        }
+        .icon {
+            font-size: 70px;
+            margin-bottom: 10px;
+        }
+        .ip-box {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 1.1rem;
+            color: #495057;
+            border: 1px dashed #adb5bd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="denied-box">
+        <div class="icon">🛑</div>
+        <h2 class="text-danger fw-bold mb-3">Acesso Negado</h2>
+        <p class="text-muted" style="font-size: 1.1rem;">
+            O sistema de Gerência de Redes é estritamente monitorado. Apenas a máquina autorizada do professor possui permissão para acessar este painel.
+        </p>
+        
+
+        <div class="ip-box text-center">
+            <!-- Bloco do IP (Com linha divisória embaixo) -->
+            <div class="mb-3 pb-3 border-bottom border-secondary border-opacity-25">
+                <small class="text-muted text-uppercase d-block mb-1">Seu IP Atual:</small>
+                <span class="text-danger fw-bold" style="font-size: 1.3rem;">{{ ip_visitante }}</span>
+            </div>
+            
+            <!-- Bloco do MAC -->
+            <div>
+                <small class="text-muted text-uppercase d-block mb-1">Endereço Físico (MAC):</small>
+                <span class="text-danger fw-bold" style="font-size: 1.3rem;">{{ mac_visitante }}</span>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button onclick="window.history.back();" class="btn btn-outline-secondary w-100">Voltar</button>
+        </div>
+    </div>
+
+</body>
+</html>

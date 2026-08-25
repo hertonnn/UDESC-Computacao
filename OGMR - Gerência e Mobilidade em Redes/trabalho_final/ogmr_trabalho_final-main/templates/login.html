@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Gerência de Redes UDESC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='fundo_tela_login.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Caixa de login translúcida e centralizada */
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Logo da UDESC no topo */
+        .udesc-logo {
+            max-height: 60px;
+            margin-bottom: 30px;
+        }
+
+        /* O "Easter Egg" - Foto redonda do Professor estilo Windows */
+        .prof-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #00a650; /* Verde UDESC */
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+        }
+
+        .prof-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo dos inputs idêntico ao do SIGA */
+        .form-control {
+            background-color: #e9f0fe;
+            border: 1px solid #d1d9e6;
+            padding: 12px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 166, 80, 0.25);
+            border-color: #00a650;
+        }
+
+        /* Botão Verde da UDESC */
+        .btn-udesc {
+            background-color: #00a650;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-udesc:hover {
+            background-color: #008f45;
+        }
+
+        /* Link verde abaixo do botão */
+        .forgot-link {
+            color: #00a650;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            margin-top: 15px;
+        }
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <!-- Logo da UDESC -->
+        <img src="{{ url_for('static', filename='logo_udesc.png') }}" alt="Logo UDESC" class="udesc-logo" onerror="this.outerHTML='<h2 style=\'color:#00a650; font-weight:900;\'>Gerenciador de Acesso à Internet <span style=\'color:#e30613;\'>UDESC</span></h2>'">
+
+        <!-- Avatar do Professor -->
+        <img src="{{ url_for('static', filename='foto_prof.jpg') }}" alt="Foto do Professor" class="prof-avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+        <div class="prof-name">Prof. Adriano Fiorese</div>
+
+        <!-- Se o usuário errar a senha, o Python manda a variável 'erro' pra cá -->
+        {% if erro %}
+            <div class="alert alert-danger p-2" style="font-size: 0.9rem;">{{ erro }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="mb-3 text-start">
+                <input type="password" name="senha" class="form-control" placeholder="••••••••" required autofocus>
+            </div>
+            
+            <button type="submit" class="btn-udesc">Entrar</button>
+
+        </form>
+    </div>
+
+</body>
+</html>
