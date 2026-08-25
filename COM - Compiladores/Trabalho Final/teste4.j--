@@ -1,0 +1,13 @@
+{
+    int a;
+    double b;
+    string s;
+
+    s = "20";
+
+    if (a > 10) {
+        print(s);
+    }
+
+    return 0;
+}

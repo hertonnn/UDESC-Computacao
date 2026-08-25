@@ -1,0 +1,21 @@
+int maior(int x, int y) {
+    if (x > y) {
+        return x;
+    }
+    else {
+        return y;
+    }
+}
+{
+    int a;
+    double b;
+    string s;
+
+    s = "20";
+
+    if (a > 10) {
+        print(s);
+    }
+
+    return;
+}

@@ -1,0 +1,52 @@
+int logica(int a, int b, int c) {
+    if ((a > b && b != c) || !(c <= a)) {
+        return 1;
+    } 
+    return 0;
+}
+
+
+int maior(int a, int b) {
+    if(a > b) {
+        return a;
+    }
+    return b;
+}
+
+int fat(int n) {
+    if (n == 0) {
+        return 1;
+    }
+    return n * fat(n - 1);
+}
+
+int fibonacci(int n) {
+    if(n == 0) {
+        return 0;
+    }
+    if(n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+{
+    int a;
+    int b;
+    int c;
+    a = 10;
+
+    print("Digite um numero: ");
+    read(b);
+
+    while(b > 0) {
+        print(fibonacci(b));
+        b = b - 1;
+    }
+
+    print("Resultado das expressoes logicas");
+    
+    print(logica(10, 5, 10));
+
+    return;
+}

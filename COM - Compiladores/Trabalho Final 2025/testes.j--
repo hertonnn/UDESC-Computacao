@@ -1,0 +1,77 @@
+// Teste de função com retorno e recursividade
+int fatorial(int n) {
+  if (n <= 1) {
+    return 1;
+  }
+  // A recursão testa se a pilha de ativação está sendo salva/restaurada corretamente
+  return n * fatorial(n - 1);
+}
+
+// Teste de fluxo de controle condicional
+void testeIfElse(int idade) {
+  print("Teste If-Else");
+  if (idade >= 18) {
+    print(1); // Maior de idade
+  } else {
+    print(0); // Menor de idade
+  }
+}
+
+// Teste de loops aninhados (Nested Loops)
+void testeMatriz(int tamanho) {
+  int i;
+  int j;
+  print("Teste Nested Loop");
+  
+  // Testa se as variáveis i e j não conflitam no escopo
+  for (i = 1; i <= tamanho; i++) {
+    for (j = 1; j <= tamanho; j++) {
+       print(i * j);
+    }
+  }
+}
+
+// Teste de precedência aritmética
+void testePrecedencia(double a, double b, double c) {
+  double res1;
+  double res2;
+  
+  print("Teste Precedencia");
+  
+  // Deve priorizar a multiplicação
+  res1 = a + b * c;
+  print(res1);
+  
+  // Deve priorizar os parênteses
+  res2 = (a + b) * c;
+  print(res2);
+}
+
+{
+  int i;
+  float f;
+  double d;
+  int resultadoTruncado;
+
+  i = 5;
+  d = 2.5;
+
+  // 1. Int para Float (Promoção automática)
+  f = i; 
+  print(f); // Esperado: 5.0
+
+  // 2. Operação mista: Float + Double (Resultado vira Double)
+  // f(5.0) + d(2.5) = 7.5 (Double)
+  print(f + d); 
+
+  // 3. Atribuição de Double em Float (Deve gerar WARNING no compilador)
+  // Narrowing: 10.9 vira 10.9 (mas com menos precisão)
+  f = 10.9; 
+  print(f);
+
+  // 4. Truncamento: Float para Int (Deve gerar WARNING no compilador)
+  // f agora é 10.9. Ao atribuir para int, vira 10.
+  resultadoTruncado = f;
+  print(resultadoTruncado); // Esperado: 10
+
+}
