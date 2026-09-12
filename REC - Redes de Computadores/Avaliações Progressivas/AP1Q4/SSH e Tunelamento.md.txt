@@ -1,0 +1,95 @@
+# Resolução: Tunelamento de Sessão Gráfica (VNC) via SSH
+
+Com base na imagem `image_bc837e.png` e na descrição da operação, segue a resolução detalhada.
+
+## b) Diagrama de Sequência da Operação
+
+O diagrama abaixo ilustra a sequência de eventos para estabelecer o túnel SSH do Cliente até o Computador B (utilizando o Computador A como salto/jump) para trafegar a sessão gráfica do VNC de forma segura.
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente (Cliente VNC)
+    participant A as Computador A (Jump Host / SSH)
+    participant B as Computador B (Servidor VNC)
+
+    Note over B: 1. Inicializa Servidor VNC (ex: display :1, porta 5901)
+    C->>A: 2. SSH: Cliente abre sessão SSH com Host A
+    activate A
+    C->>A: 3. Solicita canal TCP (direct-tcpip) para Host B
+    A->>B: 4. A abre conexão TCP com Host B (proxy)
+    activate B
+    C->>B: 5. SSH: Cliente estabelece sessão SSH end-to-end com B (através de A)
+    Note over C, B: 6. Cliente configura Port Forwarding local (-L 5901:localhost:5901)
+    Note over C, B: Túnel SSH Estabelecido (Cliente:5901 → A → B:5901)
+
+    C->>C: 7. Inicia Cliente VNC (conectando em localhost:5901)
+    C->>A: 8. Requisição VNC (tráfego encriptado no túnel SSH)
+    A->>B: 9. Proxy repassa dados ao Servidor VNC
+    B-->>A: 10. Resposta da sessão gráfica VNC (encriptada)
+    A-->>C: 11. Resposta exibida no Cliente VNC
+```
+
+## c) Comandos e Configurações em Cada Host
+
+Para que a topologia ilustrada na imagem funcione adequadamente, é necessário configurar o SSH e o VNC. O cenário assume que o servidor VNC rodará no *display* `:1`, que por padrão utiliza a porta TCP `5901`.
+
+### 1. Computador B (Servidor VNC)
+**Configurações Necessárias:**
+- Um servidor SSH (`openssh-server`) deve estar em execução para aceitar a conexão do túnel.
+- Um servidor VNC (ex: `tigervnc-standalone-server`, `tightvncserver`) deve estar instalado para prover a interface gráfica.
+
+**Comandos:**
+```bash
+# Instalação dos pacotes (Exemplo em distros Debian/Ubuntu)
+sudo apt update
+sudo apt install openssh-server tigervnc-standalone-server
+
+# Configurar senha para o VNC (executar com o usuário comum que terá a interface exportada)
+vncpasswd
+
+# Iniciar o servidor VNC no display :1 (porta 5901)
+vncserver :1 -geometry 1280x720 -depth 24
+```
+
+### 2. Computador A (Intermediário / Jump Host)
+**Configurações Necessárias:**
+- Precisa estar com o serviço de servidor SSH habilitado para receber a conexão inicial do "Cliente".
+- Deve ter um cliente SSH habilitado para saltar a conexão até o "Computador B".
+- O encaminhamento de portas deve estar permitido (`AllowTcpForwarding yes` em `/etc/ssh/sshd_config`, que costuma ser o padrão).
+
+**Comandos:**
+```bash
+# Habilitar e iniciar o serviço SSH caso não esteja rodando
+sudo systemctl enable --now ssh
+```
+
+### 3. Cliente (Máquina Local)
+**Configurações Necessárias:**
+- Precisa de um cliente SSH (padrão em sistemas Linux/macOS ou OpenSSH no Windows).
+- Precisa de um visualizador VNC (ex: *VNC Viewer*, *Remmina*, *Vinagre*).
+
+**Comandos:**
+A abordagem moderna para passar pelo Computador A e fazer o tunelamento do VNC do Computador B para a máquina local do Cliente é o uso do parâmetro `-J` (ProxyJump) junto com `-L` (Local Port Forwarding).
+
+**Passo 1: Estabelecer o Túnel SSH**
+No terminal do Cliente, execute:
+```bash
+# Conectar fazendo túnel da porta local 5901 até a porta 5901 do Computador B, 
+# saltando (-J) através do Computador A.
+ssh -J usuarioA@IP_ComputadorA usuarioB@IP_ComputadorB -L 5901:localhost:5901
+```
+*Alternativa Clássica (Se a versão do SSH não suportar `-J`):*
+```bash
+# No Cliente, conectar em A e criar túnel direto até a porta 5901 de B.
+# Aqui, o forwarding aponta para IP_ComputadorB:5901 (visto da perspectiva de A).
+ssh -L 5901:IP_ComputadorB:5901 usuarioA@IP_ComputadorA
+```
+*Nota: Nesta abordagem, A precisa ter acesso de rede ao Computador B na porta 5901. A conexão entre A e B **não** será criptografada pelo SSH (apenas o trecho Cliente→A é protegido pelo túnel). Para criptografia end-to-end, prefira o `-J`.*
+
+**Passo 2: Acessar a Sessão Gráfica**
+Com o terminal do Passo 1 ainda aberto (mantendo o túnel ativo), abra outra janela de terminal ou inicie o aplicativo gráfico do Cliente VNC:
+```bash
+# Exemplo via linha de comando no Linux:
+vncviewer localhost:5901
+```
+*Nota: Caso utilize uma interface gráfica como o **RealVNC Viewer** ou **Remmina**, basta colocar o endereço `localhost:5901` ou `127.0.0.1:5901` no campo de conexão.*
