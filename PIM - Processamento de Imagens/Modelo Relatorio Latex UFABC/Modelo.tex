@@ -1,0 +1,65 @@
+%Modelo de relatório de Transformações Bioquímicas em Latex (2009/3)
+%Escrito por Amadeus Folego da Silva
+\documentclass[a4paper, oneside]{report}                        %classe relatório, papel A4, formato de uma página
+\usepackage[top=3cm, bottom=2cm, left=3cm, right=2cm]{geometry} %margens da folha
+\usepackage[utf8]{inputenc}                                     %|
+\usepackage[brazil]{babel}                                      %|adaptações para português brasileiro
+%\usepackage{pslatex}                                           %fonte Times New Roman
+\usepackage[alf]{abntcite}                                      %pacote de citações formato alfanumérico da abnt
+\usepackage{indentfirst}                                        %começa parágrafo sempre
+\usepackage{fancyhdr}                                           %pacote para editar layout da pagina
+\usepackage{graphicx}                                           %pacote para colocar gráficos
+\usepackage{amsmath}                                            %pacote para notações matemáticas da ams
+\usepackage{url}                                                %pacote para colocar endereço online
+\cfoot{}                                                        %nada no rodapé central
+\rfoot{\thepage}                                                %número da página no rodapé à direita
+
+\pagestyle{fancyplain}                                          %utiliza layout estabelecido
+
+%\setlength{\parindent}{2.5cm}                                   %parágrafo com recuo de 2.5cm
+\fontsize{12pt}{1.5cm}                                          %fonte tamanho 12, entrelinhas de 1.5cm
+
+\title{\Huge{Universidade Federal do ABC}\\[1.5cm]\huge{Transformações Bioquímicas}\\[2cm]\large{\textbf{Experimento 1: Espectrofotometria}}\\[4cm]}  %título editado
+
+\author{\hfill \textbf{Grupo x}\smallskip\\\hfill Nome1\\\hfill Nome2\\\hfill Nome3\\\hfill Nome4\\\hfill Nome5\medskip\\\hfill \textbf{Prof. Responsável}\smallskip\\\hfill Professor} %autores editado
+
+\date{\vfill\today}                                           %data
+
+\begin{document}                                                %inicia documento
+
+\maketitle                                                      %faz capa
+\tableofcontents                                                %faz sumário
+
+\renewcommand{\abstractname}{Abstract}                          %coloca nome de resumo para abstract
+\begin{abstract}                                                %inicia abstract
+\input{Abstract}                                                %coloca abstract
+\end{abstract}                                                  %finaliza abstract
+
+\renewcommand{\abstractname}{Resumo}                            %coloca nome de abstract para resumo
+\begin{abstract}                                                %inicia abstract
+\input{Resumo}                                                  %coloca resumo
+\end{abstract}                                                  %finaliza abstract
+
+\chapter*{Introdução}                                           %inicia capítulo sem numeração
+\addcontentsline{toc}{chapter}{Introdução}                      %como não numeramos os capítulos, precisamos fazer isso pra colocar a introdução no sumário
+\input{Introducao}
+\chapter*{Objetivos}
+\addcontentsline{toc}{chapter}{Objetivo}
+\input{Objetivo}
+\chapter*{Parte experimental}
+\addcontentsline{toc}{chapter}{Parte experimental}
+\input{Experimental}
+\chapter*{Resultados}
+\addcontentsline{toc}{chapter}{Resultados}
+\input{Resultados}
+\chapter*{Discussão}
+\addcontentsline{toc}{chapter}{Discussão}
+\input{Discussao}
+\chapter*{Conclusões}
+\addcontentsline{toc}{chapter}{Conclusões}
+\input{Conclusao}
+
+\bibliographystyle{abnt-alf}                                    %define estilo de bibliografia como abnt
+\bibliography{Bibliografia}                                     %coloca bibliografia
+
+\end{document}                                                  %finaliza documento
