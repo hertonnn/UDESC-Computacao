@@ -1,0 +1,27 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{1.45.2.1 }
+
+\bibitem[Associação Brasileira de Normas Técnicas 2000]{NBR6023:2000}
+\abntrefinfo{ABNT}{ABNT}{2000}
+{ASSOCIAçãO BRASILEIRA DE NORMAS TéCNICAS. \emph{{NBR} 6023}: Informação e
+  documentação --- referências ---elaboração.
+Rio de Janeiro, ago. 2000. 22~p.}
+
+\bibitem[Torelly 1991]{livro1}
+\abntrefinfo{Torelly}{TORELLY}{1991}
+{TORELLY, M. \emph{Almanaque para 1949}: primeiro semestre ou {A}lmanaque
+  d’{A} {M}anhã. Ed. fac-sim. São Paulo: Studioma: Arquivo do Estado, 1991.
+   (Coleção Almanaques do Barão de Itararé). Contém iconografia e
+  depoimentos sobre o autor.}
+
+\bibitem[Weber 2003]{abntex}
+\abntrefinfo{Weber}{WEBER}{2003}
+{WEBER, G. \emph{Estilo bibtex compatível com a ‘norma’ 6023/2000 da
+  {ABNT}}: Questões específicas da ‘norma’ 10520/2001.
+[S.l.], 2003. Dispon{\'\i}vel em: $<$http://abntex.codigolivre.org.br$>$.}
+
+\end{thebibliography}
