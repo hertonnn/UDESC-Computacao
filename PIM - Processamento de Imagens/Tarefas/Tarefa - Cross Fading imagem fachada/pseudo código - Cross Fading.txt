@@ -1,0 +1,42 @@
+// ---------- utilitários de data ----------
+FUNÇÃO ehBissexto(ano):
+    RETORNE (ano mod 4 == 0 E ano mod 100 != 0) OU (ano mod 400 == 0)
+
+FUNÇÃO diasDoMes(mes, ano):
+    SE mes EM {4, 6, 9, 11}          ENTÃO RETORNE 30
+    SE mes == 2                      ENTÃO RETORNE (ehBissexto(ano) ? 29 : 28)
+    SENÃO                                  RETORNE 31          // 1,3,5,7,8,10,12
+
+FUNÇÃO diaDoAno(dia, mes, ano):
+    n ← dia
+    PARA m ← 1 ATÉ mes-1 FAÇA
+        n ← n + diasDoMes(m, ano)
+    RETORNE n
+
+// ---------- cross-fading ----------
+ENTRADA : I1 (imagem de 01/01/1937), I2 (imagem de 31/12/1937),
+          data-alvo t = (dia, mes, ano=1937)
+SAÍDA   : I (imagem sintetizada para a data t)
+
+INÍCIO
+    // 0) pré-condições
+    SE dimensoes(I1) != dimensoes(I2) ENTÃO ERRO "imagens incompatíveis"
+    SE t < 01/01/1937 OU t > 31/12/1937 ENTÃO ERRO "data fora do intervalo"
+
+    // 1) escala temporal
+    D_total  ← diaDoAno(31,12,1937) - diaDoAno(1,1,1937)   // 365 - 1 = 364
+    D_passado← diaDoAno(dia,mes,1937) - diaDoAno(1,1,1937) // 0 .. 364
+    alpha    ← D_passado / D_total                          // 0.0 .. 1.0
+
+    // 2) mistura pixel a pixel (por canal)
+    PARA i ← 0 ATÉ altura-1 FAÇA
+        PARA j ← 0 ATÉ largura-1 FAÇA
+            PARA CADA canal k EM {R, G, B} FAÇA
+                v ← (1 - alpha) * I1[i][j][k] + alpha * I2[i][j][k]
+                I[i][j][k] ← arredonda( limita(v, 0, 255) )
+            FIM PARA
+        FIM PARA
+    FIM PARA
+
+    RETORNE I
+FIM
